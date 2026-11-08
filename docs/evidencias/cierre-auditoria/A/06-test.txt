@@ -1,0 +1,19 @@
+$ npm run test
+2026-11-08T13:17:47-07:00
+
+> vetsync@1.0.0 test
+> vitest run tests/unit
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+
+ Test Files  9 passed (9)
+      Tests  96 passed (96)
+   Start at  13:17:48
+   Duration  1.66s (import 54%, tests 33%, transform 11%, worker 2%)
+
+    Isolate  9 workers spawned · ~79ms startup each (spawn + environment, per file)
+             at least ~634ms faster with isolate: false — reuses workers across files instead of one per file
+
+exit=0

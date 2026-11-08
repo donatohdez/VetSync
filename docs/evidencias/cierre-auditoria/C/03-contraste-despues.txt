@@ -1,0 +1,41 @@
+[despues] combinaciones únicas medidas: 160; bajo umbral: 0; de ellas 10-12px: 0
+placeholders: [{"id":"patient-search","ratio":4.81},{"id":"select-search-input","ratio":4.7},{"id":"select-search-input","ratio":4.7},{"id":"select-search-input","ratio":4.7}]
+[despues] bordes de campos en reposo (único por tipo):
+  input.owner-name borde rgb(47, 122, 92) razón 5.17:1
+  input.owner-email borde rgb(125, 143, 118) razón 3.46:1
+  input.owner-phone borde rgb(125, 143, 118) razón 3.46:1
+  button.select-trigger borde rgb(125, 143, 118) razón 3.46:1
+  input.pet-name borde rgb(125, 143, 118) razón 3.46:1
+  input.pet-breed borde rgb(125, 143, 118) razón 3.46:1
+  input.pet-birthdate borde rgb(125, 143, 118) razón 3.46:1
+  input.appointment-date borde rgb(125, 143, 118) razón 3.46:1
+  textarea.appointment-reason borde rgb(125, 143, 118) razón 3.46:1
+  input.record-date borde rgb(125, 143, 118) razón 3.46:1
+  textarea.record-note borde rgb(125, 143, 118) razón 3.46:1
+  search-field borde rgb(125, 143, 118) razón 3.24:1
+[despues] foco (únicos):
+  a.skip-link outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=4.84 outlineVsOwnBg=1.84 borderVsOwnBg=9.52
+  a.brand outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=5.17 outlineVsOwnBg=5.17 borderVsOwnBg=11.65
+  button.nav-item outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=5.17 outlineVsOwnBg=4.52 borderVsOwnBg=8.33
+  button.nav-item outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=5.17 outlineVsOwnBg=5.17 borderVsOwnBg=4.68
+  button.button outline[solid 3px rgb(47, 122, 92) off 3px] shadow[rgba(25, 62, 48, 0.063) 0px 2px 5px 0px] outlineVsParent=5.17 outlineVsOwnBg=1.69 borderVsOwnBg=1
+  button.selected outline[solid 3px rgb(47, 122, 92) off 3px] shadow[rgba(23, 53, 37, 0.086) 0px 1px 4px 0px] outlineVsParent=4.45 outlineVsOwnBg=5.17 borderVsOwnBg=8.19
+  button.filter-all outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=4.45 outlineVsOwnBg=4.45 borderVsOwnBg=4.66
+  button.button outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=5.17 outlineVsOwnBg=4.81 borderVsOwnBg=1.15
+  input.owner-email outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  input.owner-phone outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  button.icon-button outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=5.17 outlineVsOwnBg=4.68 borderVsOwnBg=3.93
+  input.owner-name outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  input.pet-name outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  button.select-trigger outline[solid 3px rgb(47, 122, 92) off 3px] shadow[none] outlineVsParent=5.17 outlineVsOwnBg=5.17 borderVsOwnBg=3.46
+  input.pet-breed outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  input.pet-birthdate outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  input.pet-birthdate outline[none 3px rgb(63, 93, 61) off 0px] shadow[none] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=3.46
+  input.appointment-date outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  input.appointment-date outline[none 3px rgb(63, 93, 61) off 0px] shadow[none] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=3.46
+  textarea.appointment-reason outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  dialog.form-dialog outline[auto 1px rgb(0, 95, 204) off 0px] shadow[rgba(18, 51, 33, 0.21) 0px 25px 100px 0px] outlineVsParent=5.6 outlineVsOwnBg=5.98 borderVsOwnBg=1.26
+  input.record-date outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+  input.record-date outline[none 3px rgb(63, 93, 61) off 0px] shadow[none] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=3.46
+  textarea.record-note outline[solid 2px rgba(0, 0, 0, 0) off 2px] shadow[rgb(47, 122, 92) 0px 0px 0px 1px, rgb(213, 232, 215) 0px 0px] outlineVsParent=1 outlineVsOwnBg=1 borderVsOwnBg=5.17
+[despues] controles enfocables sin outline ni box-shadow: 3 input.pet-birthdate, input.appointment-date, input.record-date

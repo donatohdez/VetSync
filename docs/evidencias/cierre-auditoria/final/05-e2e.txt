@@ -1,0 +1,40 @@
+# npm run test:e2e — 2026-11-08T20:36:30Z
+
+> vetsync@1.0.0 test:e2e
+> playwright test
+
+
+Running 29 tests using 1 worker
+
+  ✓   1 tests/e2e/booking.spec.ts:15:1 › recepción registra dueño y mascota desde la cita y reserva un bloque de media hora (4.3s)
+  ✓   2 tests/e2e/booking.spec.ts:115:3 › iconos centrados y flechas con margen en 1440px (735ms)
+  ✓   3 tests/e2e/booking.spec.ts:115:3 › iconos centrados y flechas con margen en 390px (784ms)
+  ✓   4 tests/e2e/clinic.spec.ts:18:1 › recorre registros, agenda, disponibilidad, historial y correo simulado (6.9s)
+  ✓   5 tests/e2e/clinic.spec.ts:144:1 › navegación móvil sin desbordamiento horizontal (846ms)
+  ✓   6 tests/e2e/polish.spec.ts:105:1 › selector de historial con búsqueda, contexto del paciente y notas (1.4s)
+  ✓   7 tests/e2e/polish.spec.ts:140:1 › Escape cierra el selector antes del modal y permite selección por teclado (677ms)
+  ✓   8 tests/e2e/polish.spec.ts:161:1 › guardado con estado de carga, conflicto legible y aviso descartable (2.7s)
+  ✓   9 tests/e2e/polish.spec.ts:218:1 › una respuesta antigua no reemplaza el historial recién seleccionado (1.0s)
+  ✓  10 tests/e2e/polish.spec.ts:263:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento (748ms)
+  ✓  11 tests/e2e/polish.spec.ts:308:1 › un alta confirmada no se repite si falla la actualización posterior (1.1s)
+  ✓  12 tests/e2e/recovery.spec.ts:225:3 › F-01 guardado confirmado y refresco fallido › mascota: no se repite el alta y la lista muestra el registro guardado (1.2s)
+  ✓  13 tests/e2e/recovery.spec.ts:246:3 › F-01 guardado confirmado y refresco fallido › nota clínica: aviso de guardado y un solo POST (912ms)
+  ✓  14 tests/e2e/recovery.spec.ts:259:3 › F-01 guardado confirmado y refresco fallido › cita: aviso de guardado, diálogo cerrado y la cita visible sin repetir el POST (2.0s)
+  ✓  15 tests/e2e/recovery.spec.ts:272:3 › F-01 guardado confirmado y refresco fallido › fallo parcial: /owners responde y /appointments falla sin duplicar al dueño nuevo (1.5s)
+  ✓  16 tests/e2e/recovery.spec.ts:291:3 › F-01 guardado confirmado y refresco fallido › cadena cita > mascota > dueño con refrescos fallidos conserva borradores y no duplica altas (3.1s)
+  ✓  17 tests/e2e/recovery.spec.ts:332:3 › F-01 guardado confirmado y refresco fallido › un fallo real del POST sí permite reintentar y conserva los datos (1.4s)
+  ✓  18 tests/e2e/recovery.spec.ts:368:3 › F-08 conflicto 409 de cita › vuelve a consultar, libera el bloque ocupado y permite elegir otro (2.2s)
+  ✓  19 tests/e2e/recovery.spec.ts:411:3 › F-08 conflicto 409 de cita › si la nueva consulta falla no habilita una reserva obsoleta y permite reintentar (2.1s)
+  ✓  20 tests/e2e/recovery.spec.ts:457:3 › F-09 selector requerido y F-14 mensajes en español › un selector requerido sin elegir muestra un error asociado y lo limpia al elegir (1.4s)
+  ✓  21 tests/e2e/recovery.spec.ts:486:3 › F-09 selector requerido y F-14 mensajes en español › con varios campos inválidos el foco va al primero del formulario (843ms)
+  ✓  22 tests/e2e/recovery.spec.ts:496:3 › F-09 selector requerido y F-14 mensajes en español › errores de validación de zod y de red llegan en español (1.4s)
+  ✓  23 tests/e2e/recovery.spec.ts:532:3 › F-09 selector requerido y F-14 mensajes en español › la consulta de horarios fallida por red se muestra en español (1.0s)
+  ✓  24 tests/e2e/recovery.spec.ts:548:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados (1.6s)
+  ✓  25 tests/e2e/recovery.spec.ts:591:3 › F-15 teclado de horarios y F-16 estado durante el guardado › durante el guardado se bloquean acciones incompatibles y no queda «Volver» residual (2.8s)
+  ✓  26 tests/e2e/recovery.spec.ts:658:3 › F-19/F-21 horario de clínica desde /config › la UI muestra el horario y la duración que entrega /config (666ms)
+  ✓  27 tests/e2e/recovery.spec.ts:674:3 › F-19/F-21 horario de clínica desde /config › sin bookingHours usa los valores por defecto seguros (650ms)
+  ✓  28 tests/e2e/recovery.spec.ts:711:3 › contraste de estados interactivos › el horario seleccionado conserva el contraste con el puntero encima (1.6s)
+  ✓  29 tests/e2e/recovery.spec.ts:723:3 › contraste de estados interactivos › la etiqueta «(opcional)» alcanza 4.5:1 sobre fondo blanco (803ms)
+
+  29 passed (52.5s)
+EXIT=0

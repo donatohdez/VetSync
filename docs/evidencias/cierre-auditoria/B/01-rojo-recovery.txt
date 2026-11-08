@@ -1,0 +1,400 @@
+Comando: npx playwright test tests/e2e/recovery.spec.ts --reporter=line
+Fecha: 2026-11-08T20:12:01Z
+
+Running 16 tests using 1 worker
+
+[1/16] tests/e2e/recovery.spec.ts:221:3 › F-01 guardado confirmado y refresco fallido › mascota: no se repite el alta y la lista muestra el registro guardado
+  1) tests/e2e/recovery.spec.ts:221:3 › F-01 guardado confirmado y refresco fallido › mascota: no se repite el alta y la lista muestra el registro guardado 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#notice')
+    Expected substring: "guardada"
+    Received string:    "Registro guardado correctamente. No se pudo actualizar la vista; recarga la página para consultar los datos recientes."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#notice') with timeout 5000ms
+      - waiting for locator('#notice')
+        14 × locator resolved to <div id="notice" role="status" aria-live="polite" class="notice error">…</div>
+           - unexpected value "Registro guardado correctamente. No se pudo actualizar la vista; recarga la página para consultar los datos recientes."
+
+
+      230 |     await page.locator("#pet-form .submit-button").click();
+      231 |     await expect(page.locator("#form-dialog")).not.toBeVisible();
+    > 232 |     await expect(page.locator("#notice")).toContainText("guardada");
+          |                                           ^
+      233 |     await expect(page.locator("#notice")).toContainText("No se pudo actualizar");
+      234 |     await expect(page.locator("#patients-grid")).toContainText("Rocky");
+      235 |     expect(mock.posts["/api/pets"]).toHaveLength(1);
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:232:43
+
+    Error Context: work/playwright-results/recovery-F-01-guardado-con-49655-uestra-el-registro-guardado/error-context.md
+
+
+[2/16] tests/e2e/recovery.spec.ts:237:3 › F-01 guardado confirmado y refresco fallido › nota clínica: aviso de guardado y un solo POST
+  2) tests/e2e/recovery.spec.ts:237:3 › F-01 guardado confirmado y refresco fallido › nota clínica: aviso de guardado y un solo POST 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#notice')
+    Expected substring: "guardada"
+    Received string:    "Registro guardado correctamente. No se pudo actualizar la vista; recarga la página para consultar los datos recientes."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#notice') with timeout 5000ms
+      - waiting for locator('#notice')
+        14 × locator resolved to <div id="notice" role="status" aria-live="polite" class="notice error">…</div>
+           - unexpected value "Registro guardado correctamente. No se pudo actualizar la vista; recarga la página para consultar los datos recientes."
+
+
+      243 |     await page.locator("#record-form .submit-button").click();
+      244 |     await expect(page.locator("#form-dialog")).not.toBeVisible();
+    > 245 |     await expect(page.locator("#notice")).toContainText("guardada");
+          |                                           ^
+      246 |     expect(mock.posts["/api/pets/pet-luna/medical-records"]).toHaveLength(1);
+      247 |   });
+      248 |   test("cita: aviso de guardado, diálogo cerrado y la cita visible sin repetir el POST", async ({
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:245:43
+
+    Error Context: work/playwright-results/recovery-F-01-guardado-con-d024a--de-guardado-y-un-solo-POST/error-context.md
+
+
+[3/16] tests/e2e/recovery.spec.ts:248:3 › F-01 guardado confirmado y refresco fallido › cita: aviso de guardado, diálogo cerrado y la cita visible sin repetir el POST
+  3) tests/e2e/recovery.spec.ts:248:3 › F-01 guardado confirmado y refresco fallido › cita: aviso de guardado, diálogo cerrado y la cita visible sin repetir el POST 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#notice')
+    Expected substring: "guardada"
+    Received string:    "Registro guardado correctamente. No se pudo actualizar la vista; recarga la página para consultar los datos recientes."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#notice') with timeout 5000ms
+      - waiting for locator('#notice')
+        14 × locator resolved to <div id="notice" role="status" aria-live="polite" class="notice error">…</div>
+           - unexpected value "Registro guardado correctamente. No se pudo actualizar la vista; recarga la página para consultar los datos recientes."
+
+
+      255 |     await page.locator("#appointment-form .submit-button").click();
+      256 |     await expect(page.locator("#form-dialog")).not.toBeVisible();
+    > 257 |     await expect(page.locator("#notice")).toContainText("guardada");
+          |                                           ^
+      258 |     await expect(page.locator("#appointments-body")).toContainText("Luna");
+      259 |     expect(mock.posts["/api/appointments"]).toHaveLength(1);
+      260 |   });
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:257:43
+
+    Error Context: work/playwright-results/recovery-F-01-guardado-con-f50bc-visible-sin-repetir-el-POST/error-context.md
+
+
+[4/16] tests/e2e/recovery.spec.ts:261:3 › F-01 guardado confirmado y refresco fallido › fallo parcial: /owners responde y /appointments falla sin duplicar al dueño nuevo
+[5/16] tests/e2e/recovery.spec.ts:278:3 › F-01 guardado confirmado y refresco fallido › cadena cita > mascota > dueño con refrescos fallidos conserva borradores y no duplica altas
+[6/16] tests/e2e/recovery.spec.ts:308:3 › F-01 guardado confirmado y refresco fallido › un fallo real del POST sí permite reintentar y conserva los datos
+[7/16] tests/e2e/recovery.spec.ts:335:3 › F-08 conflicto 409 de cita › vuelve a consultar, libera el bloque ocupado y permite elegir otro
+  4) tests/e2e/recovery.spec.ts:335:3 › F-08 conflicto 409 de cita › vuelve a consultar, libera el bloque ocupado y permite elegir otro 
+
+    Error: expect(locator).toBeDisabled() failed
+
+    Locator:  locator('.slot-button[data-time="10:00"]')
+    Expected: disabled
+    Received: enabled
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeDisabled" locator('.slot-button[data-time="10:00"]') with timeout 5000ms
+      - waiting for locator('.slot-button[data-time="10:00"]')
+        14 × locator resolved to <button role="radio" type="button" data-time="10:00" class="slot-button" aria-checked="true" aria-label="10:00 a.m.">…</button>
+           - unexpected value "enabled"
+
+
+      351 |     await page.locator("#appointment-form .submit-button").click();
+      352 |     await expect(page.locator("#form-error")).toContainText("ya tiene una cita");
+    > 353 |     await expect(slot(page, "10:00")).toBeDisabled();
+          |                                       ^
+      354 |     await expect(slot(page, "10:00")).toContainText("Ocupado");
+      355 |     await expect(slot(page, "10:00")).toHaveAttribute("aria-checked", "false");
+      356 |     await expect(page.locator("#appointment-form .submit-button")).toBeDisabled();
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:353:39
+
+    Error Context: work/playwright-results/recovery-F-08-conflicto-40-c4487-upado-y-permite-elegir-otro/error-context.md
+
+
+[8/16] tests/e2e/recovery.spec.ts:370:3 › F-08 conflicto 409 de cita › si la nueva consulta falla no habilita una reserva obsoleta y permite reintentar
+  5) tests/e2e/recovery.spec.ts:370:3 › F-08 conflicto 409 de cita › si la nueva consulta falla no habilita una reserva obsoleta y permite reintentar 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.slot-button')
+    Expected: 16
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.slot-button') with timeout 5000ms
+      - waiting for locator('.slot-button')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      202 |   await page.locator("#appointment-date").fill(tomorrow());
+      203 |   await page.locator("#appointment-reason").fill("Control anual");
+    > 204 |   await expect(page.locator(".slot-button")).toHaveCount(16);
+          |                                              ^
+      205 | }
+      206 | const slot = (page: Page, time: string) =>
+      207 |   page.locator(`.slot-button[data-time="${time}"]`);
+        at openBooking (/Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:204:46)
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:385:5
+
+    Error Context: work/playwright-results/recovery-F-08-conflicto-40-20ce9-soleta-y-permite-reintentar/error-context.md
+
+
+[9/16] tests/e2e/recovery.spec.ts:402:3 › F-09 selector requerido y F-14 mensajes en español › un selector requerido sin elegir muestra un error asociado y lo limpia al elegir
+  6) tests/e2e/recovery.spec.ts:402:3 › F-09 selector requerido y F-14 mensajes en español › un selector requerido sin elegir muestra un error asociado y lo limpia al elegir 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#pet-owner-error')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('#pet-owner-error') with timeout 5000ms
+      - waiting for locator('#pet-owner-error')
+
+
+      410 |     const trigger = page.locator("#pet-owner-control");
+      411 |     const error = page.locator("#pet-owner-error");
+    > 412 |     await expect(error).toBeVisible();
+          |                         ^
+      413 |     await expect(error).toContainText("Selecciona");
+      414 |     await expect(error).toHaveAttribute("role", "alert");
+      415 |     await expect(trigger).toHaveAttribute("aria-invalid", "true");
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:412:25
+
+    Error Context: work/playwright-results/recovery-F-09-selector-req-9c105-ciado-y-lo-limpia-al-elegir/error-context.md
+
+
+[10/16] tests/e2e/recovery.spec.ts:424:3 › F-09 selector requerido y F-14 mensajes en español › con varios campos inválidos el foco va al primero del formulario
+  7) tests/e2e/recovery.spec.ts:424:3 › F-09 selector requerido y F-14 mensajes en español › con varios campos inválidos el foco va al primero del formulario 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  locator('#pet-owner-control')
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" locator('#pet-owner-control') with timeout 5000ms
+      - waiting for locator('#pet-owner-control')
+        14 × locator resolved to <button type="button" role="combobox" aria-label="Dueño" aria-expanded="false" class="select-trigger" id="pet-owner-control" aria-haspopup="listbox" aria-controls="pet-owner-list" aria-describedby="pet-owner-value">…</button>
+           - unexpected value "inactive"
+
+
+      429 |     await page.locator("#new-pet").click();
+      430 |     await page.locator("#pet-form .submit-button").click();
+    > 431 |     await expect(page.locator("#pet-owner-control")).toBeFocused();
+          |                                                      ^
+      432 |     await expect(page.locator("#pet-owner-error")).toBeVisible();
+      433 |   });
+      434 |   test("errores de validación de zod y de red llegan en español", async ({
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:431:54
+
+    Error Context: work/playwright-results/recovery-F-09-selector-req-63152-a-al-primero-del-formulario/error-context.md
+
+
+[11/16] tests/e2e/recovery.spec.ts:434:3 › F-09 selector requerido y F-14 mensajes en español › errores de validación de zod y de red llegan en español
+  8) tests/e2e/recovery.spec.ts:434:3 › F-09 selector requerido y F-14 mensajes en español › errores de validación de zod y de red llegan en español 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#form-error')
+    Expected substring: "Correo electrónico"
+    Received string:    "email: Invalid email address; name: Too small: expected string to have >=1 characters"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#form-error') with timeout 5000ms
+      - waiting for locator('#form-error')
+        - locator resolved to <div hidden="" role="alert" tabindex="-1" id="form-error" class="form-error"></div>
+        - unexpected value ""
+        13 × locator resolved to <div role="alert" tabindex="-1" id="form-error" class="form-error">…</div>
+           - unexpected value "email: Invalid email address; name: Too small: expected string to have >=1 characters"
+
+
+      458 |     await page.locator("#owner-form .submit-button").click();
+      459 |     const box = page.locator("#form-error");
+    > 460 |     await expect(box).toContainText("Correo electrónico");
+          |                       ^
+      461 |     await expect(box).toContainText("no es un correo válido");
+      462 |     await expect(box).toContainText("Nombre");
+      463 |     await expect(box).toContainText("obligatorio");
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:460:23
+
+    Error Context: work/playwright-results/recovery-F-09-selector-req-dfc2d--y-de-red-llegan-en-español/error-context.md
+
+
+[12/16] tests/e2e/recovery.spec.ts:470:3 › F-09 selector requerido y F-14 mensajes en español › la consulta de horarios fallida por red se muestra en español
+  9) tests/e2e/recovery.spec.ts:470:3 › F-09 selector requerido y F-14 mensajes en español › la consulta de horarios fallida por red se muestra en español 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#appointment-slots')
+    Expected substring: "No se pudo conectar"
+    Received string:    "Failed to fetch"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('#appointment-slots') with timeout 5000ms
+      - waiting for locator('#appointment-slots')
+        - locator resolved to <div aria-busy="true" role="radiogroup" aria-live="polite" id="appointment-slots" class="appointment-slots" aria-label="Horarios disponibles">…</div>
+        - unexpected value "Consultando horarios…"
+        13 × locator resolved to <div role="radiogroup" aria-live="polite" id="appointment-slots" class="appointment-slots" aria-label="Horarios disponibles">…</div>
+           - unexpected value "Failed to fetch"
+
+
+      474 |     await page.locator("#new-appointment").click();
+      475 |     await choose(page, "Veterinario", "Elena");
+    > 476 |     await expect(page.locator("#appointment-slots")).toContainText("No se pudo conectar");
+          |                                                      ^
+      477 |     await expect(page.locator("#appointment-slots")).not.toContainText("Failed to fetch");
+      478 |   });
+      479 | });
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:476:54
+
+    Error Context: work/playwright-results/recovery-F-09-selector-req-26f1c-r-red-se-muestra-en-español/error-context.md
+
+
+[13/16] tests/e2e/recovery.spec.ts:482:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados
+  10) tests/e2e/recovery.spec.ts:482:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.slot-button[tabindex="0"]')
+    Expected: 1
+    Received: 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.slot-button[tabindex="0"]') with timeout 5000ms
+      - waiting for locator('.slot-button[tabindex="0"]')
+        14 × locator resolved to 0 elements
+           - unexpected value "0"
+
+
+      485 |     await setup(page, { occupied: new Set(["10:30"]) });
+      486 |     await openBooking(page);
+    > 487 |     await expect(page.locator('.slot-button[tabindex="0"]')).toHaveCount(1);
+          |                                                              ^
+      488 |     await expect(slot(page, "10:00")).toHaveAttribute("tabindex", "0");
+      489 |     await page.locator("#appointment-date").focus();
+      490 |     await page.keyboard.press("Tab");
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:487:62
+
+    Error Context: work/playwright-results/recovery-F-15-teclado-de-h-f1580-has-saltan-bloques-ocupados/error-context.md
+
+
+[14/16] tests/e2e/recovery.spec.ts:512:3 › F-15 teclado de horarios y F-16 estado durante el guardado › durante el guardado se bloquean acciones incompatibles y no queda «Volver» residual
+  11) tests/e2e/recovery.spec.ts:512:3 › F-15 teclado de horarios y F-16 estado durante el guardado › durante el guardado se bloquean acciones incompatibles y no queda «Volver» residual 
+
+    Error: expect(locator).toBeDisabled() failed
+
+    Locator:  locator('#appointment-register-pet')
+    Expected: disabled
+    Received: enabled
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeDisabled" locator('#appointment-register-pet') with timeout 5000ms
+      - waiting for locator('#appointment-register-pet')
+        14 × locator resolved to <button type="button" class="text-button" id="appointment-register-pet">…</button>
+           - unexpected value "enabled"
+
+
+      540 |       "#return-form",
+      541 |     ])
+    > 542 |       await expect(page.locator(selector)).toBeDisabled();
+          |                                            ^
+      543 |     await page.locator("#appointment-register-pet").click({ force: true, timeout: 2000 }).catch(() => undefined);
+      544 |     await expect(page.locator("#pet-form")).toBeHidden();
+      545 |     await page.keyboard.press("Escape");
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:542:44
+
+    Error Context: work/playwright-results/recovery-F-15-teclado-de-h-3ea59--no-queda-«Volver»-residual/error-context.md
+
+
+[15/16] tests/e2e/recovery.spec.ts:570:3 › F-19/F-21 horario de clínica desde /config › la UI muestra el horario y la duración que entrega /config
+  12) tests/e2e/recovery.spec.ts:570:3 › F-19/F-21 horario de clínica desde /config › la UI muestra el horario y la duración que entrega /config 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#booking-hours-hint')
+    Expected substring: "09:00 a 13:00"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('#booking-hours-hint') with timeout 5000ms
+      - waiting for locator('#booking-hours-hint')
+
+
+      580 |     await page.locator("#new-appointment").click();
+      581 |     const hint = page.locator("#booking-hours-hint");
+    > 582 |     await expect(hint).toContainText("09:00 a 13:00");
+          |                        ^
+      583 |     await expect(hint).toContainText("20 minutos");
+      584 |     await expect(hint).toContainText("12:40");
+      585 |   });
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:582:24
+
+    Error Context: work/playwright-results/recovery-F-19-F-21-horario-a1be7-duración-que-entrega-config/error-context.md
+
+
+[16/16] tests/e2e/recovery.spec.ts:586:3 › F-19/F-21 horario de clínica desde /config › sin bookingHours usa los valores por defecto seguros
+  13) tests/e2e/recovery.spec.ts:586:3 › F-19/F-21 horario de clínica desde /config › sin bookingHours usa los valores por defecto seguros 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#booking-hours-hint')
+    Expected substring: "10:00 a 18:00"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('#booking-hours-hint') with timeout 5000ms
+      - waiting for locator('#booking-hours-hint')
+
+
+      590 |     await page.locator("#new-appointment").click();
+      591 |     const hint = page.locator("#booking-hours-hint");
+    > 592 |     await expect(hint).toContainText("10:00 a 18:00");
+          |                        ^
+      593 |     await expect(hint).toContainText("30 minutos");
+      594 |     await expect(hint).toContainText("17:30");
+      595 |   });
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:592:24
+
+    Error Context: work/playwright-results/recovery-F-19-F-21-horario-7fc63-valores-por-defecto-seguros/error-context.md
+
+
+  13 failed
+    tests/e2e/recovery.spec.ts:221:3 › F-01 guardado confirmado y refresco fallido › mascota: no se repite el alta y la lista muestra el registro guardado 
+    tests/e2e/recovery.spec.ts:237:3 › F-01 guardado confirmado y refresco fallido › nota clínica: aviso de guardado y un solo POST 
+    tests/e2e/recovery.spec.ts:248:3 › F-01 guardado confirmado y refresco fallido › cita: aviso de guardado, diálogo cerrado y la cita visible sin repetir el POST 
+    tests/e2e/recovery.spec.ts:335:3 › F-08 conflicto 409 de cita › vuelve a consultar, libera el bloque ocupado y permite elegir otro 
+    tests/e2e/recovery.spec.ts:370:3 › F-08 conflicto 409 de cita › si la nueva consulta falla no habilita una reserva obsoleta y permite reintentar 
+    tests/e2e/recovery.spec.ts:402:3 › F-09 selector requerido y F-14 mensajes en español › un selector requerido sin elegir muestra un error asociado y lo limpia al elegir 
+    tests/e2e/recovery.spec.ts:424:3 › F-09 selector requerido y F-14 mensajes en español › con varios campos inválidos el foco va al primero del formulario 
+    tests/e2e/recovery.spec.ts:434:3 › F-09 selector requerido y F-14 mensajes en español › errores de validación de zod y de red llegan en español 
+    tests/e2e/recovery.spec.ts:470:3 › F-09 selector requerido y F-14 mensajes en español › la consulta de horarios fallida por red se muestra en español 
+    tests/e2e/recovery.spec.ts:482:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados 
+    tests/e2e/recovery.spec.ts:512:3 › F-15 teclado de horarios y F-16 estado durante el guardado › durante el guardado se bloquean acciones incompatibles y no queda «Volver» residual 
+    tests/e2e/recovery.spec.ts:570:3 › F-19/F-21 horario de clínica desde /config › la UI muestra el horario y la duración que entrega /config 
+    tests/e2e/recovery.spec.ts:586:3 › F-19/F-21 horario de clínica desde /config › sin bookingHours usa los valores por defecto seguros 
+  3 passed (1.5m)
+Código de salida: 1

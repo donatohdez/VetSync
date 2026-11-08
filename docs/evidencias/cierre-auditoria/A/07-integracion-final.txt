@@ -1,0 +1,16 @@
+$ npm run test:integration
+2026-11-08T13:17:50-07:00
+
+> vetsync@1.0.0 test:integration
+> vitest run tests/integration
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+
+ Test Files  1 passed (1)
+      Tests  37 passed (37)
+   Start at  13:17:50
+   Duration  667ms (tests 74%, import 22%, transform 3%)
+
+exit=0

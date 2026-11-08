@@ -1,0 +1,27 @@
+# Sonda en memoria (supertest, servicios falsos, sin BD). Comando: npx tsx work/cierre-auditoria/D/probe.mts
+# Fecha: 2026-11-08T20:22:23Z salida 0. Reloj fijo 2030-01-15T20:00:00Z.
+config -> 200 {"timeZone":"America/Hermosillo","reminderHours":24,"bookingHours":{"opensAt":"10:00","closesAt":"18:00","slotMinutes":30}}
+run {} -> 200 {"sent":0}
+run vacío+json -> 200 {"sent":0}
+run sin tipo -> 415 {"error":{"code":"UNSUPPORTED_MEDIA_TYPE","message":"Usa Content-Type: application/json."}}
+run [] -> 400 {"error":{"code":"VALIDATION_ERROR","message":"datos: Invalid input: expected object, received array"}}
+run {x:1} -> 400 {"error":{"code":"VALIDATION_ERROR","message":"datos: Unrecognized key: \"x\""}}
+run null -> 400 {"error":{"code":"INVALID_JSON","message":"El JSON no es válido."}}
+run text -> 415 {"error":{"code":"UNSUPPORTED_MEDIA_TYPE","message":"Usa Content-Type: application/json."}}
+run charset -> 400 {"error":{"code":"INVALID_JSON","message":"El JSON no es válido."}}
+run enc -> 415 {"error":{"code":"UNSUPPORTED_CONTENT_ENCODING","message":"La codificación del contenido no es compatible."}}
+run bad json -> 400 {"error":{"code":"INVALID_JSON","message":"El JSON no es válido."}}
+run grande -> 413 {"error":{"code":"PAYLOAD_TOO_LARGE","message":"La solicitud supera el tamaño permitido."}}
+historial petId espacios -> 200 []
+historial petId malformado -> 400 {"error":{"code":"INVALID_PARAMETER","message":"Un parámetro de la ruta no está codificado correctamente."}}
+historial petId vacío(espacio) -> 400 {"error":{"code":"VALIDATION_ERROR","message":"datos: Too small: expected string to have >=1 characters"}}
+historial inexistente -> 404 {"error":{"code":"NOT_FOUND","message":"La mascota no existe."}}
+disp 0001 -> 200 [{"time":"10:00","startsAt":"0001-01-01T17:23:52.000Z","endsAt":"0001-01-01T17:53:52.000Z","available":false,"reason":"past"},{"time":"10:30","startsAt":"0001-01-01T17:53:52.000Z","endsAt":"0001-01-01T18:23:52.000Z","available":false,"reason":"past"}]
+disp 9999 -> 200 [{"time":"10:00","startsAt":"9999-12-31T17:00:00.000Z","endsAt":"9999-12-31T17:30:00.000Z","available":true,"reason":null}]
+disp formato -> 400 {"error":{"code":"VALIDATION_ERROR","message":"date: Invalid ISO date"}}
+pet hoy clínica -> 201 {"ownerId":"o","name":"a","species":"b","birthDate":"2030-01-15","id":"9d6a27b1-1f8a-433e-b0aa-575ed7a96d94","breed":null}
+pet mañana clínica -> 400 {"error":{"code":"VALIDATION_ERROR","message":"La fecha de nacimiento no puede estar en el futuro."}}
+pet 0999 -> 400 {"error":{"code":"VALIDATION_ERROR","message":"La fecha de nacimiento no puede ser anterior al año 1000."}}
+pet 1000 -> 201 {"ownerId":"o","name":"a","species":"b","birthDate":"1000-01-01","id":"1243f823-bddc-48e6-9670-b9bfebcc62ff","breed":null}
+petIds vistos por repositorio: ["pet-luna"]
+run charset desconocido -> 415 {"error":{"code":"UNSUPPORTED_CHARSET","message":"Usa codificación UTF-8 en el cuerpo de la solicitud."}}

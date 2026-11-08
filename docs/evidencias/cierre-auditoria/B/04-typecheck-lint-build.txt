@@ -1,0 +1,22 @@
+== npm run typecheck (2026-11-08T20:16:59Z)
+
+> vetsync@1.0.0 typecheck
+> tsc --noEmit
+
+exit 0
+== npm run lint (2026-11-08T20:17:00Z)
+
+> vetsync@1.0.0 lint
+> eslint src tests scripts
+
+exit 0
+== npm run build (2026-11-08T20:17:01Z)
+
+> vetsync@1.0.0 build
+> tsc -p tsconfig.build.json && esbuild src/web/app.ts --bundle --format=esm --outfile=dist/web/app.js && node scripts/copy-web.mjs
+
+
+  dist/web/app.js  49.2kb
+
+⚡ Done in 3ms
+exit 0

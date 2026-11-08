@@ -1,0 +1,29 @@
+Comando: npx playwright test tests/e2e/polish.spec.ts tests/e2e/recovery.spec.ts --reporter=line
+Fecha: 2026-11-08T20:17:01Z
+
+Running 22 tests using 1 worker
+
+[1/22] tests/e2e/polish.spec.ts:105:1 › selector de historial con búsqueda, contexto del paciente y notas
+[2/22] tests/e2e/polish.spec.ts:140:1 › Escape cierra el selector antes del modal y permite selección por teclado
+[3/22] tests/e2e/polish.spec.ts:161:1 › guardado con estado de carga, conflicto legible y aviso descartable
+[4/22] tests/e2e/polish.spec.ts:218:1 › una respuesta antigua no reemplaza el historial recién seleccionado
+[5/22] tests/e2e/polish.spec.ts:263:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento
+[6/22] tests/e2e/polish.spec.ts:308:1 › un alta confirmada no se repite si falla la actualización posterior
+[7/22] tests/e2e/recovery.spec.ts:225:3 › F-01 guardado confirmado y refresco fallido › mascota: no se repite el alta y la lista muestra el registro guardado
+[8/22] tests/e2e/recovery.spec.ts:246:3 › F-01 guardado confirmado y refresco fallido › nota clínica: aviso de guardado y un solo POST
+[9/22] tests/e2e/recovery.spec.ts:259:3 › F-01 guardado confirmado y refresco fallido › cita: aviso de guardado, diálogo cerrado y la cita visible sin repetir el POST
+[10/22] tests/e2e/recovery.spec.ts:272:3 › F-01 guardado confirmado y refresco fallido › fallo parcial: /owners responde y /appointments falla sin duplicar al dueño nuevo
+[11/22] tests/e2e/recovery.spec.ts:291:3 › F-01 guardado confirmado y refresco fallido › cadena cita > mascota > dueño con refrescos fallidos conserva borradores y no duplica altas
+[12/22] tests/e2e/recovery.spec.ts:332:3 › F-01 guardado confirmado y refresco fallido › un fallo real del POST sí permite reintentar y conserva los datos
+[13/22] tests/e2e/recovery.spec.ts:368:3 › F-08 conflicto 409 de cita › vuelve a consultar, libera el bloque ocupado y permite elegir otro
+[14/22] tests/e2e/recovery.spec.ts:411:3 › F-08 conflicto 409 de cita › si la nueva consulta falla no habilita una reserva obsoleta y permite reintentar
+[15/22] tests/e2e/recovery.spec.ts:457:3 › F-09 selector requerido y F-14 mensajes en español › un selector requerido sin elegir muestra un error asociado y lo limpia al elegir
+[16/22] tests/e2e/recovery.spec.ts:486:3 › F-09 selector requerido y F-14 mensajes en español › con varios campos inválidos el foco va al primero del formulario
+[17/22] tests/e2e/recovery.spec.ts:496:3 › F-09 selector requerido y F-14 mensajes en español › errores de validación de zod y de red llegan en español
+[18/22] tests/e2e/recovery.spec.ts:532:3 › F-09 selector requerido y F-14 mensajes en español › la consulta de horarios fallida por red se muestra en español
+[19/22] tests/e2e/recovery.spec.ts:548:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados
+[20/22] tests/e2e/recovery.spec.ts:591:3 › F-15 teclado de horarios y F-16 estado durante el guardado › durante el guardado se bloquean acciones incompatibles y no queda «Volver» residual
+[21/22] tests/e2e/recovery.spec.ts:658:3 › F-19/F-21 horario de clínica desde /config › la UI muestra el horario y la duración que entrega /config
+[22/22] tests/e2e/recovery.spec.ts:674:3 › F-19/F-21 horario de clínica desde /config › sin bookingHours usa los valores por defecto seguros
+  22 passed (31.7s)
+Código de salida: 0

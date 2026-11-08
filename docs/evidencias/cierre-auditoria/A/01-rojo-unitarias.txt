@@ -1,0 +1,448 @@
+$ npm test (rojo, tras corregir dos defectos de las propias pruebas: serializacion gzip y asercion de ano en 9999-12-31)
+2026-11-08T13:13:56-07:00
+
+> vetsync@1.0.0 test
+> vitest run tests/unit
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+stderr | tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 415 con un charset distinto de UTF-8
+Error interno de la aplicación: unsupported charset "ISO-8859-1"
+
+stderr | tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 415 con un charset inexistente
+Error interno de la aplicación: unsupported charset "NOMBRE-FALSO"
+
+stderr | tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 415 con una codificación de contenido desconocida
+Error interno de la aplicación: unsupported content encoding "desconocida"
+
+stderr | tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 400 con cuerpo inválido para gzip
+Error interno de la aplicación: incorrect header check
+
+stderr | tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 400 con cuerpo inválido para br
+Error interno de la aplicación: Decompression failed
+
+stderr | tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 400 con cuerpo inválido para deflate
+Error interno de la aplicación: incorrect header check
+
+stderr | tests/unit/http-errors.test.ts > parámetros de ruta mal codificados (F-06) > responde 400 y no 500 con porcentaje truncado
+Error interno de la aplicación: Failed to decode param '%E0%A4%A'
+
+stderr | tests/unit/http-errors.test.ts > parámetros de ruta mal codificados (F-06) > responde 400 también en POST
+Error interno de la aplicación: Failed to decode param '%E0%A4%A'
+
+stderr | tests/unit/http-errors.test.ts > mapeo explícito de errores del cuerpo > traduce request.aborted a 400
+Error interno de la aplicación: detalle interno xyz
+
+stderr | tests/unit/http-errors.test.ts > mapeo explícito de errores del cuerpo > traduce request.size.invalid a 400
+Error interno de la aplicación: detalle interno xyz
+
+stderr | tests/unit/http-errors.test.ts > mapeo explícito de errores del cuerpo > traduce entity.verify.failed a 403
+Error interno de la aplicación: detalle interno xyz
+
+ ❯ tests/unit/http-errors.test.ts (26 tests | 15 failed) 35ms
+   ❯ cuerpos con codificación o charset no admitidos (F-06) (7)
+     × responde 415 con un charset distinto de UTF-8 11ms
+     × responde 415 con un charset inexistente 2ms
+     × responde 415 con una codificación de contenido desconocida 1ms
+     × responde 400 con cuerpo inválido para gzip 4ms
+     × responde 400 con cuerpo inválido para br 1ms
+     × responde 400 con cuerpo inválido para deflate 1ms
+   ❯ parámetros de ruta mal codificados (F-06) (3)
+     × responde 400 y no 500 con porcentaje truncado 1ms
+     × responde 400 también en POST 1ms
+   ❯ mapeo explícito de errores del cuerpo (9)
+     × traduce request.aborted a 400 1ms
+     × traduce request.size.invalid a 400 1ms
+     × traduce entity.verify.failed a 403 1ms
+   ❯ POST /api/notifications/run exige cuerpo vacío (F-19) (7)
+     × rechaza [] con 400 VALIDATION_ERROR 0ms
+     × rechaza {"x":1} con 400 VALIDATION_ERROR 1ms
+     × rechaza {"hours":1} con 400 VALIDATION_ERROR 0ms
+     × rechaza [{}] con 400 VALIDATION_ERROR 1ms
+ ❯ tests/unit/availability.test.ts (13 tests | 2 failed) 24ms
+   × calcula los bloques del año pedido para 0001-01-01, sin trasladarlos a 1900-1999 (F-18) 3ms
+   × calcula los bloques del año pedido para 0099-12-31, sin trasladarlos a 1900-1999 (F-18) 1ms
+ ❯ tests/unit/clinic-hours-source.test.ts (2 tests | 1 failed) 22ms
+   ❯ fuente única del horario de la clínica (2)
+     × disponibilidad, validación de citas y /config siguen la misma definición 10ms
+ ❯ tests/unit/pets.test.ts (7 tests | 5 failed) 7ms
+   ❯ fecha de nacimiento frente al día de la clínica (F-18) (7)
+     × rechaza «mañana» de la clínica aunque en UTC ya sea ese día 5ms
+     × usa por defecto America/Hermosillo 0ms
+     × en una zona adelantada, el día de hoy local ya es el siguiente en UTC 0ms
+     × en una zona atrasada, hoy local es el día anterior en UTC 0ms
+     × cota inferior técnica: DATE de MySQL admite desde 1000-01-01 0ms
+ ❯ tests/unit/medical-records.test.ts (2 tests | 1 failed) 7ms
+   ❯ identificador de mascota normalizado (F-07) (2)
+     × guarda y consulta con el identificador recortado 4ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/availability.test.ts > calcula los bloques del año pedido para 0001-01-01, sin trasladarlos a 1900-1999 (F-18)
+AssertionError: expected 59958206632000 to be less than 172800000
+ ❯ tests/unit/availability.test.ts:133:9
+    131|       expect(
+    132|         Math.abs(slot.startsAt.getTime() - target.getTime()),
+    133|       ).toBeLessThan(2 * 86400000);
+       |         ^
+    134|     const expectedReason = date === "9999-12-31" ? null : "past";
+    135|     expect(slots[0]?.reason).toBe(expectedReason);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+
+ FAIL  tests/unit/availability.test.ts > calcula los bloques del año pedido para 0099-12-31, sin trasladarlos a 1900-1999 (F-18)
+AssertionError: expected 59958205200000 to be less than 172800000
+ ❯ tests/unit/availability.test.ts:133:9
+    131|       expect(
+    132|         Math.abs(slot.startsAt.getTime() - target.getTime()),
+    133|       ).toBeLessThan(2 * 86400000);
+       |         ^
+    134|     const expectedReason = date === "9999-12-31" ? null : "past";
+    135|     expect(slots[0]?.reason).toBe(expectedReason);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯
+
+ FAIL  tests/unit/clinic-hours-source.test.ts > fuente única del horario de la clínica > disponibilidad, validación de citas y /config siguen la misma definición
+AssertionError: expected [ '10:00', '11:00', '12:00', …(5) ] to deeply equal [ '09:00', '10:00', '11:00' ]
+
+- Expected
++ Received
+
+  [
+-   "09:00",
+    "10:00",
+    "11:00",
++   "12:00",
++   "13:00",
++   "14:00",
++   "15:00",
++   "16:00",
++   "17:00",
+  ]
+
+ ❯ tests/unit/clinic-hours-source.test.ts:39:38
+     37|       clock,
+     38|     ).execute({ date: "2026-11-09", veterinarianId: "v" });
+     39|     expect(slots.map((s) => s.time)).toEqual(["09:00", "10:00", "11:00…
+       |                                      ^
+     40|     const schedule = new ScheduleAppointment(repository, clock);
+     41|     const input = {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 415 con un charset distinto de UTF-8
+Error: expected 415 "Unsupported Media Type", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:37:8
+     35|       .set("Content-Type", "application/json; charset=iso-8859-1")
+     36|       .send("{}")
+     37|       .expect(415);
+       |        ^
+     38|     expect(response.body.error.code).toBe("UNSUPPORTED_CHARSET");
+     39|     expect(response.text).not.toMatch(/ISO-8859-1|stack|node_modules/i…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 415 con un charset inexistente
+Error: expected 415 "Unsupported Media Type", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:46:8
+     44|       .set("Content-Type", "application/json; charset=nombre-falso")
+     45|       .send("{}")
+     46|       .expect(415);
+       |        ^
+     47|   });
+     48|   it("responde 415 con una codificación de contenido desconocida", asy…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 415 con una codificación de contenido desconocida
+Error: expected 415 "Unsupported Media Type", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:52:8
+     50|       .set("Content-Encoding", "desconocida")
+     51|       .send("{}")
+     52|       .expect(415);
+       |        ^
+     53|     expect(response.body.error.code).toBe("UNSUPPORTED_CONTENT_ENCODIN…
+     54|   });
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 400 con cuerpo inválido para gzip
+ FAIL  tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 400 con cuerpo inválido para br
+ FAIL  tests/unit/http-errors.test.ts > cuerpos con codificación o charset no admitidos (F-06) > responde 400 con cuerpo inválido para deflate
+Error: expected 400 "Bad Request", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:61:10
+     59|         .set("Content-Encoding", encoding)
+     60|         .send("esto no esta comprimido")
+     61|         .expect(400);
+       |          ^
+     62|       expect(response.body.error.code).toBe("INVALID_BODY_ENCODING");
+     63|       expect(response.text).not.toMatch(/Z_DATA|header check|errno/i);
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > parámetros de ruta mal codificados (F-06) > responde 400 y no 500 con porcentaje truncado
+Error: expected 400 "Bad Request", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:82:8
+     80|     const response = await request(app)
+     81|       .get("/api/pets/%E0%A4%A/medical-records")
+     82|       .expect(400);
+       |        ^
+     83|     expect(response.body.error.code).toBe("INVALID_PARAMETER");
+     84|     expect(response.text).not.toContain("%E0%A4%A");
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > parámetros de ruta mal codificados (F-06) > responde 400 también en POST
+Error: expected 400 "Bad Request", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:87:65
+     85|   });
+     86|   it("responde 400 también en POST", async () => {
+     87|     await json("/api/pets/%E0%A4%A/medical-records").send("{}").expect…
+       |                                                                 ^
+     88|   });
+     89|   it("una ruta bien codificada llega al servicio", async () => {
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > mapeo explícito de errores del cuerpo > traduce request.aborted a 400
+ FAIL  tests/unit/http-errors.test.ts > mapeo explícito de errores del cuerpo > traduce request.size.invalid a 400
+Error: expected 400 "Bad Request", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:104:59
+    102|   ])("traduce %s a %i", async (type, status, code) => {
+    103|     failure = Object.assign(new Error("detalle interno xyz"), { type }…
+    104|     const response = await json("/api/owners").send("{}").expect(statu…
+       |                                                           ^
+    105|     expect(response.body.error.code).toBe(code);
+    106|     expect(response.text).not.toContain("detalle interno");
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > mapeo explícito de errores del cuerpo > traduce entity.verify.failed a 403
+Error: expected 403 "Forbidden", got 500 "Internal Server Error"
+ ❯ tests/unit/http-errors.test.ts:104:59
+    102|   ])("traduce %s a %i", async (type, status, code) => {
+    103|     failure = Object.assign(new Error("detalle interno xyz"), { type }…
+    104|     const response = await json("/api/owners").send("{}").expect(statu…
+       |                                                           ^
+    105|     expect(response.body.error.code).toBe(code);
+    106|     expect(response.text).not.toContain("detalle interno");
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/24]⎯
+
+ FAIL  tests/unit/http-errors.test.ts > POST /api/notifications/run exige cuerpo vacío (F-19) > rechaza [] con 400 VALIDATION_ERROR
+ FAIL  tests/unit/http-errors.test.ts > POST /api/notifications/run exige cuerpo vacío (F-19) > rechaza {"x":1} con 400 VALIDATION_ERROR
+ FAIL  tests/unit/http-errors.test.ts > POST /api/notifications/run exige cuerpo vacío (F-19) > rechaza {"hours":1} con 400 VALIDATION_ERROR
+ FAIL  tests/unit/http-errors.test.ts > POST /api/notifications/run exige cuerpo vacío (F-19) > rechaza [{}] con 400 VALIDATION_ERROR
+Error: expected 400 "Bad Request", got 200 "OK"
+ ❯ tests/unit/http-errors.test.ts:148:10
+    146|       const response = await json("/api/notifications/run")
+    147|         .send(body)
+    148|         .expect(400);
+       |          ^
+    149|       expect(response.body.error.code).toBe("VALIDATION_ERROR");
+    150|     },
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/24]⎯
+
+ FAIL  tests/unit/medical-records.test.ts > identificador de mascota normalizado (F-07) > guarda y consulta con el identificador recortado
+AssertionError: expected '  22222222-2222-4222-8222-22222222222…' to be '22222222-2222-4222-8222-222222222222' // Object.is equality
+
+Expected: "22222222-2222-4222-8222-222222222222"
+Received: "  22222222-2222-4222-8222-222222222222 "
+
+ ❯ tests/unit/medical-records.test.ts:33:27
+     31|   it("guarda y consulta con el identificador recortado", async () => {
+     32|     const created = await service.create(`  ${petId} `, input);
+     33|     expect(created.petId).toBe(petId);
+       |                           ^
+     34|     expect(repo.records[0]?.petId).toBe(petId);
+     35|     expect(await service.list(` ${petId}  `)).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/24]⎯
+
+ FAIL  tests/unit/pets.test.ts > fecha de nacimiento frente al día de la clínica (F-18) > rechaza «mañana» de la clínica aunque en UTC ya sea ese día
+AssertionError: promise resolved "{ ownerId: 'owner', name: 'Luna', …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "birthDate": "2026-11-09",
++   "breed": null,
++   "id": "46cd9b7e-5e6b-48c9-8cf3-ba4a306a5af5",
++   "name": "Luna",
++   "ownerId": "owner",
++   "species": "Perro",
+  }
+
+ ❯ tests/unit/pets.test.ts:37:6
+     35|     await expect(
+     36|       service.create({ ...base, birthDate: "2026-11-09" }),
+     37|     ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+       |      ^
+     38|     expect(repo.pets).toHaveLength(0);
+     39|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/24]⎯
+
+ FAIL  tests/unit/pets.test.ts > fecha de nacimiento frente al día de la clínica (F-18) > usa por defecto America/Hermosillo
+AssertionError: promise resolved "{ ownerId: 'owner', name: 'Luna', …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "birthDate": "2026-11-09",
++   "breed": null,
++   "id": "152b89b0-4285-41e5-bbf4-07b2478786b3",
++   "name": "Luna",
++   "ownerId": "owner",
++   "species": "Perro",
+  }
+
+ ❯ tests/unit/pets.test.ts:49:6
+     47|     await expect(
+     48|       service.create({ ...base, birthDate: "2026-11-09" }),
+     49|     ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+       |      ^
+     50|     await service.create({ ...base, birthDate: "2026-11-08" });
+     51|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/24]⎯
+
+ FAIL  tests/unit/pets.test.ts > fecha de nacimiento frente al día de la clínica (F-18) > en una zona adelantada, el día de hoy local ya es el siguiente en UTC
+Error: La fecha de nacimiento no puede estar en el futuro.
+ ❯ Pets.create src/modules/pets/application/pets.ts:27:13
+     25|       data.birthDate > this.clock.now().toISOString().slice(0, 10)
+     26|     )
+     27|       throw new AppError(
+       |             ^
+     28|         "VALIDATION_ERROR",
+     29|         "La fecha de nacimiento no puede estar en el futuro.",
+ ❯ tests/unit/pets.test.ts:55:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/24]⎯
+
+ FAIL  tests/unit/pets.test.ts > fecha de nacimiento frente al día de la clínica (F-18) > en una zona atrasada, hoy local es el día anterior en UTC
+AssertionError: promise resolved "{ ownerId: 'owner', name: 'Luna', …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "birthDate": "2026-11-09",
++   "breed": null,
++   "id": "3ad5c215-23fc-4a7e-b4c6-55d1b0eac9c0",
++   "name": "Luna",
++   "ownerId": "owner",
++   "species": "Perro",
+  }
+
+ ❯ tests/unit/pets.test.ts:65:6
+     63|     await expect(
+     64|       service.create({ ...base, birthDate: "2026-11-09" }),
+     65|     ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+       |      ^
+     66|     await service.create({ ...base, birthDate: "2026-11-08" });
+     67|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/24]⎯
+
+ FAIL  tests/unit/pets.test.ts > fecha de nacimiento frente al día de la clínica (F-18) > cota inferior técnica: DATE de MySQL admite desde 1000-01-01
+AssertionError: promise resolved "{ ownerId: 'owner', name: 'Luna', …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "birthDate": "0999-12-31",
++   "breed": null,
++   "id": "ec818226-0aed-4c8a-bb97-ff96d1ef3170",
++   "name": "Luna",
++   "ownerId": "owner",
++   "species": "Perro",
+  }
+
+ ❯ tests/unit/pets.test.ts:73:6
+     71|     await expect(
+     72|       service.create({ ...base, birthDate: "0999-12-31" }),
+     73|     ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+       |      ^
+     74|     await expect(
+     75|       service.create({ ...base, birthDate: "0001-01-01" }),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/24]⎯
+
+
+ Test Files  5 failed | 4 passed (9)
+      Tests  24 failed | 71 passed (95)
+   Start at  13:13:56
+   Duration  942ms (import 58%, tests 30%, transform 9%, worker 3%)
+
+    Isolate  9 workers spawned · ~47ms startup each (spawn + environment, per file)
+             at least ~380ms faster with isolate: false — reuses workers across files instead of one per file
+
+exit=1

@@ -1,0 +1,53 @@
+Comando: npx playwright test tests/e2e/recovery.spec.ts --reporter=line
+Fecha: 2026-11-08T20:15:25Z
+
+Running 16 tests using 1 worker
+
+[1/16] tests/e2e/recovery.spec.ts:225:3 › F-01 guardado confirmado y refresco fallido › mascota: no se repite el alta y la lista muestra el registro guardado
+[2/16] tests/e2e/recovery.spec.ts:246:3 › F-01 guardado confirmado y refresco fallido › nota clínica: aviso de guardado y un solo POST
+[3/16] tests/e2e/recovery.spec.ts:259:3 › F-01 guardado confirmado y refresco fallido › cita: aviso de guardado, diálogo cerrado y la cita visible sin repetir el POST
+[4/16] tests/e2e/recovery.spec.ts:272:3 › F-01 guardado confirmado y refresco fallido › fallo parcial: /owners responde y /appointments falla sin duplicar al dueño nuevo
+[5/16] tests/e2e/recovery.spec.ts:291:3 › F-01 guardado confirmado y refresco fallido › cadena cita > mascota > dueño con refrescos fallidos conserva borradores y no duplica altas
+[6/16] tests/e2e/recovery.spec.ts:332:3 › F-01 guardado confirmado y refresco fallido › un fallo real del POST sí permite reintentar y conserva los datos
+[7/16] tests/e2e/recovery.spec.ts:368:3 › F-08 conflicto 409 de cita › vuelve a consultar, libera el bloque ocupado y permite elegir otro
+[8/16] tests/e2e/recovery.spec.ts:411:3 › F-08 conflicto 409 de cita › si la nueva consulta falla no habilita una reserva obsoleta y permite reintentar
+[9/16] tests/e2e/recovery.spec.ts:457:3 › F-09 selector requerido y F-14 mensajes en español › un selector requerido sin elegir muestra un error asociado y lo limpia al elegir
+[10/16] tests/e2e/recovery.spec.ts:486:3 › F-09 selector requerido y F-14 mensajes en español › con varios campos inválidos el foco va al primero del formulario
+[11/16] tests/e2e/recovery.spec.ts:496:3 › F-09 selector requerido y F-14 mensajes en español › errores de validación de zod y de red llegan en español
+[12/16] tests/e2e/recovery.spec.ts:532:3 › F-09 selector requerido y F-14 mensajes en español › la consulta de horarios fallida por red se muestra en español
+[13/16] tests/e2e/recovery.spec.ts:548:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados
+  1) tests/e2e/recovery.spec.ts:548:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  locator('.slot-button[data-time="10:00"]')
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" locator('.slot-button[data-time="10:00"]') with timeout 5000ms
+      - waiting for locator('.slot-button[data-time="10:00"]')
+        14 × locator resolved to <button role="radio" tabindex="0" type="button" data-time="10:00" class="slot-button" aria-checked="false" aria-label="10:00 a.m.">…</button>
+           - unexpected value "inactive"
+
+
+      555 |     await page.locator("#appointment-date").focus();
+      556 |     await page.keyboard.press("Tab");
+    > 557 |     await expect(slot(page, "10:00")).toBeFocused();
+          |                                       ^
+      558 |     await page.keyboard.press("Tab");
+      559 |     await expect(page.locator("#appointment-reason")).toBeFocused();
+      560 |     await page.keyboard.press("Shift+Tab");
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:557:39
+
+    Error Context: work/playwright-results/recovery-F-15-teclado-de-h-f1580-has-saltan-bloques-ocupados/error-context.md
+
+
+[14/16] tests/e2e/recovery.spec.ts:578:3 › F-15 teclado de horarios y F-16 estado durante el guardado › durante el guardado se bloquean acciones incompatibles y no queda «Volver» residual
+[15/16] tests/e2e/recovery.spec.ts:645:3 › F-19/F-21 horario de clínica desde /config › la UI muestra el horario y la duración que entrega /config
+[16/16] tests/e2e/recovery.spec.ts:661:3 › F-19/F-21 horario de clínica desde /config › sin bookingHours usa los valores por defecto seguros
+  1 failed
+    tests/e2e/recovery.spec.ts:548:3 › F-15 teclado de horarios y F-16 estado durante el guardado › el grupo de horarios tiene una sola parada de Tab y las flechas saltan bloques ocupados 
+  15 passed (25.4s)
+Código de salida: 1

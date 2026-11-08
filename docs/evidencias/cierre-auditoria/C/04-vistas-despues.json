@@ -1,0 +1,869 @@
+{
+  "320": {
+    "agenda": {
+      "doc": {
+        "sw": 320,
+        "cw": 320,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "agendaCols": {
+      "scrollRight": 299,
+      "tableSW": 278,
+      "tableCW": 278,
+      "th": [],
+      "longReasonW": 236,
+      "normalReasonW": 236,
+      "normalReasonH": 40,
+      "statusRight": 278,
+      "statusInView": true
+    },
+    "patients": {
+      "doc": {
+        "sw": 320,
+        "cw": 320,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "cards": {
+      "rows": [
+        [
+          {
+            "btnTop": 1264.8,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ],
+        [
+          {
+            "btnTop": 1549.1,
+            "gapBottom": 22,
+            "cardH": 270
+          }
+        ],
+        [
+          {
+            "btnTop": 1797.5,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ],
+        [
+          {
+            "btnTop": 2276.3,
+            "gapBottom": 22,
+            "cardH": 465
+          }
+        ],
+        [
+          {
+            "btnTop": 2542.7,
+            "gapBottom": 22,
+            "cardH": 252
+          }
+        ],
+        [
+          {
+            "btnTop": 2791,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ]
+      ],
+      "rowAligned": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "arrowToBtnRight": 15
+    },
+    "history": {
+      "doc": {
+        "sw": 320,
+        "cw": 320,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "notifications": {
+      "doc": {
+        "sw": 320,
+        "cw": 320,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "reminderTitle": {
+      "w": 198,
+      "lines": 6
+    },
+    "topbar": {
+      "gap": 16,
+      "leftH": 17,
+      "rightH": 29,
+      "lh": 16.5
+    },
+    "forms": {
+      "cita": {
+        "overflow": {
+          "doc": {
+            "sw": 320,
+            "cw": 320,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 284,
+        "dialogCW": 284
+      },
+      "dueno": {
+        "overflow": {
+          "doc": {
+            "sw": 320,
+            "cw": 320,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": null,
+        "placeholderTruncated": null,
+        "dialogSW": 284,
+        "dialogCW": 284
+      },
+      "mascota": {
+        "overflow": {
+          "doc": {
+            "sw": 320,
+            "cw": 320,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 284,
+        "dialogCW": 284
+      },
+      "nota": {
+        "overflow": {
+          "doc": {
+            "sw": 320,
+            "cw": 320,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 284,
+        "dialogCW": 284
+      }
+    },
+    "errs": []
+  },
+  "390": {
+    "agenda": {
+      "doc": {
+        "sw": 390,
+        "cw": 390,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "agendaCols": {
+      "scrollRight": 369,
+      "tableSW": 348,
+      "tableCW": 348,
+      "th": [],
+      "longReasonW": 306,
+      "normalReasonW": 306,
+      "normalReasonH": 40,
+      "statusRight": 348,
+      "statusInView": true
+    },
+    "patients": {
+      "doc": {
+        "sw": 390,
+        "cw": 390,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "cards": {
+      "rows": [
+        [
+          {
+            "btnTop": 1134.6,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ],
+        [
+          {
+            "btnTop": 1383,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ],
+        [
+          {
+            "btnTop": 1631.3,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ],
+        [
+          {
+            "btnTop": 2045.3,
+            "gapBottom": 22,
+            "cardH": 400
+          }
+        ],
+        [
+          {
+            "btnTop": 2293.7,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ],
+        [
+          {
+            "btnTop": 2542.1,
+            "gapBottom": 22,
+            "cardH": 234
+          }
+        ]
+      ],
+      "rowAligned": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "arrowToBtnRight": 15
+    },
+    "history": {
+      "doc": {
+        "sw": 390,
+        "cw": 390,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "notifications": {
+      "doc": {
+        "sw": 390,
+        "cw": 390,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "reminderTitle": {
+      "w": 268,
+      "lines": 5
+    },
+    "topbar": {
+      "gap": 74,
+      "leftH": 17,
+      "rightH": 29,
+      "lh": 16.5
+    },
+    "forms": {
+      "cita": {
+        "overflow": {
+          "doc": {
+            "sw": 390,
+            "cw": 390,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 354,
+        "dialogCW": 354
+      },
+      "dueno": {
+        "overflow": {
+          "doc": {
+            "sw": 390,
+            "cw": 390,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": null,
+        "placeholderTruncated": null,
+        "dialogSW": 354,
+        "dialogCW": 354
+      },
+      "mascota": {
+        "overflow": {
+          "doc": {
+            "sw": 390,
+            "cw": 390,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 354,
+        "dialogCW": 354
+      },
+      "nota": {
+        "overflow": {
+          "doc": {
+            "sw": 390,
+            "cw": 390,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": true,
+        "dialogSW": 354,
+        "dialogCW": 354
+      }
+    },
+    "errs": []
+  },
+  "768": {
+    "agenda": {
+      "doc": {
+        "sw": 768,
+        "cw": 768,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "agendaCols": {
+      "scrollRight": 741,
+      "tableSW": 499,
+      "tableCW": 499,
+      "th": [],
+      "longReasonW": 457,
+      "normalReasonW": 457,
+      "normalReasonH": 40,
+      "statusRight": 720,
+      "statusInView": true
+    },
+    "patients": {
+      "doc": {
+        "sw": 768,
+        "cw": 768,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "cards": {
+      "rows": [
+        [
+          {
+            "btnTop": 1026.2,
+            "gapBottom": 20,
+            "cardH": 273
+          },
+          {
+            "btnTop": 1026.2,
+            "gapBottom": 20,
+            "cardH": 273
+          }
+        ],
+        [
+          {
+            "btnTop": 1593.8,
+            "gapBottom": 20,
+            "cardH": 551
+          },
+          {
+            "btnTop": 1593.8,
+            "gapBottom": 20,
+            "cardH": 551
+          }
+        ],
+        [
+          {
+            "btnTop": 1866.1,
+            "gapBottom": 20,
+            "cardH": 255
+          },
+          {
+            "btnTop": 1866.1,
+            "gapBottom": 20,
+            "cardH": 255
+          }
+        ]
+      ],
+      "rowAligned": [
+        true,
+        true,
+        true
+      ],
+      "arrowToBtnRight": 15
+    },
+    "history": {
+      "doc": {
+        "sw": 768,
+        "cw": 768,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "notifications": {
+      "doc": {
+        "sw": 768,
+        "cw": 768,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "reminderTitle": {
+      "w": 319,
+      "lines": 4
+    },
+    "topbar": {
+      "gap": 190,
+      "leftH": 18,
+      "rightH": 35,
+      "lh": 18
+    },
+    "forms": {
+      "cita": {
+        "overflow": {
+          "doc": {
+            "sw": 768,
+            "cw": 768,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 558,
+        "dialogCW": 558
+      },
+      "dueno": {
+        "overflow": {
+          "doc": {
+            "sw": 768,
+            "cw": 768,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": null,
+        "placeholderTruncated": null,
+        "dialogSW": 558,
+        "dialogCW": 558
+      },
+      "mascota": {
+        "overflow": {
+          "doc": {
+            "sw": 768,
+            "cw": 768,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 558,
+        "dialogCW": 558
+      },
+      "nota": {
+        "overflow": {
+          "doc": {
+            "sw": 768,
+            "cw": 768,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": true,
+        "dialogSW": 558,
+        "dialogCW": 558
+      }
+    },
+    "errs": []
+  },
+  "1440": {
+    "agenda": {
+      "doc": {
+        "sw": 1440,
+        "cw": 1440,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "agendaCols": {
+      "scrollRight": 1401,
+      "tableSW": 1118,
+      "tableCW": 1118,
+      "th": [
+        {
+          "n": "Paciente",
+          "w": 302,
+          "right": 585
+        },
+        {
+          "n": "Fecha y hora",
+          "w": 128,
+          "right": 713
+        },
+        {
+          "n": "Veterinario",
+          "w": 241,
+          "right": 954
+        },
+        {
+          "n": "Motivo",
+          "w": 322,
+          "right": 1276
+        },
+        {
+          "n": "Estado",
+          "w": 125,
+          "right": 1401
+        }
+      ],
+      "longReasonW": 322,
+      "normalReasonW": 322,
+      "normalReasonH": 100,
+      "statusRight": 1401,
+      "statusInView": true
+    },
+    "patients": {
+      "doc": {
+        "sw": 1440,
+        "cw": 1440,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "cards": {
+      "rows": [
+        [
+          {
+            "btnTop": 762.7,
+            "gapBottom": 23,
+            "cardH": 243
+          },
+          {
+            "btnTop": 762.7,
+            "gapBottom": 23,
+            "cardH": 243
+          },
+          {
+            "btnTop": 762.7,
+            "gapBottom": 23,
+            "cardH": 243
+          }
+        ],
+        [
+          {
+            "btnTop": 1188.6,
+            "gapBottom": 23,
+            "cardH": 409
+          },
+          {
+            "btnTop": 1188.6,
+            "gapBottom": 23,
+            "cardH": 409
+          },
+          {
+            "btnTop": 1188.6,
+            "gapBottom": 23,
+            "cardH": 409
+          }
+        ]
+      ],
+      "rowAligned": [
+        true,
+        true
+      ],
+      "arrowToBtnRight": 15
+    },
+    "history": {
+      "doc": {
+        "sw": 1440,
+        "cw": 1440,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "notifications": {
+      "doc": {
+        "sw": 1440,
+        "cw": 1440,
+        "over": false
+      },
+      "bad": [],
+      "clipped": [],
+      "nClipped": 0
+    },
+    "reminderTitle": {
+      "w": 938,
+      "lines": 2
+    },
+    "topbar": {
+      "gap": 809,
+      "leftH": 18,
+      "rightH": 35,
+      "lh": 18
+    },
+    "forms": {
+      "cita": {
+        "overflow": {
+          "doc": {
+            "sw": 1440,
+            "cw": 1440,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 558,
+        "dialogCW": 558
+      },
+      "dueno": {
+        "overflow": {
+          "doc": {
+            "sw": 1440,
+            "cw": 1440,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": null,
+        "placeholderTruncated": null,
+        "dialogSW": 558,
+        "dialogCW": 558
+      },
+      "mascota": {
+        "overflow": {
+          "doc": {
+            "sw": 1440,
+            "cw": 1440,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": false,
+        "dialogSW": 558,
+        "dialogCW": 558
+      },
+      "nota": {
+        "overflow": {
+          "doc": {
+            "sw": 1440,
+            "cw": 1440,
+            "over": false
+          },
+          "bad": [],
+          "clipped": [],
+          "nClipped": 0
+        },
+        "xDx": 0,
+        "xDy": 0,
+        "arrowToTriggerRight": 17,
+        "placeholderTruncated": true,
+        "dialogSW": 558,
+        "dialogCW": 558
+      }
+    },
+    "errs": []
+  },
+  "modales": {
+    "cita-390x600": {
+      "vh": 600,
+      "saveBottomBeforeScroll": 865,
+      "saveTopAfter": 516,
+      "saveBottomAfter": 563,
+      "reachable": true,
+      "scrollable": true,
+      "dialogSW": 354,
+      "dialogCW": 354
+    },
+    "dueno-390x600": {
+      "vh": 600,
+      "saveBottomBeforeScroll": 517,
+      "saveTopAfter": 470,
+      "saveBottomAfter": 517,
+      "reachable": true,
+      "scrollable": false,
+      "dialogSW": 354,
+      "dialogCW": 354
+    },
+    "mascota-390x600": {
+      "vh": 600,
+      "saveBottomBeforeScroll": 678,
+      "saveTopAfter": 516,
+      "saveBottomAfter": 563,
+      "reachable": true,
+      "scrollable": true,
+      "dialogSW": 354,
+      "dialogCW": 354
+    },
+    "nota-390x600": {
+      "vh": 600,
+      "saveBottomBeforeScroll": 742,
+      "saveTopAfter": 516,
+      "saveBottomAfter": 563,
+      "reachable": true,
+      "scrollable": true,
+      "dialogSW": 354,
+      "dialogCW": 354
+    },
+    "cita-320x500": {
+      "vh": 500,
+      "saveBottomBeforeScroll": 933,
+      "saveTopAfter": 416,
+      "saveBottomAfter": 463,
+      "reachable": true,
+      "scrollable": true,
+      "dialogSW": 284,
+      "dialogCW": 284
+    },
+    "dueno-320x500": {
+      "vh": 500,
+      "saveBottomBeforeScroll": 490,
+      "saveTopAfter": 416,
+      "saveBottomAfter": 463,
+      "reachable": true,
+      "scrollable": true,
+      "dialogSW": 284,
+      "dialogCW": 284
+    },
+    "mascota-320x500": {
+      "vh": 500,
+      "saveBottomBeforeScroll": 708,
+      "saveTopAfter": 416,
+      "saveBottomAfter": 463,
+      "reachable": true,
+      "scrollable": true,
+      "dialogSW": 284,
+      "dialogCW": 284
+    },
+    "nota-320x500": {
+      "vh": 500,
+      "saveBottomBeforeScroll": 806,
+      "saveTopAfter": 416,
+      "saveBottomAfter": 463,
+      "reachable": true,
+      "scrollable": true,
+      "dialogSW": 284,
+      "dialogCW": 284
+    }
+  },
+  "errorFocus-1440": {
+    "outline": "solid 2px rgb(160, 90, 58) off -1px",
+    "border": "1px rgb(232, 208, 189)"
+  },
+  "errorFocus-390": {
+    "outline": "solid 2px rgb(160, 90, 58) off -1px",
+    "border": "1px rgb(232, 208, 189)"
+  }
+}

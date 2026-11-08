@@ -1,0 +1,22 @@
+
+> vetsync@1.0.0 test:e2e
+> playwright test
+
+
+Running 11 tests using 1 worker
+
+(node:50755) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/booking.spec.ts:15:1 › recepción registra dueño y mascota desde la cita y reserva un bloque de media hora (2.5s)
+  ✓   2 tests/e2e/booking.spec.ts:115:3 › iconos centrados y flechas con margen en 1440px (234ms)
+  ✓   3 tests/e2e/booking.spec.ts:115:3 › iconos centrados y flechas con margen en 390px (134ms)
+  ✓   4 tests/e2e/clinic.spec.ts:15:1 › recorre registros, agenda, disponibilidad, historial y correo simulado (1.2s)
+  ✓   5 tests/e2e/clinic.spec.ts:141:1 › navegación móvil sin desbordamiento horizontal (197ms)
+  ✓   6 tests/e2e/polish.spec.ts:105:1 › selector de historial con búsqueda, contexto del paciente y notas (301ms)
+  ✓   7 tests/e2e/polish.spec.ts:140:1 › Escape cierra el selector antes del modal y permite selección por teclado (214ms)
+  ✓   8 tests/e2e/polish.spec.ts:161:1 › guardado con estado de carga, conflicto legible y aviso descartable (1.2s)
+  ✓   9 tests/e2e/polish.spec.ts:218:1 › una respuesta antigua no reemplaza el historial recién seleccionado (262ms)
+  ✓  10 tests/e2e/polish.spec.ts:263:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento (177ms)
+  ✓  11 tests/e2e/polish.spec.ts:308:1 › un alta confirmada no se repite si falla la actualización posterior (178ms)
+
+  11 passed (9.9s)

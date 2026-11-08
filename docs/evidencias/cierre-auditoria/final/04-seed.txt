@@ -1,0 +1,5 @@
+# env DB_NAME=vetsync_test npm run db:seed — 2026-11-08T20:36:29Z
+> tsx scripts/seed.ts
+
+Datos ficticios de demostración disponibles. Las citas iniciales son relativas a esta primera carga.
+EXIT=0

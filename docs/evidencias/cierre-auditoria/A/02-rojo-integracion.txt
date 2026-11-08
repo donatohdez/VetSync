@@ -1,0 +1,83 @@
+$ npm run test:integration (rojo, antes de los arreglos; la base es vetsync_test, fijada en tests/integration/api.test.ts y verificada con SELECT DATABASE() en beforeAll)
+2026-11-08T13:14:04-07:00
+
+> vetsync@1.0.0 test:integration
+> vitest run tests/integration
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+stderr | tests/integration/api.test.ts > historial con identificador de mascota con espacios usa el identificador normalizado (F-07)
+Error interno de la aplicación: Data too long for column 'pet_id' at row 1
+
+stderr | tests/integration/api.test.ts > parámetros mal codificados, charset y codificación inválidos responden 4xx con la aplicación compuesta (F-06)
+Error interno de la aplicación: Failed to decode param '%E0%A4%A'
+
+ ❯ tests/integration/api.test.ts (37 tests | 3 failed) 441ms
+   × historial con identificador de mascota con espacios usa el identificador normalizado (F-07) 8ms
+   × parámetros mal codificados, charset y codificación inválidos responden 4xx con la aplicación compuesta (F-06) 7ms
+   × POST /notifications/run solo admite el objeto vacío (F-19) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/api.test.ts > historial con identificador de mascota con espacios usa el identificador normalizado (F-07)
+Error: expected 201 "Created", got 500 "Internal Server Error"
+ ❯ tests/integration/api.test.ts:504:6
+    502|       clinicalNote: "Control con espacios en la ruta.",
+    503|     })
+    504|     .expect(201);
+       |      ^
+    505|   expect(created.body.petId).toBe(petId);
+    506|   const stored = await rows<{ petId: string }>(
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/integration/api.test.ts > parámetros mal codificados, charset y codificación inválidos responden 4xx con la aplicación compuesta (F-06)
+Error: expected 400 "Bad Request", got 500 "Internal Server Error"
+ ❯ tests/integration/api.test.ts:520:64
+    518| });
+    519| it("parámetros mal codificados, charset y codificación inválidos respo…
+    520|   await request(app).get("/api/pets/%E0%A4%A/medical-records").expect(…
+       |                                                                ^
+    521|   await request(app)
+    522|     .post("/api/owners")
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/integration/api.test.ts > POST /notifications/run solo admite el objeto vacío (F-19)
+Error: expected 400 "Bad Request", got 200 "OK"
+ ❯ tests/integration/api.test.ts:536:62
+    534| it("POST /notifications/run solo admite el objeto vacío (F-19)", async…
+    535|   await request(app).post("/api/notifications/run").send({}).expect(20…
+    536|   await request(app).post("/api/notifications/run").send([]).expect(40…
+       |                                                              ^
+    537|   const extra = await request(app)
+    538|     .post("/api/notifications/run")
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 34 passed (37)
+   Start at  13:14:04
+   Duration  664ms (tests 74%, import 20%, transform 6%)
+
+exit=1

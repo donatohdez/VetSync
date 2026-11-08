@@ -1,0 +1,84 @@
+[antes] combinaciones únicas medidas: 160; bajo umbral: 42; de ellas 10-12px: 42
+  3.91:1 11px small. "Cuidamos cada seguimiento" rgb(105, 125, 108) sobre rgb(237,243,230) [agenda]
+  3.91:1 11px small. "Cuidamos cada seguimiento" rgb(105, 125, 108) sobre rgb(237,243,230) [patients]
+  3.91:1 11px small. "Cuidamos cada seguimiento" rgb(105, 125, 108) sobre rgb(237,243,230) [history]
+  3.91:1 11px small. "Cuidamos cada seguimiento" rgb(105, 125, 108) sobre rgb(237,243,230) [notifications]
+  3.94:1 11px button. "Todas" rgb(102, 123, 102) sobre rgb(234,240,228) [agenda]
+  3.96:1 10px span.species-tag "Perro" rgb(108, 126, 101) sobre rgb(242,245,237) [patients]
+  4.05:1 10px span.badge "Simulado" rgb(100, 128, 95) sobre rgb(244,247,239) [notifications]
+  4.06:1 12px span.breadcrumb "Clínica /" rgb(111, 129, 116) sobre rgb(252,253,251) [agenda]
+  4.06:1 12px span.breadcrumb "Clínica /" rgb(111, 129, 116) sobre rgb(252,253,251) [patients]
+  4.06:1 12px span.breadcrumb "Clínica /" rgb(111, 129, 116) sobre rgb(252,253,251) [history]
+  4.06:1 12px span.breadcrumb "Clínica /" rgb(111, 129, 116) sobre rgb(252,253,251) [notifications]
+  4.18:1 11px p. "Un horario para cada pacient" rgb(98, 122, 93) sobre rgb(239,243,230) [agenda]
+  4.2:1 10px p.eyebrow "CUIDAR EMPIEZA POR ORGANIZAR" rgb(96, 126, 104) sobre rgb(246,248,244) [agenda]
+  4.2:1 10px p.eyebrow "CUIDAR EMPIEZA POR ORGANIZAR" rgb(96, 126, 104) sobre rgb(246,248,244) [patients]
+  4.2:1 10px p.eyebrow "CUIDAR EMPIEZA POR ORGANIZAR" rgb(96, 126, 104) sobre rgb(246,248,244) [history]
+  4.2:1 10px p.eyebrow "CUIDAR EMPIEZA POR ORGANIZAR" rgb(96, 126, 104) sobre rgb(246,248,244) [notifications]
+  4.24:1 11px p.slots-empty "Selecciona un veterinario y " rgb(102, 125, 93) sobre rgb(246,249,241) [dialog-cita-selector]
+  4.28:1 10px span.care-signature "Hecho para cuidar" rgb(94, 121, 87) sobre rgb(239,243,230) [agenda]
+  4.37:1 12px span.subtle "6 pacientes" rgb(101, 121, 107) sobre rgb(246,248,244) [patients]
+  4.39:1 10px span. "VetSync · Gestión veterinari" rgb(102, 121, 99) sobre rgb(246,248,244) [agenda]
+  4.39:1 10px span. "VetSync · Gestión veterinari" rgb(102, 121, 99) sobre rgb(246,248,244) [patients]
+  4.39:1 9px p.eyebrow "EXPEDIENTE DEL PACIENTE" rgb(96, 126, 104) sobre rgb(252,253,249) [history]
+  4.39:1 10px span. "VetSync · Gestión veterinari" rgb(102, 121, 99) sobre rgb(246,248,244) [history]
+  4.39:1 10px span. "VetSync · Gestión veterinari" rgb(102, 121, 99) sobre rgb(246,248,244) [notifications]
+  4.39:1 10px span.option-description "Perro · Ana Martínez" rgb(94, 120, 81) sobre rgb(237,245,230) [dialog-cita-selector]
+  4.4:1 11px span.record-count "2 notas clínicas" rgb(91, 121, 82) sobre rgb(240,245,233) [history]
+  4.42:1 11px small. "Citas por atender" rgb(105, 125, 108) sobre rgb(255,255,255) [agenda]
+  4.42:1 11px small. "Citas por atender" rgb(105, 125, 108) sobre rgb(255,255,255) [patients]
+  4.42:1 11px small. "Citas por atender" rgb(105, 125, 108) sobre rgb(255,255,255) [history]
+  4.42:1 11px small. "Citas por atender" rgb(105, 125, 108) sobre rgb(255,255,255) [notifications]
+  4.43:1 11px small. "Ana Martínez" rgb(104, 125, 109) sobre rgb(255,255,255) [agenda]
+  4.46:1 11px span. "Recordatorios simulados" rgb(94, 116, 101) sobre rgb(237,243,230) [agenda]
+  4.46:1 11px span. "Recordatorios simulados" rgb(94, 116, 101) sobre rgb(237,243,230) [patients]
+  4.46:1 11px span. "Recordatorios simulados" rgb(94, 116, 101) sobre rgb(237,243,230) [history]
+  4.46:1 11px span. "Recordatorios simulados" rgb(94, 116, 101) sobre rgb(237,243,230) [notifications]
+  4.48:1 12px p. "Los mensajes se guardan para" rgb(92, 119, 86) sobre rgb(240,245,233) [notifications]
+  4.49:1 10px p.nav-label "TU CLÍNICA" rgb(96, 126, 104) sobre rgb(255,255,255) [agenda]
+  4.49:1 10px p.nav-label "TU CLÍNICA" rgb(96, 126, 104) sobre rgb(255,255,255) [patients]
+  4.49:1 10px p.nav-label "TU CLÍNICA" rgb(96, 126, 104) sobre rgb(255,255,255) [history]
+  4.49:1 10px p.nav-label "TU CLÍNICA" rgb(96, 126, 104) sobre rgb(255,255,255) [notifications]
+  4.49:1 10px span.delivery-note "Sin envío real" rgb(104, 125, 93) sobre rgb(255,255,255) [notifications]
+  4.49:1 9px p.eyebrow "VETSYNC · CUIDADO CONECTADO" rgb(96, 126, 104) sobre rgb(255,255,255) [dialog-cita-selector]
+placeholders: [{"id":"patient-search","ratio":3.55},{"id":"select-search-input","ratio":3.47},{"id":"select-search-input","ratio":3.47},{"id":"select-search-input","ratio":3.47}]
+[antes] bordes de campos en reposo (único por tipo):
+  input.owner-name borde rgb(127, 167, 114) razón 2.74:1
+  input.owner-email borde rgb(216, 227, 209) razón 1.33:1
+  input.owner-phone borde rgb(216, 227, 209) razón 1.33:1
+  button.select-trigger borde rgb(216, 227, 209) razón 1.33:1
+  input.pet-name borde rgb(216, 227, 209) razón 1.33:1
+  input.pet-breed borde rgb(216, 227, 209) razón 1.33:1
+  input.pet-birthdate borde rgb(216, 227, 209) razón 1.33:1
+  input.appointment-date borde rgb(216, 227, 209) razón 1.33:1
+  textarea.appointment-reason borde rgb(216, 227, 209) razón 1.33:1
+  input.record-date borde rgb(216, 227, 209) razón 1.33:1
+  textarea.record-note borde rgb(216, 227, 209) razón 1.33:1
+  search-field borde rgb(220, 229, 213) razón 1.21:1
+[antes] foco (únicos):
+  a.skip-link outline[solid 3px rgb(134, 179, 150) off 3px] shadow[none] outlineVsParent=2.21 outlineVsOwnBg=4.04 borderVsOwnBg=9.52
+  a.brand outline[solid 3px rgb(134, 179, 150) off 3px] shadow[none] outlineVsParent=2.36 outlineVsOwnBg=2.36 borderVsOwnBg=11.65
+  button.nav-item outline[solid 3px rgb(134, 179, 150) off 3px] shadow[none] outlineVsParent=2.36 outlineVsOwnBg=2.06 borderVsOwnBg=8.33
+  button.nav-item outline[solid 3px rgb(134, 179, 150) off 3px] shadow[none] outlineVsParent=2.36 outlineVsOwnBg=2.36 borderVsOwnBg=4.68
+  button.button outline[solid 3px rgb(134, 179, 150) off 3px] shadow[rgba(25, 62, 48, 0.063) 0px 2px 5px 0px] outlineVsParent=2.36 outlineVsOwnBg=3.7 borderVsOwnBg=1
+  button.selected outline[solid 3px rgb(134, 179, 150) off 3px] shadow[rgba(23, 53, 37, 0.086) 0px 1px 4px 0px] outlineVsParent=2.03 outlineVsOwnBg=2.36 borderVsOwnBg=8.19
+  button.filter-all outline[solid 3px rgb(134, 179, 150) off 3px] shadow[none] outlineVsParent=2.03 outlineVsOwnBg=2.03 borderVsOwnBg=3.94
+  div.table-scroll outline[auto 1px rgb(0, 95, 204) off 0px] shadow[none] outlineVsParent=5.98 outlineVsOwnBg=5.98 borderVsOwnBg=11.58
+  button.button outline[solid 2px rgb(25, 78, 64) off 3px] shadow[none] outlineVsParent=9.52 outlineVsOwnBg=8.86 borderVsOwnBg=1.15
+  input.owner-email outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  input.owner-phone outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  button.icon-button outline[solid 3px rgb(134, 179, 150) off 3px] shadow[none] outlineVsParent=2.36 outlineVsOwnBg=2.13 borderVsOwnBg=3.93
+  input.owner-name outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  input.pet-name outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  button.select-trigger outline[solid 3px rgb(134, 179, 150) off 3px] shadow[none] outlineVsParent=2.36 outlineVsOwnBg=2.36 borderVsOwnBg=1.33
+  input.pet-breed outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  input.pet-birthdate outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  input.pet-birthdate outline[none 3px rgb(63, 93, 61) off 0px] shadow[none] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=1.33
+  input.appointment-date outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  input.appointment-date outline[none 3px rgb(63, 93, 61) off 0px] shadow[none] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=1.33
+  textarea.appointment-reason outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  dialog.form-dialog outline[auto 1px rgb(0, 95, 204) off 0px] shadow[rgba(18, 51, 33, 0.21) 0px 25px 100px 0px] outlineVsParent=5.6 outlineVsOwnBg=5.98 borderVsOwnBg=1.26
+  input.record-date outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+  input.record-date outline[none 3px rgb(63, 93, 61) off 0px] shadow[none] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=1.33
+  textarea.record-note outline[none 3px rgb(63, 93, 61) off 0px] shadow[rgb(232, 241, 223) 0px 0px 0px 3px] outlineVsParent=null outlineVsOwnBg=null borderVsOwnBg=2.74
+[antes] controles enfocables sin outline ni box-shadow: 3 input.pet-birthdate, input.appointment-date, input.record-date

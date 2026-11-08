@@ -1,0 +1,7 @@
+$ npm run typecheck
+2026-11-08T13:17:36-07:00
+
+> vetsync@1.0.0 typecheck
+> tsc --noEmit
+
+exit=0

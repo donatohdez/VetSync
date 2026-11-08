@@ -1,0 +1,47 @@
+# npm run check — 2026-11-08T20:35:58Z
+> vetsync@1.0.0 build
+> tsc -p tsconfig.build.json && esbuild src/web/app.ts --bundle --format=esm --outfile=dist/web/app.js && node scripts/copy-web.mjs
+
+
+  dist/web/app.js  49.2kb
+
+⚡ Done in 13ms
+
+> vetsync@1.0.0 test:coverage
+> vitest run --coverage
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+      Coverage enabled with v8
+
+
+ Test Files  10 passed (10)
+      Tests  133 passed (133)
+   Start at  13:36:11
+   Duration  8.26s (tests 56%, import 35%, worker 6%, transform 2%)
+
+    Isolate  10 workers spawned · ~221ms startup each (spawn + environment, per file)
+             at least ~1.99s faster with isolate: false — reuses workers across files instead of one per file
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   98.56 |    97.29 |   98.76 |   99.24 |                   
+ http              |   98.61 |    94.44 |     100 |     100 |                   
+  app.ts           |   98.61 |    94.44 |     100 |     100 | 88,208            
+ ...ntments/domain |   97.05 |      100 |     100 |   96.77 |                   
+  clinic-hours.ts  |   97.05 |      100 |     100 |   96.77 | 81                
+ ...infrastructure |   88.88 |       50 |     100 |    87.5 |                   
+  ...-reminders.ts |   88.88 |       50 |     100 |    87.5 | 29                
+ shared            |   97.61 |      100 |    92.3 |     100 |                   
+  clock.ts         |      80 |      100 |   66.66 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 98.56% ( 274/278 )
+Branches     : 97.29% ( 108/111 )
+Functions    : 98.76% ( 80/81 )
+Lines        : 99.24% ( 263/265 )
+================================================================================
+EXIT=0

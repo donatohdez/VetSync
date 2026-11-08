@@ -1,0 +1,102 @@
+##### antes
+== 1440
+  agenda doc 1440 / 1440 bad ['.table-scroll sw=1267 cw=1118 ox=auto'] clipped 4
+  patients doc 1440 / 1440 bad [] clipped 0
+  history doc 1440 / 1440 bad [] clipped 0
+  notifications doc 1440 / 1440 bad [] clipped 0
+  cols {'scrollRight': 1401, 'tableSW': 1267, 'tableCW': 1118, 'longReasonW': 87, 'normalReasonW': 87, 'normalReasonH': 116, 'statusRight': 1550, 'statusInView': False}
+  rowAligned [True, False] arrow 15 [[744.7, 744.7, 744.7], [1152.6, 987.1, 987.1]]
+  remTitle {'w': 938, 'lines': 2} topbar {'gap': 809, 'leftH': 18, 'rightH': 35, 'lh': 18}
+    cita X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    dueno X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    mascota X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 0 truncPH False docOver False dialogBad []
+== 768
+  agenda doc 768 / 768 bad ['.panel:not([hidden]) sw=953 cw=499 ox=hidden', '.table-scroll sw=953 cw=499 ox=visible', '.agenda-table sw=953 cw=499 ox=visible'] clipped 0
+  patients doc 768 / 768 bad [] clipped 0
+  history doc 1067 / 768 bad ['.workspace sw=852 cw=553 ox=visible', 'main sw=852 cw=553 ox=visible', '.panel:not([hidden]) sw=825 cw=499 ox=visible'] clipped 2
+  notifications doc 768 / 768 bad [] clipped 0
+  cols {'scrollRight': 741, 'tableSW': 953, 'tableCW': 499, 'longReasonW': 457, 'normalReasonW': 457, 'normalReasonH': 40, 'statusRight': 720, 'statusInView': True}
+  rowAligned [False, False, False] arrow 15 [[972.2, 1008.2], [1244.6, 1557.8], [1812.1, 1794.1]]
+  remTitle {'w': 319, 'lines': 4} topbar {'gap': 190, 'leftH': 18, 'rightH': 35, 'lh': 18}
+    cita X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    dueno X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    mascota X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 0 truncPH False docOver True dialogBad []
+== 390
+  agenda doc 390 / 390 bad ['.panel:not([hidden]) sw=877 cw=348 ox=hidden', '.table-scroll sw=877 cw=348 ox=visible', '.agenda-table sw=877 cw=348 ox=visible'] clipped 0
+  patients doc 390 / 390 bad [] clipped 0
+  history doc 711 / 390 bad ['.workspace sw=711 cw=390 ox=visible', 'main sw=711 cw=390 ox=visible', '.panel:not([hidden]) sw=690 cw=348 ox=visible'] clipped 2
+  notifications doc 390 / 390 bad [] clipped 0
+  cols {'scrollRight': 369, 'tableSW': 877, 'tableCW': 348, 'longReasonW': 306, 'normalReasonW': 306, 'normalReasonH': 40, 'statusRight': 348, 'statusInView': True}
+  rowAligned [True, True, True, True, True, True] arrow 15 [[1116.6], [1347], [1577.3], [1973.3], [2203.7], [2434.1]]
+  remTitle {'w': 148, 'lines': 7} topbar {'gap': 74, 'leftH': 17, 'rightH': 29, 'lh': 16.5}
+    cita X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    dueno X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    mascota X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 0 truncPH False docOver True dialogBad []
+== 320
+  agenda doc 320 / 320 bad ['.panel:not([hidden]) sw=842 cw=278 ox=hidden', '.table-scroll sw=842 cw=278 ox=visible', '.agenda-table sw=842 cw=278 ox=visible'] clipped 0
+  patients doc 320 / 320 bad [] clipped 0
+  history doc 711 / 320 bad ['.workspace sw=711 cw=320 ox=visible', 'main sw=711 cw=320 ox=visible', '.panel:not([hidden]) sw=690 cw=278 ox=visible'] clipped 2
+  notifications doc 320 / 320 bad ['nav sw=282 cw=280 ox=visible'] clipped 0
+  cols {'scrollRight': 299, 'tableSW': 842, 'tableCW': 278, 'longReasonW': 236, 'normalReasonW': 236, 'normalReasonH': 40, 'statusRight': 278, 'statusInView': True}
+  rowAligned [True, True, True, True, True, True] arrow 15 [[1246.8], [1513.1], [1743.5], [2204.3], [2452.7], [2683]]
+  remTitle {'w': 78, 'lines': 14} topbar {'gap': 4, 'leftH': 17, 'rightH': 29, 'lh': 16.5}
+    cita X 0 0 arrow 17 truncPH True docOver False dialogBad []
+    dueno X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    mascota X 0 0 arrow 0 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 0 truncPH False docOver True dialogBad []
+modales {'cita-390x600': (True, True, True), 'dueno-390x600': (True, False, True), 'mascota-390x600': (True, True, True), 'nota-390x600': (True, True, True), 'cita-320x500': (True, True, True), 'dueno-320x500': (True, True, True), 'mascota-320x500': (True, True, True), 'nota-320x500': (True, True, True)}
+errFocus {'outline': 'solid 2px rgb(217, 181, 155) off 2px', 'border': '1px rgb(232, 208, 189)'} {'outline': 'solid 2px rgb(217, 181, 155) off 2px', 'border': '1px rgb(232, 208, 189)'}
+##### despues
+== 1440
+  agenda doc 1440 / 1440 bad [] clipped 0
+  patients doc 1440 / 1440 bad [] clipped 0
+  history doc 1440 / 1440 bad [] clipped 0
+  notifications doc 1440 / 1440 bad [] clipped 0
+  cols {'scrollRight': 1401, 'tableSW': 1118, 'tableCW': 1118, 'longReasonW': 322, 'normalReasonW': 322, 'normalReasonH': 100, 'statusRight': 1401, 'statusInView': True}
+  rowAligned [True, True] arrow 15 [[762.7, 762.7, 762.7], [1188.6, 1188.6, 1188.6]]
+  remTitle {'w': 938, 'lines': 2} topbar {'gap': 809, 'leftH': 18, 'rightH': 35, 'lh': 18}
+    cita X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    dueno X 0 0 arrow None truncPH None docOver False dialogBad []
+    mascota X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 17 truncPH True docOver False dialogBad []
+== 768
+  agenda doc 768 / 768 bad [] clipped 0
+  patients doc 768 / 768 bad [] clipped 0
+  history doc 768 / 768 bad [] clipped 0
+  notifications doc 768 / 768 bad [] clipped 0
+  cols {'scrollRight': 741, 'tableSW': 499, 'tableCW': 499, 'longReasonW': 457, 'normalReasonW': 457, 'normalReasonH': 40, 'statusRight': 720, 'statusInView': True}
+  rowAligned [True, True, True] arrow 15 [[1026.2, 1026.2], [1593.8, 1593.8], [1866.1, 1866.1]]
+  remTitle {'w': 319, 'lines': 4} topbar {'gap': 190, 'leftH': 18, 'rightH': 35, 'lh': 18}
+    cita X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    dueno X 0 0 arrow None truncPH None docOver False dialogBad []
+    mascota X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 17 truncPH True docOver False dialogBad []
+== 390
+  agenda doc 390 / 390 bad [] clipped 0
+  patients doc 390 / 390 bad [] clipped 0
+  history doc 390 / 390 bad [] clipped 0
+  notifications doc 390 / 390 bad [] clipped 0
+  cols {'scrollRight': 369, 'tableSW': 348, 'tableCW': 348, 'longReasonW': 306, 'normalReasonW': 306, 'normalReasonH': 40, 'statusRight': 348, 'statusInView': True}
+  rowAligned [True, True, True, True, True, True] arrow 15 [[1134.6], [1383], [1631.3], [2045.3], [2293.7], [2542.1]]
+  remTitle {'w': 268, 'lines': 5} topbar {'gap': 74, 'leftH': 17, 'rightH': 29, 'lh': 16.5}
+    cita X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    dueno X 0 0 arrow None truncPH None docOver False dialogBad []
+    mascota X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 17 truncPH True docOver False dialogBad []
+== 320
+  agenda doc 320 / 320 bad [] clipped 0
+  patients doc 320 / 320 bad [] clipped 0
+  history doc 320 / 320 bad [] clipped 0
+  notifications doc 320 / 320 bad [] clipped 0
+  cols {'scrollRight': 299, 'tableSW': 278, 'tableCW': 278, 'longReasonW': 236, 'normalReasonW': 236, 'normalReasonH': 40, 'statusRight': 278, 'statusInView': True}
+  rowAligned [True, True, True, True, True, True] arrow 15 [[1264.8], [1549.1], [1797.5], [2276.3], [2542.7], [2791]]
+  remTitle {'w': 198, 'lines': 6} topbar {'gap': 16, 'leftH': 17, 'rightH': 29, 'lh': 16.5}
+    cita X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    dueno X 0 0 arrow None truncPH None docOver False dialogBad []
+    mascota X 0 0 arrow 17 truncPH False docOver False dialogBad []
+    nota X 0 0 arrow 17 truncPH False docOver False dialogBad []
+modales {'cita-390x600': (True, True, True), 'dueno-390x600': (True, False, True), 'mascota-390x600': (True, True, True), 'nota-390x600': (True, True, True), 'cita-320x500': (True, True, True), 'dueno-320x500': (True, True, True), 'mascota-320x500': (True, True, True), 'nota-320x500': (True, True, True)}
+errFocus {'outline': 'solid 2px rgb(160, 90, 58) off -1px', 'border': '1px rgb(232, 208, 189)'} {'outline': 'solid 2px rgb(160, 90, 58) off -1px', 'border': '1px rgb(232, 208, 189)'}

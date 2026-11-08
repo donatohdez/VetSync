@@ -1,0 +1,32 @@
+Mutacion manual en copia aislada (work/cierre-auditoria/A/mutantes); fecha 2026-11-08T13:16:56.208150-07:00
+
+=== M1 agendar: startsAt <= now -> <
+  pruebas ANTERIORES (HEAD): exit=0 Test Files  5 passed (5) | Tests  49 passed (49)
+  pruebas NUEVAS: exit=1 Test Files  1 failed | 8 passed (9) | Tests  1 failed | 95 passed (96)
+     FAIL límite temporal de «ahora» con horario válido de clínica (F-02) > rechaza una cita que empieza exactamente en 
+
+=== M2 disponibilidad: startsAt <= now -> <
+  pruebas ANTERIORES (HEAD): exit=0 Test Files  5 passed (5) | Tests  49 passed (49)
+  pruebas NUEVAS: exit=1 Test Files  1 failed | 8 passed (9) | Tests  1 failed | 95 passed (96)
+     FAIL el bloque que empieza exactamente en «ahora» es pasado y el siguiente está disponible (F-02)
+
+=== M3 disponibilidad: sin filtro por veterinario
+  pruebas ANTERIORES (HEAD): exit=0 Test Files  5 passed (5) | Tests  49 passed (49)
+  pruebas NUEVAS: exit=1 Test Files  1 failed | 8 passed (9) | Tests  1 failed | 95 passed (96)
+     FAIL la cita de un veterinario no bloquea a otro (F-02)
+
+=== M4 horario: hora de cierre (analogo de a.hour>=18 -> >18)
+  pruebas ANTERIORES (HEAD): exit=1 Test Files  1 failed | 4 passed (5) | Tests  1 failed | 48 passed (49)
+     FAIL horario de clínica: rechaza 18:00:00-18:30:00
+  pruebas NUEVAS: exit=1 Test Files  2 failed | 7 passed (9) | Tests  2 failed | 94 passed (96)
+     FAIL fuente única del horario de la clínica > disponibilidad, validación de citas y /config siguen la misma definic
+     FAIL horario de clínica: rechaza 18:00:00-18:30:00
+
+=== M5 horario: quitar !sameDay
+  pruebas ANTERIORES (HEAD): exit=0 Test Files  5 passed (5) | Tests  49 passed (49)
+  pruebas NUEVAS: exit=0 Test Files  9 passed (9) | Tests  96 passed (96)
+
+=== M6 agendar: endsAt <= startsAt -> false
+  pruebas ANTERIORES (HEAD): exit=0 Test Files  5 passed (5) | Tests  49 passed (49)
+  pruebas NUEVAS: exit=1 Test Files  1 failed | 8 passed (9) | Tests  1 failed | 95 passed (96)
+     FAIL un fin igual o anterior al inicio se rechaza con el mensaje específico

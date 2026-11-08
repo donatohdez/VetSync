@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:49886) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/polish.spec.ts:308:1 › un alta confirmada no se repite si falla la actualización posterior (5.5s)
+
+
+  1) tests/e2e/polish.spec.ts:308:1 › un alta confirmada no se repite si falla la actualización posterior 
+
+    Error: expect(locator).not.toBeVisible() failed
+
+    Locator:  getByRole('dialog')
+    Expected: not visible
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "not toBeVisible" getByRole('dialog') with timeout 5000ms
+      - waiting for getByRole('dialog')
+        14 × locator resolved to <dialog open="" id="form-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description">…</dialog>
+           - unexpected value "visible"
+
+
+      321 |   await page.getByLabel("Correo electrónico").fill("nuevo@example.test");
+      322 |   await page.getByRole("dialog").getByRole("button",{name:"Registrar dueño",exact:true}).click();
+    > 323 |   await expect(page.getByRole("dialog")).not.toBeVisible();
+          |                                              ^
+      324 |   await expect(page.locator("#notice")).toContainText("guardado");
+      325 |   expect(posts).toBe(1);
+      326 | });
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:323:46
+
+    Error Context: work/playwright-results/polish-un-alta-confirmada--ca691--la-actualización-posterior/error-context.md
+
+  1 failed
+    tests/e2e/polish.spec.ts:308:1 › un alta confirmada no se repite si falla la actualización posterior 

@@ -1,0 +1,47 @@
+# ROJO F-23/F-24 (hallazgos del verificador visual) npx playwright test tests/e2e/recovery.spec.ts -g contraste — 2026-11-08T20:35:19Z
+Running 2 tests using 1 worker
+
+  ✘  1 tests/e2e/recovery.spec.ts:709:3 › contraste de estados interactivos › el horario seleccionado conserva el contraste con el puntero encima (533ms)
+  ✘  2 tests/e2e/recovery.spec.ts:721:3 › contraste de estados interactivos › la etiqueta «(opcional)» alcanza 4.5:1 sobre fondo blanco (325ms)
+
+
+  1) tests/e2e/recovery.spec.ts:709:3 › contraste de estados interactivos › el horario seleccionado conserva el contraste con el puntero encima 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 4.5
+    Received:    1.0817139307830916
+
+      717 |     expect(
+      718 |       await contrast(page, '.slot-button[data-time="10:00"]'),
+    > 719 |     ).toBeGreaterThanOrEqual(4.5);
+          |       ^
+      720 |   });
+      721 |   test("la etiqueta «(opcional)» alcanza 4.5:1 sobre fondo blanco", async ({
+      722 |     page,
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:719:7
+
+    Error Context: work/playwright-results/recovery-contraste-de-esta-b7c5c-raste-con-el-puntero-encima/error-context.md
+
+  2) tests/e2e/recovery.spec.ts:721:3 › contraste de estados interactivos › la etiqueta «(opcional)» alcanza 4.5:1 sobre fondo blanco 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 4.5
+    Received:    4.294002323882354
+
+      731 |     expect(
+      732 |       await contrast(page, "#owner-form .optional", true),
+    > 733 |     ).toBeGreaterThanOrEqual(4.5);
+          |       ^
+      734 |   });
+      735 | });
+      736 |
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/recovery.spec.ts:733:7
+
+    Error Context: work/playwright-results/recovery-contraste-de-esta-50224-za-4-5-1-sobre-fondo-blanco/error-context.md
+
+  2 failed
+    tests/e2e/recovery.spec.ts:709:3 › contraste de estados interactivos › el horario seleccionado conserva el contraste con el puntero encima 
+    tests/e2e/recovery.spec.ts:721:3 › contraste de estados interactivos › la etiqueta «(opcional)» alcanza 4.5:1 sobre fondo blanco 
+EXIT=1

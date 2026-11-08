@@ -1,0 +1,9 @@
+# VERDE F-23/F-24 tras el cambio de CSS — 2026-11-08T20:35:38Z
+
+Running 2 tests using 1 worker
+
+  ✓  1 tests/e2e/recovery.spec.ts:711:3 › contraste de estados interactivos › el horario seleccionado conserva el contraste con el puntero encima (513ms)
+  ✓  2 tests/e2e/recovery.spec.ts:723:3 › contraste de estados interactivos › la etiqueta «(opcional)» alcanza 4.5:1 sobre fondo blanco (143ms)
+
+  2 passed (1.5s)
+EXIT=0

@@ -1,0 +1,10 @@
+# npm test — 2026-11-08T20:36:20Z
+ Test Files  9 passed (9)
+      Tests  96 passed (96)
+   Start at  13:36:21
+   Duration  4.37s (import 59%, tests 33%, transform 4%, worker 3%)
+
+    Isolate  9 workers spawned · ~226ms startup each (spawn + environment, per file)
+             at least ~1.81s faster with isolate: false — reuses workers across files instead of one per file
+
+EXIT=0

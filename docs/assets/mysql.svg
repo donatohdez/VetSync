@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="82" height="20" viewBox="0 0 82 20" role="img" aria-labelledby="title">
+  <title id="title">MySQL: 8.4</title>
+  <path fill="#555" d="M0 0h51v20H0z"/>
+  <path fill="#386455" d="M51 0h31v20H51z"/>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,DejaVu Sans,sans-serif" font-size="11">
+    <text x="25.5" y="14">MySQL</text>
+    <text x="66.5" y="14">8.4</text>
+  </g>
+</svg>

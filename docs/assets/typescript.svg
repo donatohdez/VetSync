@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="107" height="20" viewBox="0 0 107 20" role="img" aria-labelledby="title">
+  <title id="title">TypeScript: 6.0</title>
+  <path fill="#555" d="M0 0h76v20H0z"/>
+  <path fill="#194E40" d="M76 0h31v20H76z"/>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,DejaVu Sans,sans-serif" font-size="11">
+    <text x="38.0" y="14">TypeScript</text>
+    <text x="91.5" y="14">6.0</text>
+  </g>
+</svg>

@@ -10,11 +10,11 @@
 Una aplicación local con agenda sin choques y recordatorios por correo simulados.</p>
 
 <p>
-  <img src="https://img.shields.io/badge/Node.js-24-194E40?style=flat-square&amp;logo=nodedotjs&amp;logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/TypeScript-6.0-194E40?style=flat-square&amp;logo=typescript&amp;logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Express-5.3-194E40?style=flat-square&amp;logo=express&amp;logoColor=white" alt="Express" />
-  <img src="https://img.shields.io/badge/MySQL-8.4-386455?style=flat-square&amp;logo=mysql&amp;logoColor=white" alt="MySQL" />
-  <img src="https://img.shields.io/badge/Docker-Local-386455?style=flat-square&amp;logo=docker&amp;logoColor=white" alt="Docker" />
+  <img src="docs/assets/nodejs.svg" alt="Node.js" />
+  <img src="docs/assets/typescript.svg" alt="TypeScript" />
+  <img src="docs/assets/express.svg" alt="Express" />
+  <img src="docs/assets/mysql.svg" alt="MySQL" />
+  <img src="docs/assets/docker.svg" alt="Docker" />
 </p>
 
 [![Verificar VetSync](https://github.com/donatohdez/VetSync/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/donatohdez/VetSync/actions/workflows/ci.yml)

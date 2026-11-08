@@ -315,7 +315,7 @@ La IA se utilizó durante el desarrollo y la revisión. **La aplicación no inco
 | [`test1.md`](test1.md) | Revisión independiente preliminar de Claude. Se conserva sin cambios. |
 | [Auditoría final de Claude](outputs/AUDITORIA-FINAL-CLAUDE.md) | Hallazgos F-01 a F-22 con su evidencia. |
 | [Seguimiento de la auditoría](outputs/SEGUIMIENTO-AUDITORIA.md) | Estado de cada hallazgo y de su atención. |
-| Cierre de la auditoría (`outputs/CIERRE-AUDITORIA-CLAUDE.md`) | Se publicará tras la verificación final; el archivo aún no existe. |
+| [Cierre de la auditoría](outputs/CIERRE-AUDITORIA-CLAUDE.md) | Estado de F-01 a F-24, cifras reales de la verificación final, evidencias y pendientes del estudiante. |
 
 Los registros distinguen las modificaciones de los asistentes de las decisiones y aportes reales del estudiante. La bitácora y la reflexión se conservan para revisión final del equipo; el [plan original](outputs/PLAN-DE-TRABAJO.md) documenta la etapa previa al desarrollo.
 

@@ -13,7 +13,7 @@ La rama `main` contiene código, documentación, migraciones, pruebas y evidenci
 ## Documentos
 
 1. [Bitácora de cinco interacciones](BITACORA-PROMPTS.md): prompts conservados, herramienta, respuesta y crítica técnica.
-2. [Reflexión técnica](REFLEXION-TECNICA.md): 370 palabras incluyendo el título, basada en el aporte del estudiante y los hechos del proyecto.
+2. [Reflexión técnica](REFLEXION-TECNICA.md): 325 palabras incluyendo el título, basada en los aportes originales del estudiante y los hechos del proyecto.
 3. [Informe de pruebas](INFORME-PRUEBAS.md) y [CI remoto](CI-REMOTO.md).
 4. [Evaluación de la revisión de Claude](RESULTADO-REVISION-CLAUDE.md).
 

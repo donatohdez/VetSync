@@ -131,3 +131,18 @@ La publicación y el CI también están registrados en la bitácora de trabajo, 
 
 El estudiante aportó su experiencia de ahorro de tiempo en código y pruebas; se conserva el mensaje original en `../docs/ia/respuestas/reflexion-aporte-estudiante.txt`. Se redactó una reflexión de menos de 500 palabras con ese aporte y hechos comprobados. Debe revisar la voz final y las cinco entradas. La literalidad del prompt de Claude ya fue confirmada por el estudiante. No se inventaron cambios manuales ni experiencias personales para completar campos.
 
+
+## Aporte personal posterior a la auditoría
+
+El estudiante confirmó que recorrió los flujos, incluidas citas y altas de mascotas, que le costó comprobar las fechas y que propuso simplificarlas a fecha y hora. Explicó que ambas herramientas agilizan el trabajo pero requieren comprobación personal. El mensaje original está en `docs/ia/respuestas/reflexion-revision-personal.txt` desde la raíz del proyecto. La reflexión se reescribió con ese aporte y atribuye las medidas técnicas a los asistentes. Queda la lectura del texto final por el estudiante, sin atribuirle implementación manual ni pruebas automatizadas.
+
+## Aclaraciones tras la auditoría (hallazgos F-03 a F-05)
+
+Estas notas no modifican los textos originales conservados; precisan cómo leer la selección de cinco interacciones.
+
+- **Selección.** Las cinco entradas se eligieron entre interacciones reales de las conversaciones de trabajo. Cada entrada conserva el texto original de los mensajes del estudiante o del prompt pegado; las respuestas enlazadas son documentos y código producidos, no transcripciones del chat.
+- **Entrada 02.** El texto conservado en `docs/ia/prompts/02-iniciar-proyecto.txt` es un mensaje breve del estudiante. No se presenta como un prompt técnico: la implementación posterior siguió el plan aprobado y `AGENTS.md`.
+- **Entrada 03.** El prompt para Claude fue redactado por Codex y pegado literalmente por el estudiante, quien confirmó esa literalidad. La autoría de la redacción es de Codex, no del estudiante.
+- **Entrada 05.** Agrupa tres mensajes separados (pulido, recepción, márgenes) más una aclaración sobre el horario. No se reconstruyó un prompt único; las iteraciones se conservan por separado.
+- **Archivado de los textos.** Los archivos de `docs/ia/prompts/` y `docs/ia/respuestas/` se crearon durante el trabajo para conservar los mensajes. Su fecha de modificación indica cuándo se archivaron, no cuándo se escribió el mensaje original en la conversación, y tampoco es una prueba de que el contenido se haya alterado. No hay evidencia de una captura automática simultánea de cada mensaje, y no se afirma que exista.
+- **Pendiente del estudiante.** Solo el estudiante puede confirmar que leyó las cinco entradas y el texto final de la reflexión, y que reflejan fielmente lo ocurrido. Esa confirmación no se da por hecha en este documento.

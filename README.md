@@ -112,7 +112,7 @@ flowchart LR
 
 **Avisos sin duplicados.** Una restricción única por cita y tipo de aviso impide registrar dos recordatorios, incluso si la simulación se ejecuta simultáneamente. La ventana es `ahora < inicio <= ahora + REMINDER_HOURS`.
 
-**Fechas coherentes.** Los instantes se almacenan en UTC; la agenda y el texto de los avisos se muestran en la zona de la clínica. Los formularios indican que la captura de hora usa la zona del dispositivo.
+**Fechas coherentes.** Los instantes se almacenan en UTC. Las reglas de horario, la disponibilidad, la agenda, la fecha límite de nacimiento y el texto de los avisos usan la zona de la clínica. La zona del dispositivo solo interviene en la fecha y hora de la nota clínica, y el formulario lo indica cuando difiere de la de la clínica.
 
 El [modelo y las decisiones de arquitectura](docs/arquitectura/ARQUITECTURA.md) explican los límites de módulos, relaciones e índices. El esquema ejecutable está en [la migración inicial](database/migrations/001-initial.sql).
 
@@ -205,7 +205,7 @@ Base local: `http://127.0.0.1:3010/api`. Las escrituras requieren `Content-Type:
 | `/pets/{petId}/medical-records` | Consultar y agregar notas clínicas de una mascota. |
 | `/appointments` | Consultar y reservar citas; un choque devuelve `409`. |
 | `/notifications` | Consultar correos simulados. |
-| `/notifications/run` | Ejecutar la simulación mediante `POST` con cuerpo `{}`. |
+| `/notifications/run` | Ejecutar la simulación mediante `POST` con cuerpo `{}` o sin cuerpo; cualquier otro cuerpo da `400`. |
 
 El [documento de API](docs/api/API.md) incluye métodos, reglas de fechas, ejemplos y errores. El [contrato OpenAPI](docs/api/openapi.json) permite consultar los esquemas y respuestas.
 
@@ -230,20 +230,32 @@ DB_NAME=vetsync_test npm run db:seed
 npm run test:e2e
 ```
 
-Playwright inicia su propio servidor en el puerto `3011`. No ejecutes integración y navegador simultáneamente: comparten `vetsync_test`. La variable opcional `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` permite utilizar un Chromium ya instalado.
+Playwright inicia su propio servidor en el puerto `3011`. Las pruebas del navegador se ejecutan **después** de las de integración, nunca al mismo tiempo: comparten `vetsync_test`.
+
+**Navegador.** La variable opcional `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` permite usar un Chromium ya instalado. En el equipo de desarrollo de este proyecto la compilación que busca esta versión de Playwright no está en la caché, y se comprobó que existe `chromium_headless_shell-1234`, por lo que se usa así:
+
+```sh
+PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="$HOME/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell" npm run test:e2e
+```
+
+Si el navegador no está instalado o no se encuentra, la suite falla antes de probar nada: es un problema de entorno, no un defecto de la aplicación ni evidencia de una prueba de negocio.
+
+**Capturas.** Las que genera la suite automática se guardan en `work/playwright-results/` (ignorada por Git) y el CI ya no las sube. `docs/evidencias/capturas/` es solo documental: sus imágenes se regeneran a mano y la suite no las reescribe.
 
 ### Resultados comprobados
 
+La tabla distingue dos cosas. Los resultados **locales** corresponden al código de este árbol de trabajo en el momento de la última verificación. El **CI remoto** corresponde a un commit concreto que ya se ejecutó en GitHub, no necesariamente al cambio actual: hasta que se publique y se ejecute de nuevo, no respalda las cifras locales.
+
 | Comprobación | Resultado registrado |
 | :--- | :--- |
-| Unitarias | **49 aprobadas**. |
-| Integración HTTP/MySQL | **32 aprobadas**, incluidas reservas y avisos concurrentes. |
-| Navegador | **10 recorridos aprobados**: recepción, alta durante reserva, disponibilidad, selectores, historial, errores y móvil. |
-| Cobertura de líneas | **98.70%**. |
-| Cobertura de ramas | **97.82%**. |
-| Cobertura de funciones y sentencias | **98.63% funciones; 98.33% sentencias**. |
+| Unitarias | **96 aprobadas** (verificación local posterior a la auditoría; antes 49). |
+| Integración HTTP/MySQL | **37 aprobadas** (antes 32), incluidas reservas y avisos concurrentes. |
+| Navegador | **29 casos aprobados** (antes 10): recepción, alta durante reserva, disponibilidad, selectores, historial, errores, recuperación tras fallos, teclado y móvil. Los casos de `polish.spec.ts` y `recovery.spec.ts` usan respuestas HTTP controladas; solo los de `booking`/`clinic` usan MySQL. |
+| Cobertura de líneas | **99.24%** (backend; la UI está excluida). |
+| Cobertura de ramas | **97.29%**. |
+| Cobertura de funciones y sentencias | **98.76% funciones; 98.56% sentencias**. |
 | Umbral configurado | **80% mínimo** en las cuatro métricas. |
-| CI remoto | Instalación limpia, migración, tipos, linter, compilación, pruebas y artefactos aprobados. |
+| CI remoto (primera ejecución registrada, de un commit anterior; ver [CI remoto](outputs/CI-REMOTO.md)) | Instalación limpia, migración, tipos, linter, compilación, pruebas y artefactos aprobados en esa ejecución. |
 
 Las pruebas cubren solapamientos, citas contiguas, referencias inválidas, límites de recordatorios, zonas horarias, errores de transacción, consultas parametrizadas y representación segura de notas. Cuatro mutaciones temporales de operadores SQL fueron detectadas por pruebas de integración; después se restauró el código correcto.
 
@@ -260,11 +272,11 @@ VetSync/
 │   ├── arquitectura/       # Modelo y decisiones técnicas
 │   ├── assets/             # Identidad y captura del README
 │   ├── calidad/            # Registro de ciclos TDD
-│   ├── evidencias/         # Resultados, capturas y revisiones
+│   ├── evidencias/         # Resultados, capturas documentales y revisiones
 │   ├── ia/                 # Prompts, respuestas y crítica
 │   ├── referencias/        # Material original de la asignación
 │   └── requisitos/         # Matriz de requisitos y supuestos
-├── outputs/                # Documentos para revisión y entrega
+├── outputs/                # Documentos para revisión y entrega (incluye los de auditoría)
 ├── scripts/                # Migraciones, datos ficticios y tareas auxiliares
 ├── src/
 │   ├── modules/            # Seis módulos de negocio
@@ -275,6 +287,7 @@ VetSync/
 │   └── server.ts           # Inicio y cierre del servidor
 ├── tests/                  # Unitarias, integración y navegador
 ├── AGENTS.md               # Convenciones de trabajo con IA
+├── test1.md                # Revisión independiente preliminar de Claude (se conserva sin cambios)
 ├── compose.yaml            # MySQL local
 └── .env.example            # Configuración de demostración
 ```
@@ -288,12 +301,21 @@ La IA se utilizó durante el desarrollo y la revisión. **La aplicación no inco
 | Documento | Contenido |
 | :--- | :--- |
 | [Bitácora de cinco interacciones](outputs/BITACORA-PROMPTS.md) | Prompts conservados, herramientas, respuestas y crítica de las decisiones. |
-| [Reflexión técnica](outputs/REFLEXION-TECNICA.md) | 370 palabras sobre ahorro de tiempo, carga cognitiva y prevención de deuda técnica. |
+| [Reflexión técnica](outputs/REFLEXION-TECNICA.md) | 325 palabras sobre ahorro de tiempo, carga cognitiva y prevención de deuda técnica. |
 | [Informe de pruebas](outputs/INFORME-PRUEBAS.md) | Casos verificados, resultados, cobertura y límites de la evidencia. |
 | [Revisión de Claude](outputs/RESULTADO-REVISION-CLAUDE.md) | Hallazgos aceptados, cambios comprobados y mejoras pospuestas. |
 | [Guía de entrega](outputs/ENTREGA.md) | Enlace al código, documentos y revisión final antes de enviar. |
 | [Requisitos](docs/requisitos/MATRIZ.md) | Diferencia entre obligaciones explícitas, sugerencias y decisiones del proyecto. |
 | [Registro TDD](docs/calidad/REGISTRO-TDD.md) | Secuencia de pruebas fallidas, implementación y validación posterior. |
+
+**Revisión independiente y auditoría.** Además de la revisión atendida arriba, hay una auditoría final y su cierre:
+
+| Documento | Contenido |
+| :--- | :--- |
+| [`test1.md`](test1.md) | Revisión independiente preliminar de Claude. Se conserva sin cambios. |
+| [Auditoría final de Claude](outputs/AUDITORIA-FINAL-CLAUDE.md) | Hallazgos F-01 a F-22 con su evidencia. |
+| [Seguimiento de la auditoría](outputs/SEGUIMIENTO-AUDITORIA.md) | Estado de cada hallazgo y de su atención. |
+| Cierre de la auditoría (`outputs/CIERRE-AUDITORIA-CLAUDE.md`) | Se publicará tras la verificación final; el archivo aún no existe. |
 
 Los registros distinguen las modificaciones de los asistentes de las decisiones y aportes reales del estudiante. La bitácora y la reflexión se conservan para revisión final del equipo; el [plan original](outputs/PLAN-DE-TRABAJO.md) documenta la etapa previa al desarrollo.
 

@@ -1,0 +1,1 @@
+yo revisé el flujo, agendar citas, agregar mascotas, literal todo, me costó comprobar lo de las fechas, por eso mejor di la solucion de solo poner una fecha y hora, aprendí que trabajar con codex y claude agiliza mucho el trabajo manual pero al final siempre uno personalmente tiene que comprobar que todo funcione

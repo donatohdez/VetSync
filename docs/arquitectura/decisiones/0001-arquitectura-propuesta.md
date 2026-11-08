@@ -2,6 +2,8 @@
 
 Estado: aceptado tras la aprobación del plan y la autorización de inicio.
 
+> Nota posterior: este ADR conserva la propuesta anterior a la implementación (por ejemplo, Express y mysql2 figuran como candidatos). La arquitectura vigente, incluidas las rutas HTTP que consultan repositorios directamente y la fuente única del horario, está en [ARQUITECTURA.md](../ARQUITECTURA.md).
+
 ## Contexto
 
 La presentación permite microservicios o un monolito modular desacoplado. El núcleo combina registros, agenda e historial con persistencia transaccional. El plazo favorece un solo proceso desplegable.

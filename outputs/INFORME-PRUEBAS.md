@@ -57,3 +57,28 @@ La verificación completa posterior está en `docs/evidencias/revision/06-verifi
 Se verificaron los 16 bloques, último inicio 17:30, duración de 30 minutos, fechas y disponibilidad por veterinario, rechazo HTTP de horarios inválidos y registro de dueño/mascota sin perder el borrador de la cita. Se midieron X y flechas a 1440 y 390 px. La consulta de disponibilidad no sustituye el bloqueo transaccional al reservar. Las fechas antiguas de la base de demostración se conservaron; el seed nuevo utiliza los bloques acordados sin reescribir filas existentes.
 
 Los registros rojos de UI, redimensionamiento y reglas están en `docs/evidencias/tdd/08*` a `14*`. El descubrimiento accidental de una copia temporal del repositorio por Vitest se registró y se corrigió delimitando la búsqueda a `tests/unit/` y `tests/integration/`; ese fallo de infraestructura no se cuenta como rojo de negocio.
+
+## Cierre de la auditoría final (verificación posterior)
+
+Este apartado se añade sin reescribir las secciones anteriores, que describen el estado en su fecha. Las cifras siguientes son las obtenidas el 8 de noviembre de 2026 en la verificación final local; los logs con comando, hora y código de salida están en `docs/evidencias/cierre-auditoria/final/`.
+
+| Comprobación | Resultado real | Evidencia |
+| --- | --- | --- |
+| `npm run check` (tipos, linter, compilación, unitarias + integración con cobertura) | código de salida 0; 133 pruebas aprobadas | `final/01-check.txt` |
+| `npm test` | 96 unitarias aprobadas | `final/02-unitarias.txt` |
+| `npm run test:integration` (`vetsync_test`) | 37 aprobadas | `final/03-integracion.txt` |
+| `npm run test:e2e` (Chromium headless shell 1234, tras `db:seed` de `vetsync_test`) | 29 aprobadas (más lentas que en la ejecución previa por carga de la máquina; sin fallos) | `final/04-seed.txt`, `final/05-e2e.txt` |
+| Cobertura (backend) | líneas 99.24%, ramas 97.29%, funciones 98.76%, sentencias 98.56% | `final/01-check.txt` |
+
+La cobertura mide el backend: `src/web/**`, `server.ts`, `shared/config.ts` y `composition.ts` están excluidos (justificación en `docs/arquitectura/ARQUITECTURA.md`). No describe la interfaz, que se verifica con las pruebas de navegador y con inspección visual. Las 29 pruebas de navegador incluyen casos con MySQL real (`booking`, `clinic`) y casos con respuestas HTTP controladas (`polish`, `recovery`); estos últimos no sustituyen a los primeros.
+
+### Pruebas rojas y sensibilidad
+
+- **Backend** (`docs/evidencias/cierre-auditoria/A/`): antes de los arreglos fallaron 24 pruebas unitarias y 3 de integración por la razón esperada (por ejemplo, el `petId` con espacios daba 500). Una primera ejecución roja se sobrescribió después de corregir dos defectos de las propias pruebas (serialización del cuerpo gzip y una aserción de año); la evidencia final es la segunda.
+- **Navegador** (`docs/evidencias/cierre-auditoria/B/`): de 16 casos nuevos, 13 fallaron antes de los arreglos. Tres aprobaron desde el inicio (fallo parcial del refresco, cadena cita > mascota > dueño y reintento tras fallo real del POST), porque la corrección local previa ya los cubría; no se fabricó una fase roja para ellos. Dos casos se corrigieron en la propia prueba tras el rojo, así que su forma final no se vio en rojo.
+- **Mutaciones** (copia aislada, borrada después; `docs/evidencias/cierre-auditoria/A/05-mutantes.txt`): los tres huecos reales de la auditoría (`startsAt <= now` a `<` en agendar y en disponibilidad, y la eliminación del filtro por veterinario) sobrevivían a las pruebas anteriores y mueren con las nuevas. Un mutante sobre `endsAt <= startsAt` también muere. Se clasificó como equivalente el mutante que quita `!sameDay`, porque con duración exacta de un bloque e inicio alineado dentro de 10:00–17:30 el fin cae el mismo día; es una comprobación defensiva. El mutante de cierre a las 18:00 era un análogo, porque esa comprobación se reestructuró.
+- Las pruebas de límite exacto pueden aprobar en el código actual correcto; su evidencia de sensibilidad es el fallo con el mutante, no una fase roja.
+
+### Límites de esta verificación
+
+Los casos de recuperación de errores de la interfaz usan respuestas controladas, no un fallo real de MySQL ni de red. El contraste se calculó con un script propio a partir de colores computados; no se usó una herramienta certificada. No se probaron Firefox, Safari, dispositivos físicos, teclado virtual ni lectores de pantalla.

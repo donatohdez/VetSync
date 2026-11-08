@@ -13,7 +13,7 @@
 | README/API (R10) | README con tecnologías, índice, equipo, instalación y pruebas; API y OpenAPI incluyen disponibilidad y horarios |
 | Repositorio (E01) | Público: https://github.com/donatohdez/VetSync |
 | Cinco prompts (E02) | `BITACORA-PROMPTS.md` incluye textos originales, herramientas, respuestas conservadas y crítica; el estudiante confirmó el prompt exacto de Claude |
-| Reflexión ≤500 palabras (E03) | `REFLEXION-TECNICA.md`, 370 palabras al redactarse, basada en aporte real y hechos del proyecto; falta lectura final del estudiante |
+| Reflexión ≤500 palabras (E03) | `REFLEXION-TECNICA.md`, 325 palabras en la versión revisada, basada en aporte real y hechos del proyecto; falta lectura final del estudiante |
 | Ajustes del usuario (U01–U04) | Alta durante cita, 16 turnos diarios, fecha/hora, disponibilidad, X y flechas; 81 pruebas de backend y diez de navegador aprobadas |
 
 No se identificó una obligación de correo real, videollamadas, portal del dueño o despliegue público. La simulación satisface el módulo de avisos descrito. Quedan la revisión del equipo, comprobar comprensión y enviar el enlace y documentos a la plataforma; no se afirma haber realizado esos pasos humanos.

@@ -16,6 +16,11 @@
   --soft: #edf3e9;
   --radius: 14px;
   --shadow: 0 2px 5px #193e3010;
+  /* Contraste (cálculo propio): foco >= 4.4:1 sobre los fondos de la app; borde de campos >= 3:1 (WCAG 1.4.11). */
+  --focus: #2f7a5c;
+  --focus-halo: #d5e8d7;
+  --field-border: #7d8f76;
+  --field-border-hover: #5f7a58;
 }
 * {
   box-sizing: border-box;
@@ -49,7 +54,7 @@ textarea {
 }
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid #86b396;
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 .icon {
@@ -171,7 +176,7 @@ a:focus-visible {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.8px;
-  color: #607e68;
+  color: #5a7662;
 }
 .nav-label {
   padding-left: 14px;
@@ -245,7 +250,7 @@ a:focus-visible {
   font-size: 12px;
 }
 .breadcrumb {
-  color: #6f8174;
+  color: #66776b;
 }
 .topbar-right {
   display: flex;
@@ -369,7 +374,7 @@ h1 {
   justify-content: space-between;
   gap: 10px;
   align-items: center;
-  color: #5e7465;
+  color: #5c7263;
   font-size: 11px;
   font-weight: 500;
 }
@@ -383,7 +388,7 @@ h1 {
 }
 .stat-card small {
   font-size: 11px;
-  color: #697d6c;
+  color: #5f7161;
 }
 .stat-icon {
   color: #7f9c78;
@@ -442,7 +447,7 @@ h2 {
   min-height: 33px;
   font-size: 11px;
   font-weight: 550;
-  color: #667b66;
+  color: #5c6f5c;
 }
 .segmented button:hover {
   color: var(--green);
@@ -490,7 +495,7 @@ h2 {
 }
 .subtle {
   font-size: 12px;
-  color: #65796b;
+  color: #617467;
 }
 .table-scroll {
   overflow: auto;
@@ -532,6 +537,9 @@ h2 {
   gap: 11px;
   min-width: 150px;
 }
+.patient-column {
+  max-width: 300px;
+}
 .pet-avatar {
   width: 40px;
   height: 40px;
@@ -563,7 +571,7 @@ h2 {
 .patient-cell small {
   display: block;
   font-size: 11px;
-  color: #687d6d;
+  color: #65796a;
   margin-top: 4px;
   overflow-wrap: anywhere;
 }
@@ -585,9 +593,12 @@ h2 {
 }
 .vet-column {
   min-width: 155px;
+  max-width: 240px;
+  overflow-wrap: anywhere;
 }
 .reason-column {
-  max-width: 250px;
+  min-width: 190px;
+  max-width: 320px;
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
@@ -611,7 +622,7 @@ h2 {
   border-color: #e4e8df;
 }
 .badge.simulated {
-  color: #64805f;
+  color: #5c7657;
   background: #f4f7ef;
   border-color: #e4eada;
 }
@@ -646,7 +657,7 @@ h2 {
   color: #385637;
 }
 .care-note p {
-  color: #627a5d;
+  color: #5c7357;
   font-size: 11px;
   margin: 6px 0 0;
 }
@@ -654,13 +665,13 @@ h2 {
   margin-left: auto;
   font-size: 10px;
   white-space: nowrap;
-  color: #5e7957;
+  color: #597353;
 }
 footer {
   margin-top: 40px;
   border-top: 1px solid var(--border);
   padding-top: 20px;
-  color: #667963;
+  color: #637560;
   font-size: 10px;
   display: flex;
   justify-content: space-between;
@@ -729,7 +740,7 @@ footer {
 .info-box p {
   margin: 4px 0 0;
   line-height: 1.7;
-  color: #5c7756;
+  color: #5a7554;
 }
 .patients-toolbar {
   display: flex;
@@ -743,7 +754,7 @@ footer {
   align-items: center;
   gap: 10px;
   background: white;
-  border: 1px solid #dce5d5;
+  border: 1px solid var(--field-border);
   border-radius: 9px;
   padding: 0 13px;
   max-width: 370px;
@@ -751,8 +762,12 @@ footer {
   color: #809274;
 }
 .search-field:focus-within {
-  border-color: #8ab18d;
-  box-shadow: 0 0 0 3px #e1eedb;
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 1px var(--focus),
+    0 0 0 4px var(--focus-halo);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 .search-field .icon {
   width: 18px;
@@ -766,12 +781,29 @@ footer {
   box-shadow: none !important;
   background: transparent;
 }
+/* Botón nativo de borrar de los campos de búsqueda: mismo verde que la interfaz en lugar del azul del sistema. */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f7161' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E")
+    center / 10px 10px no-repeat;
+}
+input[type="search"]::-webkit-search-cancel-button:hover {
+  background-color: #eaf0e3;
+}
 .patients-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 17px;
 }
 .patient-card {
+  display: flex;
+  flex-direction: column;
   padding: 22px;
   background: #fff;
   border: 1px solid var(--border);
@@ -791,6 +823,9 @@ footer {
   align-items: center;
   gap: 13px;
 }
+.patient-card-header > div {
+  min-width: 0;
+}
 .patient-card-header .pet-avatar {
   width: 49px;
   height: 49px;
@@ -803,7 +838,7 @@ footer {
 }
 .species-tag {
   font-size: 10px;
-  color: #6c7e65;
+  color: #62735c;
   background: #f2f5ed;
   border-radius: 5px;
   padding: 3px 7px;
@@ -833,7 +868,7 @@ footer {
   justify-content: space-between;
   width: 100%;
   min-height: 44px;
-  margin-top: 4px;
+  margin-top: auto;
   padding: 12px 14px;
   border: 1px solid #e2eadf;
   border-radius: 10px;
@@ -843,14 +878,16 @@ footer {
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 150ms ease, border-color 150ms ease;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
 }
 .patient-history:hover {
   background: #eaf2e5;
   border-color: #bdcfb6;
 }
 .patient-history:focus-visible {
-  outline: 2px solid var(--green);
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 .patient-history .icon {
@@ -910,6 +947,7 @@ footer {
 }
 .history-patient-copy {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 .history-patient-copy h3 {
   font-size: 21px;
@@ -930,7 +968,7 @@ footer {
 .record-count {
   margin-left: auto;
   background: #f0f5e9;
-  color: #5b7952;
+  color: #587550;
   border: 1px solid #e0e8d6;
   padding: 6px 11px;
   border-radius: 18px;
@@ -1010,6 +1048,10 @@ footer {
 .timeline-clinician .icon {
   width: 13px;
   height: 13px;
+}
+.timeline-clinician > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .clinical-note {
   font-size: 13px;
@@ -1106,7 +1148,7 @@ footer {
   height: 19px;
 }
 .notification-title {
-  flex: 1;
+  flex: 1 1 180px;
   min-width: 0;
 }
 .notification-title h3 {
@@ -1147,7 +1189,7 @@ footer {
 }
 .delivery-note {
   margin-left: auto;
-  color: #687d5d;
+  color: #667b5b;
 }
 label {
   color: #3c5b3c;
@@ -1164,7 +1206,7 @@ label {
 }
 .optional {
   font-weight: 400;
-  color: #6c805f;
+  color: #5b6d4f;
   font-size: 10px;
   margin-left: 3px;
 }
@@ -1175,7 +1217,7 @@ textarea {
   width: 100%;
   padding: 12px 13px;
   background: #fff;
-  border: 1px solid #d8e3d1;
+  border: 1px solid var(--field-border);
   border-radius: 8px;
   color: #3f5d3d;
   font-size: 13px;
@@ -1187,18 +1229,21 @@ textarea {
 }
 input::placeholder,
 textarea::placeholder {
-  color: #7c8d73;
+  color: #66775e;
   opacity: 1;
 }
 input:hover,
 textarea:hover {
-  border-color: #b9cdb0;
+  border-color: var(--field-border-hover);
 }
 input:focus,
 textarea:focus {
-  outline: none;
-  border-color: #7fa772;
-  box-shadow: 0 0 0 3px #e8f1df;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 1px var(--focus),
+    0 0 0 4px var(--focus-halo);
 }
 input[type="datetime-local"],
 input[type="date"] {
@@ -1208,6 +1253,11 @@ input[type="date"] {
 input::-webkit-calendar-picker-indicator {
   opacity: 0.65;
   cursor: pointer;
+}
+input::-webkit-calendar-picker-indicator:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 textarea {
   resize: vertical;
@@ -1254,9 +1304,31 @@ textarea {
   height: 18px;
   margin-top: 2px;
 }
+/* Mensaje de error por campo (selector requerido sin elegir): compacto, bajo el control. */
+.form-error.field-error {
+  margin: 6px 0 0;
+  padding: 7px 10px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.form-error.field-error .icon {
+  margin-top: 1px;
+}
+.select-trigger[aria-invalid="true"] {
+  border-color: #a05a3a;
+  box-shadow: 0 0 0 1px #a05a3a;
+}
+.appointment-slots > .button {
+  grid-column: 1/-1;
+  justify-self: center;
+}
+[data-locked-by-save] {
+  cursor: progress;
+}
+/* Un solo anillo: el contorno cubre el borde del recuadro en lugar de sumarse a él. */
 .form-error:focus {
-  outline: 2px solid #d9b59b;
-  outline-offset: 2px;
+  outline: 2px solid #a05a3a;
+  outline-offset: -1px;
 }
 dialog {
   border: 1px solid #e0e7d9;
@@ -1316,7 +1388,7 @@ dialog::backdrop {
   width: 100%;
   min-height: 46px;
   padding: 12px 13px;
-  border: 1px solid #d8e3d1;
+  border: 1px solid var(--field-border);
   border-radius: 8px;
   color: #3f5d3d;
   background: #fff;
@@ -1325,12 +1397,14 @@ dialog::backdrop {
   line-height: 1.5;
 }
 .select-trigger:hover:not(:disabled) {
-  border-color: #a5bea0;
+  border-color: var(--field-border-hover);
   background: #fefffc;
 }
 .select-trigger[aria-expanded="true"] {
-  border-color: #7fa772;
-  box-shadow: 0 0 0 3px #e8f1df;
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 1px var(--focus),
+    0 0 0 4px var(--focus-halo);
 }
 .select-trigger .icon {
   width: 17px;
@@ -1389,6 +1463,9 @@ dialog::backdrop {
   width: 16px;
   height: 16px;
 }
+.select-search:focus-within {
+  box-shadow: inset 0 -2px 0 var(--focus);
+}
 .select-search-input {
   border: 0;
   background: transparent;
@@ -1445,7 +1522,7 @@ dialog::backdrop {
   display: block;
   font-size: 10px;
   line-height: 1.6;
-  color: #5e7851;
+  color: #5b744f;
   margin-top: 2px;
   overflow-wrap: anywhere;
 }
@@ -1676,6 +1753,10 @@ dialog::backdrop {
     height: 57px;
     padding: 0 20px;
     font-size: 11px;
+    gap: 12px;
+  }
+  .topbar-right > span:first-child {
+    text-align: right;
   }
   .topbar-right {
     gap: 11px;
@@ -2153,7 +2234,7 @@ dialog::backdrop {
   justify-content: center;
   gap: 2px;
   background: #fff;
-  border: 1px solid #d7e4ce;
+  border: 1px solid var(--field-border);
   color: #3c6536;
   border-radius: 8px;
   min-height: 43px;
@@ -2162,10 +2243,11 @@ dialog::backdrop {
   line-height: 1.5;
 }
 .slot-button:hover:not(:disabled) {
-  border-color: #79a36e;
+  border-color: var(--field-border-hover);
   background: #f2f8ec;
 }
-.slot-button[aria-checked="true"] {
+.slot-button[aria-checked="true"],
+.slot-button[aria-checked="true"]:hover:not(:disabled) {
   background: #205440;
   color: #fff;
   border-color: #205440;
@@ -2190,7 +2272,7 @@ dialog::backdrop {
   text-align: center;
   font-size: 11px;
   line-height: 1.8;
-  color: #667d5d;
+  color: #617758;
   background: #f6f9f1;
   border: 1px dashed #dae6cf;
   border-radius: 8px;
@@ -2235,5 +2317,29 @@ dialog::backdrop {
   }
   .slot-field legend {
     font-size: 11px;
+  }
+}
+@media (max-width: 380px) {
+  nav {
+    gap: 2px;
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+  .nav-item {
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+  .topbar {
+    padding: 0 14px;
+    gap: 10px;
+  }
+  /* El marcador de posición del selector se ajusta en dos líneas en lugar de truncarse con puntos suspensivos. */
+  .select-value {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
   }
 }

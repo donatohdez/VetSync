@@ -1,5 +1,6 @@
 import { icon } from "./icons.js";
 const controls = new Map<HTMLSelectElement, SelectControl>();
+const focusScheduled = new WeakSet<HTMLFormElement>();
 function node<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   className: string,
@@ -18,11 +19,13 @@ function normalize(value: string): string {
 }
 class SelectControl {
   private readonly wrapper = node("div", "select-control");
-  private readonly trigger = node("button", "select-trigger");
+  readonly trigger = node("button", "select-trigger");
   private readonly value = node("span", "select-value");
   private readonly popup = node("div", "select-popup");
   private readonly search = node("input", "select-search-input");
   private readonly list = node("div", "select-options");
+  private readonly error = node("p", "form-error field-error");
+  private readonly name: string;
   private active = 0;
   private matches: HTMLOptionElement[] = [];
   private opened = false;
@@ -32,7 +35,11 @@ class SelectControl {
       select.dataset.label ??
       label?.textContent?.trim() ??
       "Seleccionar opción";
+    this.name = name;
     this.trigger.id = `${select.id}-control`;
+    this.error.id = `${select.id}-error`;
+    this.error.setAttribute("role", "alert");
+    this.error.hidden = true;
     this.trigger.type = "button";
     this.trigger.setAttribute("role", "combobox");
     this.trigger.setAttribute("aria-label", name);
@@ -55,7 +62,7 @@ class SelectControl {
     this.popup.append(searchRow, this.list);
     this.trigger.append(this.value, icon("chevron"));
     select.before(this.wrapper);
-    this.wrapper.append(select, this.trigger, this.popup);
+    this.wrapper.append(select, this.trigger, this.popup, this.error);
     select.classList.add("native-select");
     select.tabIndex = -1;
     select.setAttribute("aria-hidden", "true");
@@ -103,7 +110,8 @@ class SelectControl {
     select.addEventListener("change", () => this.sync());
     select.addEventListener("invalid", (event) => {
       event.preventDefault();
-      this.trigger.focus();
+      this.showError();
+      this.focusFirstInvalid();
     });
     document.addEventListener("pointerdown", (event) => {
       if (event.target instanceof Node && !this.wrapper.contains(event.target))
@@ -114,7 +122,38 @@ class SelectControl {
     });
     this.sync();
   }
+  // Mensaje visible y asociado al control cuando falta una opción requerida.
+  private showError(): void {
+    this.error.textContent = `Selecciona una opción en «${this.name}».`;
+    this.error.hidden = false;
+    this.trigger.setAttribute("aria-invalid", "true");
+    this.trigger.setAttribute(
+      "aria-describedby",
+      `${this.value.id} ${this.error.id}`,
+    );
+  }
+  clearError(): void {
+    this.error.hidden = true;
+    this.error.textContent = "";
+    this.trigger.removeAttribute("aria-invalid");
+    this.trigger.setAttribute("aria-describedby", this.value.id);
+  }
+  // El navegador dispara un evento invalid por cada campo; el foco debe ir al
+  // primero del formulario en orden del documento, sea un select mejorado o no.
+  private focusFirstInvalid(): void {
+    const form = this.select.form;
+    if (!form || focusScheduled.has(form)) return;
+    focusScheduled.add(form);
+    setTimeout(() => {
+      focusScheduled.delete(form);
+      const first = form.querySelector<HTMLElement>(":invalid");
+      if (first instanceof HTMLSelectElement)
+        (controls.get(first)?.trigger ?? first).focus();
+      else first?.focus();
+    }, 0);
+  }
   sync(): void {
+    if (this.select.validity.valid) this.clearError();
     const selected = this.select.selectedOptions.item(0);
     this.value.textContent =
       selected?.textContent ?? "Sin opciones disponibles";
@@ -229,4 +268,7 @@ export function syncSelect(select: HTMLSelectElement): void {
 }
 export function closeSelects(): void {
   controls.forEach((control) => control.close());
+}
+export function clearSelectErrors(): void {
+  controls.forEach((control) => control.clearError());
 }

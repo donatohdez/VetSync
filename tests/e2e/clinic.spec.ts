@@ -1,4 +1,7 @@
 import { test, expect, type Page, type Locator } from "@playwright/test";
+// Las capturas automáticas se guardan en el outputDir de Playwright
+// (work/playwright-results) para no sobrescribir las capturas documentales
+// versionadas de docs/evidencias/capturas/.
 async function choose(
   page: Page,
   scope: Page | Locator,
@@ -14,13 +17,13 @@ async function choose(
 }
 test("recorre registros, agenda, disponibilidad, historial y correo simulado", async ({
   page,
-}) => {
+}, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await expect(page.locator("#stat-vets")).not.toHaveText("—");
   await page.screenshot({
-    path: "docs/evidencias/capturas/agenda-desktop.png",
+    path: testInfo.outputPath("agenda-desktop.png"),
     fullPage: true,
   });
   await page.getByRole("button", { name: "Pacientes", exact: true }).click();
@@ -133,12 +136,14 @@ test("recorre registros, agenda, disponibilidad, historial y correo simulado", a
   if (new Date(String(body.startsAt)).getTime() <= Date.now() + 86400000)
     await expect(page.locator("#notifications-list")).toContainText(petName);
   await page.screenshot({
-    path: "docs/evidencias/capturas/recordatorios-desktop.png",
+    path: testInfo.outputPath("recordatorios-desktop.png"),
     fullPage: true,
   });
   expect(errors).toEqual([]);
 });
-test("navegación móvil sin desbordamiento horizontal", async ({ page }) => {
+test("navegación móvil sin desbordamiento horizontal", async ({
+  page,
+}, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await expect(page.locator("#stat-pets")).not.toHaveText("—");
@@ -148,7 +153,7 @@ test("navegación móvil sin desbordamiento horizontal", async ({ page }) => {
     ),
   ).toBe(true);
   await page.screenshot({
-    path: "docs/evidencias/capturas/agenda-mobile.png",
+    path: testInfo.outputPath("agenda-mobile.png"),
     fullPage: true,
   });
   await page.getByRole("button", { name: "Pacientes", exact: true }).click();

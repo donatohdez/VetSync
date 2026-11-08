@@ -13,6 +13,10 @@ export default defineConfig({
     viewport: { width: 1440, height: 1000 },
     timezoneId: "America/Hermosillo",
     locale: "es-MX",
+    // PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH (opcional): ruta a un Chromium ya
+    // instalado, útil cuando la build que busca esta versión de Playwright no
+    // está en la caché local. Sin la variable se usa el navegador administrado
+    // por Playwright (npx playwright install chromium).
     launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
       ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH }
       : {},

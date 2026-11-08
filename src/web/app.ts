@@ -3,7 +3,14 @@ import {
   enhanceSelects,
   syncSelect,
   closeSelects,
+  clearSelectErrors,
 } from "./components/select.js";
+import {
+  genericMessage,
+  isNetworkFailure,
+  localizeServerMessage,
+  networkMessage,
+} from "./messages.js";
 interface Owner {
   id: string;
   name: string;
@@ -50,11 +57,51 @@ interface AppointmentSlot {
   available: boolean;
   reason: "past" | "occupied" | null;
 }
+interface BookingHours {
+  opensAt: string;
+  closesAt: string;
+  slotMinutes: number;
+}
 interface ClinicConfig {
   timeZone: string;
   reminderHours: number;
+  bookingHours?: BookingHours;
+}
+// Valores de respaldo solo para cuando /config no entrega bookingHours; el
+// contrato vigente del backend los devuelve y la interfaz los prefiere.
+const defaultBookingHours: BookingHours = {
+  opensAt: "10:00",
+  closesAt: "18:00",
+  slotMinutes: 30,
+};
+function bookingHours(): BookingHours {
+  const hours = state.config.bookingHours;
+  const valid =
+    hours !== undefined &&
+    /^([01]\d|2[0-3]):[0-5]\d$/.test(hours.opensAt) &&
+    /^([01]\d|2[0-3]):[0-5]\d$/.test(hours.closesAt) &&
+    Number.isInteger(hours.slotMinutes) &&
+    hours.slotMinutes > 0 &&
+    minutesOf(hours.closesAt) - minutesOf(hours.opensAt) >= hours.slotMinutes;
+  return valid ? hours : defaultBookingHours;
+}
+function minutesOf(value: string): number {
+  return Number(value.slice(0, 2)) * 60 + Number(value.slice(3, 5));
+}
+function clockOf(minutes: number): string {
+  return `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
+}
+function renderBookingHint(): void {
+  const hours = bookingHours();
+  q("#booking-hours-hint").textContent =
+    `Atención de ${hours.opensAt} a ${hours.closesAt} · Citas de ${hours.slotMinutes} minutos · Última cita a las ${clockOf(minutesOf(hours.closesAt) - hours.slotMinutes)}.`;
 }
 type View = "agenda" | "patients" | "history" | "notifications";
+const confirmed = {
+  owners: [] as Owner[],
+  pets: [] as Pet[],
+  appointments: [] as Appointment[],
+};
 const state = {
   owners: [] as Owner[],
   pets: [] as Pet[],
@@ -80,18 +127,43 @@ function element<K extends keyof HTMLElementTagNameMap>(
   node.textContent = text;
   return node;
 }
+class ApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
 async function api<T>(path: string, body?: unknown): Promise<T> {
-  const response = await fetch(`/api${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...(body === undefined
-      ? {}
-      : { method: "POST", body: JSON.stringify(body) }),
-  });
-  const result: unknown = await response.json();
+  let response: Response;
+  try {
+    response = await fetch(`/api${path}`, {
+      headers: { "Content-Type": "application/json" },
+      ...(body === undefined
+        ? {}
+        : { method: "POST", body: JSON.stringify(body) }),
+    });
+  } catch (error) {
+    if (isNetworkFailure(error)) throw new ApiError(networkMessage, 0);
+    throw error;
+  }
+  let result: unknown;
+  try {
+    result = await response.json();
+  } catch {
+    // Respuesta que no es JSON (p. ej. un proxy): no se muestran detalles.
+    if (!response.ok) throw new ApiError(genericMessage, response.status);
+    throw new ApiError(
+      "La respuesta del servidor no es válida.",
+      response.status,
+    );
+  }
   if (!response.ok) {
     const error = result as { error?: { message?: string } };
-    throw new Error(
-      error.error?.message ?? "No se pudo completar la solicitud.",
+    throw new ApiError(
+      localizeServerMessage(error.error?.message ?? genericMessage),
+      response.status,
     );
   }
   return result as T;
@@ -144,11 +216,17 @@ function emptyState(
   }
   return box;
 }
+function messageOf(error: unknown, fallback = networkMessage): string {
+  if (isNetworkFailure(error)) return networkMessage;
+  return error instanceof Error ? error.message : fallback;
+}
 function report(error: unknown): void {
-  notice(
-    error instanceof Error ? error.message : "No se pudo conectar con VetSync.",
-    true,
-  );
+  notice(messageOf(error), true);
+}
+function upsert<T extends { id: string }>(list: T[], item: T): void {
+  const index = list.findIndex((entry) => entry.id === item.id);
+  if (index === -1) list.push(item);
+  else list[index] = item;
 }
 function date(value: string, withTime = false): string {
   return new Intl.DateTimeFormat("es-MX", {
@@ -511,16 +589,36 @@ function renderReminders(): void {
     );
 }
 async function refresh(): Promise<void> {
-  const [owners, pets, vets, appointments, reminders, config] =
-    await Promise.all([
-      api<Owner[]>("/owners"),
-      api<Pet[]>("/pets"),
-      api<Veterinarian[]>("/veterinarians"),
-      api<Appointment[]>("/appointments"),
-      api<Reminder[]>("/notifications"),
-      api<ClinicConfig>("/config"),
-    ]);
-  Object.assign(state, { owners, pets, vets, appointments, reminders, config });
+  // allSettled: cada lectura exitosa actualiza su parte del estado aunque otra
+  // falle, y el primer fallo se informa al final. Las altas confirmadas en esta
+  // sesión se vuelven a insertar por id, de modo que nunca se duplican ni se
+  // pierden si el GET correspondiente falla o llega sin ellas.
+  const results = await Promise.allSettled([
+    api<Owner[]>("/owners"),
+    api<Pet[]>("/pets"),
+    api<Veterinarian[]>("/veterinarians"),
+    api<Appointment[]>("/appointments"),
+    api<Reminder[]>("/notifications"),
+    api<ClinicConfig>("/config"),
+  ]);
+  const [owners, pets, vets, appointments, reminders, config] = results;
+  if (owners.status === "fulfilled") state.owners = owners.value;
+  if (pets.status === "fulfilled") state.pets = pets.value;
+  if (vets.status === "fulfilled") state.vets = vets.value;
+  if (appointments.status === "fulfilled")
+    state.appointments = appointments.value;
+  if (reminders.status === "fulfilled") state.reminders = reminders.value;
+  if (config.status === "fulfilled") state.config = config.value;
+  for (const item of confirmed.owners) upsert(state.owners, item);
+  for (const item of confirmed.pets) upsert(state.pets, item);
+  for (const item of confirmed.appointments) upsert(state.appointments, item);
+  const failure = results.find((result) => result.status === "rejected");
+  renderState();
+  if (failure) throw failure.reason;
+  if (state.view === "history") await renderHistory();
+}
+function renderState(): void {
+  const { appointments, pets, vets, reminders, config } = state;
   const now = Date.now();
   q("#stat-appointments").textContent = String(
     appointments.filter(
@@ -544,7 +642,7 @@ async function refresh(): Promise<void> {
     month: "long",
     year: "numeric",
   }).format(new Date());
-  if (state.view === "history") await renderHistory();
+  renderBookingHint();
 }
 const titles: Record<View, [string, string, string]> = {
   agenda: [
@@ -625,6 +723,12 @@ function updateBookingButton(): void {
 }
 function renderSlots(): void {
   const group = q("#appointment-slots");
+  const chosen = q<HTMLInputElement>("#appointment-time").value;
+  // Roving tabindex: una sola parada de Tab, en el horario elegido o, si no
+  // hay uno, en el primero disponible.
+  const tabStop =
+    slots.find((slot) => slot.available && slot.time === chosen) ??
+    slots.find((slot) => slot.available);
   group.replaceChildren(
     ...slots.map((slot) => {
       const label = new Intl.DateTimeFormat("es-MX", {
@@ -643,6 +747,7 @@ function renderSlots(): void {
         String(slot.time === q<HTMLInputElement>("#appointment-time").value),
       );
       button.disabled = !slot.available;
+      button.tabIndex = slot === tabStop ? 0 : -1;
       button.append(element("span", "", label));
       if (slot.reason)
         button.append(
@@ -736,14 +841,18 @@ async function loadAvailability(): Promise<void> {
     renderSlots();
   } catch (error) {
     if (request !== availabilityRequest) return;
+    const retry = element("button", "button secondary", "Reintentar consulta");
+    retry.type = "button";
+    retry.addEventListener("click", () => {
+      void loadAvailability();
+    });
     group.replaceChildren(
       element(
         "p",
         "slots-empty",
-        error instanceof Error
-          ? error.message
-          : "No se pudieron consultar los horarios.",
+        `No se pudieron consultar los horarios. ${messageOf(error, "Inténtalo de nuevo.")}`,
       ),
+      retry,
     );
   } finally {
     if (request === availabilityRequest) {
@@ -779,6 +888,7 @@ function openForm(kind: FormKind, preset: Record<string, string> = {}): void {
   q("#dialog-description").textContent = copy[1] ?? "";
   q("#form-error").hidden = true;
   q("#form-flow-message").hidden = true;
+  clearSelectErrors();
   document.querySelectorAll<HTMLFormElement>("dialog form").forEach((form) => {
     form.hidden = form.id !== `${kind}-form`;
     if (!form.hidden) form.reset();
@@ -818,14 +928,14 @@ function openForm(kind: FormKind, preset: Record<string, string> = {}): void {
     field(form, "time").value = "";
     q("#booking-zone").textContent =
       `Todos los horarios corresponden a la clínica: ${state.config.timeZone}.`;
+    renderBookingHint();
   }
   if (kind === "record") {
     field(form, "recordedAt").value = localInput(new Date());
     field(form, "recordedAt").max = localInput(new Date());
   }
-  q<HTMLInputElement>('#pet-form [name="birthDate"]').max = new Date()
-    .toISOString()
-    .slice(0, 10);
+  // Misma referencia que el servidor: el día de calendario de la clínica.
+  q<HTMLInputElement>('#pet-form [name="birthDate"]').max = clinicDay();
   for (const [name, value] of Object.entries(preset)) {
     const input = form.elements.namedItem(name);
     if (
@@ -864,6 +974,9 @@ function openForm(kind: FormKind, preset: Record<string, string> = {}): void {
   if (kind === "appointment") void loadAvailability();
 }
 function pushForm(kind: FormKind): void {
+  // No se apila nada mientras hay un guardado en curso: openForm lo rechazaría
+  // y quedaría un «Volver» sin formulario padre.
+  if (saving) return;
   formStack.push({
     kind: activeKind,
     values: formValues(q<HTMLFormElement>(`#${activeKind}-form`)),
@@ -893,18 +1006,22 @@ for (const kind of ["appointment", "owner", "pet", "record"] as const) {
   });
   q<HTMLFormElement>(`#${kind}-form`).addEventListener("submit", (event) => {
     event.preventDefault();
+    if (saving) return;
     const form = event.currentTarget as HTMLFormElement,
       button = q<HTMLButtonElement>(`#${form.id} .submit-button`);
-    button.disabled = true;
+    // Los valores se leen antes de bloquear: FormData omite los controles
+    // deshabilitados.
+    const values = formValues(form);
     saving = true;
-    q<HTMLButtonElement>("#close-dialog").disabled = true;
+    setFormLocked(form, true);
     const originalLabel = button.textContent?.trim() ?? "Guardar";
     buttonContents(button, "Guardando…", "check", true);
     void (async () => {
+      let conflict = false;
       try {
-        const values = formValues(form);
         let path = "",
-          body: unknown;
+          body: unknown,
+          booked: Appointment | undefined;
         if (kind === "appointment") {
           path = "/appointments";
           const slot = selectedSlot();
@@ -915,6 +1032,14 @@ for (const kind of ["appointment", "owner", "pet", "record"] as const) {
             startsAt: slot.startsAt,
             endsAt: slot.endsAt,
             reason: values.reason,
+          };
+          booked = {
+            id: "",
+            petId: values.petId ?? "",
+            veterinarianId: values.veterinarianId ?? "",
+            startsAt: slot.startsAt,
+            endsAt: slot.endsAt,
+            reason: values.reason ?? "",
           };
         }
         if (kind === "owner") {
@@ -938,16 +1063,56 @@ for (const kind of ["appointment", "owner", "pet", "record"] as const) {
           };
         }
         const created = await api<{ id: string }>(path, body);
-        await refresh();
+        // El POST ya confirmó la escritura. Un fallo de lectura posterior no
+        // debe permitir repetirlo ni perder las altas del flujo de recepción.
+        // Se inserta por id (sin duplicar) y refresh() lo conserva aunque su
+        // GET falle o llegue sin el registro.
+        if (kind === "owner") {
+          const item: Owner = {
+            id: created.id,
+            name: values.name ?? "",
+            email: values.email ?? "",
+            phone: values.phone || null,
+          };
+          upsert(state.owners, item);
+          upsert(confirmed.owners, item);
+        }
+        if (kind === "pet") {
+          const item: Pet = {
+            id: created.id,
+            ownerId: values.ownerId ?? "",
+            name: values.name ?? "",
+            species: values.species ?? "",
+            breed: values.breed || null,
+            birthDate: values.birthDate || null,
+          };
+          upsert(state.pets, item);
+          upsert(confirmed.pets, item);
+        }
+        if (booked) {
+          const item: Appointment = { ...booked, id: created.id };
+          upsert(state.appointments, item);
+          upsert(confirmed.appointments, item);
+        }
+        let refreshFailed = false;
+        try {
+          await refresh();
+        } catch {
+          refreshFailed = true;
+          renderState();
+        }
+        const staleView =
+          " No se pudo actualizar la vista; recarga la página para consultar los datos recientes.";
         if ((kind === "owner" || kind === "pet") && formStack.length) {
           const parent = formStack.pop()!;
           parent.values[kind === "owner" ? "ownerId" : "petId"] = created.id;
           saving = false;
           openForm(parent.kind, parent.values);
           q("#form-flow-message").textContent =
-            kind === "owner"
+            (kind === "owner"
               ? "Dueño registrado. Continúa con los datos de la mascota."
-              : "Mascota registrada. Puedes continuar con la cita.";
+              : "Mascota registrada. Puedes continuar con la cita.") +
+            (refreshFailed ? staleView : "");
           q("#form-flow-message").hidden = false;
         } else {
           dialog.close();
@@ -959,7 +1124,21 @@ for (const kind of ["appointment", "owner", "pet", "record"] as const) {
           };
           notice(messages[kind]);
         }
+        if (refreshFailed) {
+          const saved = {
+            appointment: "Cita guardada correctamente.",
+            owner: "Dueño guardado correctamente.",
+            pet: "Mascota guardada correctamente.",
+            record: "Nota clínica guardada correctamente.",
+          };
+          notice(`${saved[kind]}${staleView}`, true);
+        }
       } catch (error) {
+        conflict =
+          kind === "appointment" &&
+          error instanceof ApiError &&
+          error.status === 409;
+        const message = messageOf(error, "No se pudo guardar.");
         if (dialog.open) {
           const errorBox = q("#form-error");
           errorBox.replaceChildren(
@@ -967,21 +1146,52 @@ for (const kind of ["appointment", "owner", "pet", "record"] as const) {
             element(
               "span",
               "",
-              error instanceof Error ? error.message : "No se pudo guardar.",
+              conflict
+                ? `${message} Elige otro horario disponible; tus datos se conservaron.`
+                : message,
             ),
           );
           errorBox.hidden = false;
           errorBox.focus();
-        } else report(error);
+        } else notice(message, true);
       } finally {
-        button.disabled = false;
         saving = false;
-        q<HTMLButtonElement>("#close-dialog").disabled = false;
+        setFormLocked(form, false);
+        button.disabled = false;
         buttonContents(button, originalLabel, "check");
         if (activeKind === "appointment") updateBookingButton();
       }
+      // Tras un 409 la disponibilidad mostrada quedó obsoleta: se vuelve a
+      // consultar (Guardar queda deshabilitado hasta que responda con éxito).
+      if (conflict && activeKind === "appointment") await loadAvailability();
     })();
   });
+}
+function setFormLocked(form: HTMLFormElement, locked: boolean): void {
+  form
+    .querySelectorAll<
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement
+      | HTMLButtonElement
+    >("input,textarea,select,button")
+    .forEach((control) => {
+      if (locked) {
+        if (control.disabled) return;
+        control.disabled = true;
+        control.dataset.lockedBySave = "true";
+      } else if (control.dataset.lockedBySave) {
+        control.disabled = false;
+        delete control.dataset.lockedBySave;
+      }
+    });
+  q<HTMLButtonElement>("#close-dialog").disabled = locked;
+  q<HTMLButtonElement>("#return-form").disabled = locked;
+  dialog.setAttribute("aria-busy", String(locked));
+  if (!locked)
+    document
+      .querySelectorAll<HTMLSelectElement>("dialog select")
+      .forEach(syncSelect);
 }
 q("#close-dialog").addEventListener("click", () => {
   if (!saving) dialog.close();

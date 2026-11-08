@@ -304,3 +304,44 @@ test("móvil: navegación completa, agenda legible y selector sin desbordamiento
   );
   await expect(popup).toBeVisible();
 });
+
+test("un alta confirmada no se repite si falla la actualización posterior", async ({
+  page,
+}) => {
+  await fixture(page);
+  let saved = false,
+    posts = 0;
+  await page.route("**/api/owners", async (route) => {
+    if (route.request().method() === "POST") {
+      posts++;
+      saved = true;
+      await route.fulfill({
+        status: 201,
+        json: {
+          id: "new-owner",
+          name: "Nuevo dueño",
+          email: "nuevo@example.test",
+          phone: null,
+        },
+      });
+    } else if (saved)
+      await route.fulfill({
+        status: 500,
+        json: { error: { message: "Actualización fallida" } },
+      });
+    else await route.fallback();
+  });
+  await page.getByRole("button", { name: "Pacientes", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Registrar dueño", exact: true })
+    .click();
+  await page.getByLabel("Nombre completo").fill("Nuevo dueño");
+  await page.getByLabel("Correo electrónico").fill("nuevo@example.test");
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Registrar dueño", exact: true })
+    .click();
+  await expect(page.getByRole("dialog")).not.toBeVisible();
+  await expect(page.locator("#notice")).toContainText("guardado");
+  expect(posts).toBe(1);
+});

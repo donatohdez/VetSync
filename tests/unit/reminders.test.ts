@@ -74,3 +74,12 @@ it("permite configurar la ventana", async () => {
     await new SendReminders(repo, { now: () => now }, 2).execute(),
   ).toEqual({ sent: 0 });
 });
+
+it.each([['America/Hermosillo','10:00'],['UTC','17:00']])('expresa el aviso en la zona configurada %s',async(timeZone,expectedTime)=>{
+ repo.candidates=[{appointmentId:'zone',recipient:'dueno@example.test',petName:'Luna',startsAt:new Date('2026-11-09T17:00:00Z')}];
+ const clock={now:()=>new Date('2026-11-09T15:00:00Z')};
+ await new SendReminders(repo,clock,24,timeZone).execute();
+ expect(repo.reminders[0]?.message).toContain(expectedTime);
+ expect(repo.reminders[0]?.message).toContain(`(${timeZone})`);
+ expect(repo.reminders[0]?.message).not.toContain('17:00:00.000Z');
+});

@@ -1,0 +1,201 @@
+
+> vetsync@1.0.0 test:integration
+> vitest run tests/integration --reporter=verbose
+
+
+ RUN  v5.1.0 /Users/donato/Documents/Codex/2026-11-08/te-x20
+
+ × tests/integration/api.test.ts > crea dueños y mascotas, valida asociaciones y consulta listas 25ms
+   → expected 201 "Created", got 501 "Not Implemented"
+ × tests/integration/api.test.ts > rechaza entradas malformadas sin persistir 7ms
+   → expected 400 "Bad Request", got 501 "Not Implemented"
+ × tests/integration/api.test.ts > agrega historial y lo aísla por mascota, con orden cronológico 6ms
+   → expected 201 "Created", got 501 "Not Implemented"
+ × tests/integration/api.test.ts > reserva, rechaza conflicto y permite otro veterinario/citas contiguas 7ms
+   → expected 201 "Created", got 501 "Not Implemented"
+ × tests/integration/api.test.ts > rechaza mascota/veterinario inexistentes o inactivo sin crear citas 6ms
+   → expected 404 "Not Found", got 501 "Not Implemented"
+ × tests/integration/api.test.ts > dos solicitudes concurrentes incompatibles: una confirma y otra recibe 409 7ms
+   → expected [ 501, 501 ] to deeply equal [ 201, 409 ]
+ × tests/integration/api.test.ts > simula recordatorios próximos y no duplica con dos ejecuciones concurrentes 5ms
+   → expected 201 "Created", got 501 "Not Implemented"
+ × tests/integration/api.test.ts > usa parámetros SQL incluso si el texto contiene instrucciones SQL 5ms
+   → expected 201 "Created", got 501 "Not Implemented"
+ × tests/integration/api.test.ts > configuración, salud, 404 y JSON malformado tienen respuestas controladas 5ms
+   → expected 200 "OK", got 501 "Not Implemented"
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/api.test.ts > crea dueños y mascotas, valida asociaciones y consulta listas
+Error: expected 201 "Created", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:24:123
+     22| afterAll(async()=>{await pool.end();});
+     23| it('crea dueños y mascotas, valida asociaciones y consulta listas',asy…
+     24|  const owner=await request(app).post('/api/owners').send({name:'Ana De…
+       |                                                                                                                           ^
+     25|  const pet=await request(app).post('/api/pets').send({ownerId:owner.bo…
+     26|  expect(pet.body.ownerId).toBe(owner.body.id);
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/integration/api.test.ts > rechaza entradas malformadas sin persistir
+Error: expected 400 "Bad Request", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:33:69
+     31| });
+     32| it('rechaza entradas malformadas sin persistir',async()=>{
+     33|  await request(app).post('/api/owners').send({name:'',email:'mal'}).ex…
+       |                                                                     ^
+     34|  await request(app).post('/api/pets').send({ownerId,name:'Luna',specie…
+     35|  await request(app).post('/api/pets').send({ownerId,name:'Luna',specie…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/integration/api.test.ts > agrega historial y lo aísla por mascota, con orden cronológico
+Error: expected 201 "Created", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:40:186
+     38| });
+     39| it('agrega historial y lo aísla por mascota, con orden cronológico',as…
+     40|  const newer=await request(app).post(`/api/pets/${petId}/medical-recor…
+       |                                                                                                                                                                                          ^
+     41|  await request(app).post(`/api/pets/${petId}/medical-records`).send({v…
+     42|  const result=await request(app).get(`/api/pets/${petId}/medical-recor…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/integration/api.test.ts > reserva, rechaza conflicto y permite otro veterinario/citas contiguas
+Error: expected 201 "Created", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:51:65
+     49| });
+     50| it('reserva, rechaza conflicto y permite otro veterinario/citas contig…
+     51|  await request(app).post('/api/appointments').send(appointment).expect…
+       |                                                                 ^
+     52|  const conflict=await request(app).post('/api/appointments').send({...…
+     53|  expect(conflict.body.error.code).toBe('APPOINTMENT_CONFLICT');
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/integration/api.test.ts > rechaza mascota/veterinario inexistentes o inactivo sin crear citas
+Error: expected 404 "Not Found", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:59:86
+     57| });
+     58| it('rechaza mascota/veterinario inexistentes o inactivo sin crear cita…
+     59|  await request(app).post('/api/appointments').send({...appointment,pet…
+       |                                                                                      ^
+     60|  await request(app).post('/api/appointments').send({...appointment,vet…
+     61|  await pool.execute('UPDATE veterinarians SET active=FALSE WHERE id=?'…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  tests/integration/api.test.ts > dos solicitudes concurrentes incompatibles: una confirma y otra recibe 409
+AssertionError: expected [ 501, 501 ] to deeply equal [ 201, 409 ]
+
+- Expected
++ Received
+
+  [
+-   201,
+-   409,
++   501,
++   501,
+  ]
+
+ ❯ tests/integration/api.test.ts:67:44
+     65| it('dos solicitudes concurrentes incompatibles: una confirma y otra re…
+     66|  const responses=await Promise.all([request(app).post('/api/appointmen…
+     67|  expect(responses.map(r=>r.status).sort()).toEqual([201,409]);
+       |                                            ^
+     68|  expect(await rows(pool,'SELECT * FROM appointments')).toHaveLength(1);
+     69| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  tests/integration/api.test.ts > simula recordatorios próximos y no duplica con dos ejecuciones concurrentes
+Error: expected 201 "Created", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:71:73
+     69| });
+     70| it('simula recordatorios próximos y no duplica con dos ejecuciones con…
+     71|  const a=await request(app).post('/api/appointments').send(appointment…
+       |                                                                         ^
+     72|  const responses=await Promise.all([request(app).post('/api/notificati…
+     73|  expect(responses.map(r=>r.status)).toEqual([200,200]);
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  tests/integration/api.test.ts > usa parámetros SQL incluso si el texto contiene instrucciones SQL
+Error: expected 201 "Created", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:81:79
+     79| it('usa parámetros SQL incluso si el texto contiene instrucciones SQL'…
+     80|  const name="Demo'); DROP TABLE pets; --";
+     81|  await request(app).post('/api/owners').send({name,email:'sql@example.…
+       |                                                                               ^
+     82|  expect((await request(app).get('/api/owners').expect(200)).body.some(…
+     83|  expect(await rows(pool,'SELECT * FROM pets')).toHaveLength(1);
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  tests/integration/api.test.ts > configuración, salud, 404 y JSON malformado tienen respuestas controladas
+Error: expected 200 "OK", got 501 "Not Implemented"
+ ❯ tests/integration/api.test.ts:86:48
+     84| });
+     85| it('configuración, salud, 404 y JSON malformado tienen respuestas cont…
+     86|  expect((await request(app).get('/api/config').expect(200)).body.timeZ…
+       |                                                ^
+     87|  await request(app).get('/api/health').expect(200);
+     88|  const missing=await request(app).get('/api/unknown').expect(404); exp…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed (9)
+   Start at  09:27:05
+   Duration  270ms (import 48%, tests 41%, transform 10%, worker 1%)
+

@@ -31,7 +31,7 @@ Una aplicación local con agenda sin choques y recordatorios por correo simulado
 
 VetSync organiza el trabajo de una clínica veterinaria: vincula mascotas con sus dueños, registra su historial médico y permite agendar citas sin superponer horarios de un mismo veterinario. Los recordatorios próximos se conservan como correos simulados en MySQL, sin realizar envíos reales.
 
-El proyecto corresponde a la **primera asignación de la unidad 3** de **Optativa I: Fundamentos de la Inteligencia Artificial en la Ingeniería de Software**. Además del sistema funcional, documenta el uso de IA, los ciclos de pruebas y la revisión crítica del código generado.
+El proyecto corresponde a la **primera asignación de la unidad 3** de **Optativa I: Fundamentos de la Inteligencia Artificial en la Ingeniería de de Software**. Además del sistema funcional, documenta el uso de IA, los ciclos de pruebas y la revisión crítica del código generado.
 
 **Estado actual:** código publicado, revisión independiente de Claude atendida y CI comprobado en GitHub. La aplicación se ejecuta localmente; el repositorio incluye las instrucciones y los documentos para su revisión académica.
 

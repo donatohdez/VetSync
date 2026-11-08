@@ -1,5 +1,7 @@
 # Entrega de VetSync
 
+**Materia:** Optativa I: Fundamentos de la Inteligencia Artificial en la Ingeniería de de Software.
+
 Caso de uso: Sistema de Gestión de Citas y Telemedicina Veterinaria. Primera asignación de la unidad 3.
 
 ## Código fuente

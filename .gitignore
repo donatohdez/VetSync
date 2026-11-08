@@ -17,3 +17,5 @@ work/
 .mysql-data/
 
 # Las evidencias seleccionadas en docs/evidencias/ sí se conservan.
+playwright-report/
+test-results/

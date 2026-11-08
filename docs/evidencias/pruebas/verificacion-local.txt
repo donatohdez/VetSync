@@ -1,0 +1,53 @@
+
+> vetsync@1.0.0 check
+> npm run typecheck && npm run lint && npm run build && npm run test:coverage
+
+
+> vetsync@1.0.0 typecheck
+> tsc --noEmit
+
+
+> vetsync@1.0.0 lint
+> eslint src tests scripts
+
+
+> vetsync@1.0.0 build
+> tsc -p tsconfig.build.json && esbuild src/web/app.ts --bundle --format=esm --outfile=dist/web/app.js && node scripts/copy-web.mjs
+
+
+  dist/web/app.js  14.6kb
+
+⚡ Done in 1ms
+
+> vetsync@1.0.0 test:coverage
+> vitest run --coverage
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+      Coverage enabled with v8
+
+
+ Test Files  3 passed (3)
+      Tests  36 passed (36)
+   Start at  09:45:48
+   Duration  574ms (tests 49%, import 35%, transform 11%, worker 5%)
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   98.36 |    96.82 |   98.43 |   98.87 |                   
+ http              |     100 |       95 |     100 |     100 |                   
+  app.ts           |     100 |       95 |     100 |     100 | 135               
+ ...infrastructure |   88.88 |       50 |     100 |    87.5 |                   
+  ...-reminders.ts |   88.88 |       50 |     100 |    87.5 | 29                
+ shared            |    93.1 |      100 |      90 |   96.29 |                   
+  clock.ts         |       0 |      100 |       0 |       0 | 4                 
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 98.36% ( 180/183 )
+Branches     : 96.82% ( 61/63 )
+Functions    : 98.43% ( 63/64 )
+Lines        : 98.87% ( 175/177 )
+================================================================================

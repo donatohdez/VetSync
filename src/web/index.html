@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#153d35" />
+    <title>VetSync · Clínica veterinaria</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="VetSync, inicio"
+        ><span class="brand-mark">✚</span>VetSync<span class="brand-dot"
+          >.</span
+        ></a
+      >
+      <div class="clinic">
+        <span class="clinic-icon">V</span>
+        <div>
+          <strong>Clínica VetSync</strong><small>Espacio de demostración</small>
+        </div>
+      </div>
+      <p class="nav-label">TU CLÍNICA</p>
+      <nav aria-label="Principal">
+        <button class="nav-item active" data-view="agenda" aria-label="Agenda">
+          <span>▦</span>Agenda</button
+        ><button class="nav-item" data-view="patients" aria-label="Pacientes">
+          <span>♧</span>Pacientes</button
+        ><button
+          class="nav-item"
+          data-view="history"
+          aria-label="Historial médico"
+        >
+          <span>☷</span>Historial médico</button
+        ><button
+          class="nav-item"
+          data-view="notifications"
+          aria-label="Recordatorios"
+        >
+          <span>◉</span>Recordatorios
+        </button>
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="status-dot"></span> Entorno local · Datos ficticios
+        <p>Un poco más de cuidado.<br />Un día mejor organizado.</p>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <span class="breadcrumb">Clínica / </span
+          ><span id="breadcrumb-current">Agenda</span>
+        </div>
+        <div class="topbar-right">
+          <span id="today-label"></span><span class="avatar">VS</span>
+        </div>
+      </header>
+      <main>
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">CUIDAR EMPIEZA POR ORGANIZAR</p>
+            <h1 id="page-title">Cada cita, un mejor cuidado.</h1>
+            <p id="page-subtitle">
+              Tu agenda y tus pacientes, en un mismo lugar.
+            </p>
+          </div>
+          <button class="button primary" id="new-appointment">
+            ＋ Agendar cita
+          </button>
+        </section>
+        <div id="notice" role="status" aria-live="polite" hidden></div>
+        <section class="stats" aria-label="Resumen de la clínica">
+          <article class="stat-card">
+            <span>Próximas 24 horas</span
+            ><strong id="stat-appointments">—</strong
+            ><small>Citas por atender <span class="stat-icon">↗</span></small>
+          </article>
+          <article class="stat-card">
+            <span>Pacientes registrados</span><strong id="stat-pets">—</strong
+            ><small
+              >Pequeñas grandes historias
+              <span class="stat-icon">♧</span></small
+            >
+          </article>
+          <article class="stat-card">
+            <span>Equipo veterinario</span><strong id="stat-vets">—</strong
+            ><small
+              >Profesionales activos <span class="stat-icon">✚</span></small
+            >
+          </article>
+          <article class="stat-card accent">
+            <span>Recordatorios simulados</span
+            ><strong id="stat-reminders">—</strong
+            ><small
+              >Cuidamos cada seguimiento <span class="stat-icon">◉</span></small
+            >
+          </article>
+        </section>
+        <section id="view-agenda" class="view">
+          <div class="section-heading">
+            <div>
+              <h2>Agenda de citas</h2>
+              <p>Un espacio para cada paciente.</p>
+            </div>
+            <div class="segmented" aria-label="Filtrar citas">
+              <button class="selected" id="filter-upcoming">Próximas</button
+              ><button id="filter-all">Todas</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-toolbar">
+              <div>
+                <span class="status-dot"></span
+                ><strong id="appointment-count">Cargando agenda…</strong>
+              </div>
+              <span class="subtle" id="zone-label"></span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>PACIENTE</th>
+                    <th>FECHA Y HORA</th>
+                    <th>VETERINARIO</th>
+                    <th>MOTIVO</th>
+                    <th>ESTADO</th>
+                  </tr>
+                </thead>
+                <tbody id="appointments-body"></tbody>
+              </table>
+            </div>
+            <div id="agenda-empty" class="empty" hidden>
+              No hay citas en esta vista. Agenda la primera para comenzar.
+            </div>
+          </div>
+          <div class="care-note">
+            <div class="care-symbol">✦</div>
+            <div>
+              <strong>El cuidado también está en los detalles.</strong>
+              <p>
+                Las citas se validan para evitar cruces. Los recordatorios se
+                guardan como correos simulados.
+              </p>
+            </div>
+            <span>Hecho para cuidar ↗</span>
+          </div>
+        </section>
+        <section id="view-patients" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Nuestros pacientes</h2>
+              <p>Conoce a quienes nos alegran el día.</p>
+            </div>
+            <div class="actions">
+              <button class="button secondary" id="new-owner">
+                ＋ Registrar dueño</button
+              ><button class="button primary" id="new-pet">
+                ＋ Registrar mascota
+              </button>
+            </div>
+          </div>
+          <div id="patients-grid" class="patients-grid"></div>
+        </section>
+        <section id="view-history" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Historial médico</h2>
+              <p>La historia de su salud, visita a visita.</p>
+            </div>
+            <button class="button primary" id="new-record">
+              ＋ Agregar nota
+            </button>
+          </div>
+          <div class="panel history-panel">
+            <label for="history-pet">Selecciona un paciente</label
+            ><select id="history-pet"></select>
+            <div id="history-list" class="timeline"></div>
+          </div>
+        </section>
+        <section id="view-notifications" class="view" hidden>
+          <div class="section-heading">
+            <div>
+              <h2>Recordatorios</h2>
+              <p>
+                Correos simulados para citas de las próximas
+                <span id="reminder-window">24</span> horas.
+              </p>
+            </div>
+            <button class="button primary" id="run-reminders">
+              ↗ Simular recordatorios
+            </button>
+          </div>
+          <div class="info-box">
+            Esta demostración registra los mensajes en MySQL. No envía correos
+            reales. Cada cita recibe un único recordatorio.
+          </div>
+          <div id="notifications-list" class="notification-list"></div>
+        </section>
+        <footer>
+          VetSync <span>·</span> Gestión veterinaria con atención a los detalles
+          <span class="footer-right">Proyecto académico · Unidad 3</span>
+        </footer>
+      </main>
+    </div>
+    <dialog id="form-dialog">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">VETSYNC · CUIDADO CONECTADO</p>
+          <h2 id="dialog-title"></h2>
+        </div>
+        <button
+          type="button"
+          class="close-button"
+          id="close-dialog"
+          aria-label="Cerrar"
+        >
+          ×
+        </button>
+      </div>
+      <p class="dialog-description" id="dialog-description"></p>
+      <div id="form-error" role="alert" hidden></div>
+      <form id="appointment-form" hidden>
+        <label>Mascota<select name="petId" required></select></label
+        ><label
+          >Veterinario<select name="veterinarianId" required></select
+        ></label>
+        <div class="form-row">
+          <label
+            >Inicio<input
+              name="startsAt"
+              type="datetime-local"
+              required /></label
+          ><label
+            >Fin<input name="endsAt" type="datetime-local" required
+          /></label>
+        </div>
+        <small class="time-hint"></small
+        ><label
+          >Motivo<textarea
+            name="reason"
+            maxlength="500"
+            required
+            placeholder="¿En qué podemos ayudarle?"
+          ></textarea></label
+        ><button class="button primary submit-button">Guardar cita</button>
+      </form>
+      <form id="owner-form" hidden>
+        <label
+          >Nombre completo<input
+            name="name"
+            maxlength="120"
+            required
+            autocomplete="name" /></label
+        ><label
+          >Correo electrónico<input
+            name="email"
+            type="email"
+            maxlength="254"
+            required
+            autocomplete="email" /></label
+        ><label
+          >Teléfono <span class="subtle">(opcional)</span
+          ><input name="phone" maxlength="30" autocomplete="tel" /></label
+        ><button class="button primary submit-button">Registrar dueño</button>
+      </form>
+      <form id="pet-form" hidden>
+        <label>Dueño<select name="ownerId" required></select></label>
+        <div class="form-row">
+          <label>Nombre<input name="name" maxlength="120" required /></label
+          ><label
+            >Especie<select name="species" required>
+              <option>Perro</option>
+              <option>Gato</option>
+              <option>Ave</option>
+              <option>Conejo</option>
+              <option>Otro</option>
+            </select></label
+          >
+        </div>
+        <label
+          >Raza <span class="subtle">(opcional)</span
+          ><input name="breed" maxlength="100" /></label
+        ><label
+          >Fecha de nacimiento <span class="subtle">(opcional)</span
+          ><input name="birthDate" type="date" /></label
+        ><button class="button primary submit-button">Registrar mascota</button>
+      </form>
+      <form id="record-form" hidden>
+        <label>Mascota<select name="petId" required></select></label
+        ><label
+          >Veterinario<select name="veterinarianId" required></select></label
+        ><label
+          >Fecha y hora de la atención<input
+            name="recordedAt"
+            type="datetime-local"
+            required /></label
+        ><small class="time-hint"></small
+        ><label
+          >Nota clínica<textarea
+            name="clinicalNote"
+            maxlength="5000"
+            rows="5"
+            required
+            placeholder="Observaciones, atención y seguimiento…"
+          ></textarea></label
+        ><button class="button primary submit-button">
+          Guardar nota clínica
+        </button>
+      </form>
+    </dialog>
+  </body>
+</html>

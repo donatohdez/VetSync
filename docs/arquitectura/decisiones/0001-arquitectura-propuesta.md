@@ -1,6 +1,6 @@
 # ADR 0001: monolito modular
 
-Estado: propuesto, pendiente de revisión del plan.
+Estado: aceptado tras la aprobación del plan y la autorización de inicio.
 
 ## Contexto
 

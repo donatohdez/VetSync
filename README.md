@@ -1,31 +1,87 @@
 # VetSync
 
-Sistema de gestión de citas veterinarias. Primera asignación de la unidad 3.
+Sistema local de gestión de citas veterinarias, construido para la primera asignación de la unidad 3 de Fundamentos de IA en Ingeniería de Software.
 
-**Estado: análisis y planificación. No hay aplicación implementada todavía.**
+**Estado:** primera versión funcional local; revisión independiente con Claude, revisión del estudiante y publicación remota pendientes.
 
-## Por dónde empezar
+Incluye dueños, mascotas, historial médico, veterinarios de demostración, agenda protegida contra reservas simultáneas y correos simulados. Arquitectura de monolito modular con TypeScript, Express y MySQL. La interfaz está en español y se adapta a escritorio y móvil.
 
-1. Revisar el [plan de trabajo](outputs/PLAN-DE-TRABAJO.md).
-2. Consultar los [requisitos y sus fuentes](docs/requisitos/MATRIZ.md).
-3. Seguir las [reglas del proyecto](AGENTS.md) durante la implementación.
-4. Registrar las interacciones reales con IA en la [bitácora](docs/ia/BITACORA.md).
+## Iniciar desde una instalación limpia
 
-## Organización
+Requisitos: Node.js 24 o superior, npm y Docker Desktop en ejecución. Los comandos se ejecutan desde la raíz del proyecto:
 
-- `docs/referencias/`: presentación y captura originales; no modificarlas.
-- `docs/requisitos/`: requisitos, supuestos y criterios de aceptación.
-- `docs/arquitectura/`: modelo, límites de módulos y decisiones justificadas.
-- `docs/api/`: contrato de la API, ejemplos y colección de solicitudes.
-- `docs/calidad/`: plan de pruebas y seguimiento de calidad.
-- `docs/ia/`: prompts exactos, respuestas y crítica basada en cambios reales.
-- `docs/evidencias/`: resultados TDD, pruebas, revisión y capturas.
-- `src/`: código de la aplicación, aún pendiente.
-- `tests/`: pruebas unitarias, integración y recorrido de demostración.
-- `database/`: migraciones y datos ficticios de demostración.
-- `scripts/`: tareas reproducibles de desarrollo y verificación.
-- `.github/workflows/`: automatización de pruebas y linter, pendiente.
-- `outputs/`: plan para revisión y documentos finales de entrega.
-- `work/`: extracción, renderizados y otros archivos temporales; no se entrega.
+```bash
+cd '/Users/donato/Ago-Dic 2026/Fun de IA/VetSync'
+npm ci
+cp .env.example .env
+docker compose up -d --wait
+npm run db:migrate
+npm run db:seed
+npm run build
+npm start
+```
 
-Los directorios reservados están vacíos a propósito. La estructura específica de módulos se creará al implementar. Los comandos de instalación y ejecución se documentarán cuando existan y se hayan probado.
+Abrir **http://127.0.0.1:3010**. Si `.env` ya existe, conservarlo en vez de copiar de nuevo el ejemplo. `Ctrl+C` detiene el servidor; `docker compose stop` detiene MySQL sin eliminar los datos.
+
+El nombre de Compose se mantiene fijo (`te-x20`) para conservar el contenedor y volumen creados antes de mover la carpeta a VetSync. No depende del nombre actual del directorio. La base se publica únicamente en localhost:33316 y el servidor escucha en localhost:3010.
+
+`npm run db:seed` inserta datos ficticios sin borrar los existentes: tres dueños, cuatro mascotas, tres veterinarios y cuatro citas. Las citas son relativas al momento de su primera carga; repetir el seed no mueve sus fechas ni sobrescribe registros. Si transcurre tiempo, se pueden consultar con el filtro “Todas” y crear nuevas citas.
+
+## Demostración sugerida
+
+1. En **Pacientes**, registrar un dueño y después su mascota.
+2. Agendar una cita futura; el formulario propone 30 minutos de duración.
+3. Intentar reservar de nuevo el mismo veterinario y horario: debe aparecer el conflicto sin crear otra cita.
+4. En **Historial médico**, elegir la mascota y agregar una nota con fecha actual o pasada.
+5. En **Recordatorios**, simular avisos para citas de las próximas 24 horas. Ejecutar otra vez: no debe duplicar mensajes.
+
+Los formularios convierten la hora del dispositivo a UTC. La agenda se muestra en la zona configurada de la clínica, `America/Hermosillo` por defecto; la interfaz explica esta diferencia. No hay envío de correo real.
+
+## Desarrollo y verificación
+
+```bash
+npm run db:prepare-test
+npm run test
+npm run test:integration
+npm run check
+```
+
+`db:prepare-test` crea/migra **vetsync_test** en el contenedor local. Las pruebas de integración limpian únicamente esa base antes de cada caso; no usan la base de demostración `vetsync`. `npm test` ejecuta solo unitarias. `npm run check` verifica tipos, linter, compilación y cobertura de unitarias más integración, con mínimo de 80% en líneas, ramas, funciones y sentencias.
+
+Pruebas del navegador:
+
+```bash
+npx playwright install chromium
+DB_NAME=vetsync_test npm run db:seed
+npm run test:e2e
+```
+
+Playwright arranca su propio servidor en el puerto 3011 contra `vetsync_test`. Usa esa base también para el seed, como indica el comando. No ejecutar las pruebas de integración simultáneamente con las de navegador: comparten la base de pruebas.
+
+En este equipo se aprovechó un Chromium ya instalado mediante la variable opcional `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`. En una instalación nueva basta el comando de instalación anterior. El workflow de CI instala el navegador.
+
+Para desarrollar el backend: `npm run dev`. Después de cambiar la interfaz TypeScript, ejecutar `npm run build` para regenerar los recursos; el modo dev actual no recompila automáticamente el frontend.
+
+## Organización y documentación
+
+- `src/modules/`: owners, pets, veterinarians, medical-records, appointments y notifications.
+- `src/shared/`: reloj, validación, errores, conexión y transacciones.
+- `src/http/` y `src/composition.ts`: transporte HTTP y ensamblado de dependencias.
+- `src/web/`: interfaz; la compilación copia recursos a `dist/web/`.
+- `tests/`: unitarias, integración MySQL y navegador.
+- `database/`: migraciones; los datos de demostración están en `scripts/seed.ts`.
+- [Requisitos y fuentes](docs/requisitos/MATRIZ.md).
+- [Arquitectura y modelo](docs/arquitectura/ARQUITECTURA.md).
+- [API](docs/api/API.md) y [contrato OpenAPI](docs/api/openapi.json).
+- [Registro TDD](docs/calidad/REGISTRO-TDD.md) y evidencias en `docs/evidencias/`.
+- [Bitácora en construcción](docs/ia/BITACORA.md).
+- [Plan original](outputs/PLAN-DE-TRABAJO.md), documento previo al desarrollo.
+- [Revisión preparada para Claude](outputs/REVISION-CON-CLAUDE.md).
+
+## Configuración y límites
+
+`.env.example` contiene configuración y credenciales ficticias exclusivas de desarrollo local; `.env` está excluido de Git. Se usan consultas parametrizadas, claves foráneas, validación de entradas y salidas de error controladas. Las notas se muestran como texto para evitar interpretación HTML.
+
+Las notificaciones se ejecutan manualmente desde la UI o la API. Esta versión no incluye autenticación, videollamadas, cancelación, reprogramación, paginación ni despliegue público. Es una demostración académica local con datos ficticios.
+
+El workflow `.github/workflows/ci.yml` está preparado para cada push y PR. **Su ejecución en GitHub aún no se ha comprobado:** no hay remoto configurado. La bitácora final de cinco prompts, la reflexión personal y el enlace de entrega se cerrarán después de la revisión y la participación del estudiante.

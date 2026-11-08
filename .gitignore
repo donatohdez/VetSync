@@ -1,0 +1,19 @@
+# Dependencias y resultados de ejecución
+node_modules/
+dist/
+coverage/
+*.log
+
+# Configuración privada
+.env
+.env.*
+!.env.example
+
+# Temporales y sistema
+work/
+.DS_Store
+
+# Datos locales de MySQL
+.mysql-data/
+
+# Las evidencias seleccionadas en docs/evidencias/ sí se conservan.

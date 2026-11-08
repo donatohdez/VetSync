@@ -1,0 +1,20 @@
+services:
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "127.0.0.1:33316:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: vetsync_root_local_only
+      MYSQL_DATABASE: vetsync
+      MYSQL_USER: vetsync
+      MYSQL_PASSWORD: vetsync_local_only
+      TZ: UTC
+    volumes:
+      - vetsync_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+volumes:
+  vetsync_mysql:

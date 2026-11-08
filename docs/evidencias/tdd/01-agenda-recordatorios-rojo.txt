@@ -1,0 +1,216 @@
+
+> vetsync@1.0.0 test
+> vitest run --exclude 'tests/integration/**' --reporter=verbose
+
+
+ RUN  v5.1.0 /Users/donato/Documents/Codex/2026-11-08/te-x20
+
+ × tests/unit/appointments.test.ts > Agendar cita > guarda una cita válida como instante UTC 2ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:00-10:30 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:45-10:15 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:15-10:45 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:05-10:20 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:30-11:00 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 09:30-10:00 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 10:30-11:00 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > permite el mismo horario con otro veterinario 0ms
+   → Pendiente implementar agenda
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-07T10:00:00Z"} antes de persistir 2ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-08T15:00:00Z"} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T10:00:00-07:00"} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T09:30:00-07:00"} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-09T10:00:00"} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"no-fecha"} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-02-30T10:00:00Z"} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"reason":" "} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"petId":""} antes de persistir 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"petId":"missing"} 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'NOT_FOUND' }
+ × tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"veterinarianId":"missing"} 0ms
+   → expected Error: Pendiente implementar agenda to match object { code: 'NOT_FOUND' }
+ × tests/unit/reminders.test.ts > incluye el límite de 24 horas y excluye citas pasadas, actuales y posteriores 2ms
+   → Pendiente implementar recordatorios
+ × tests/unit/reminders.test.ts > dos ejecuciones no duplican un correo simulado 1ms
+   → Pendiente implementar recordatorios
+ × tests/unit/reminders.test.ts > sin citas no genera recordatorios 0ms
+   → Pendiente implementar recordatorios
+ × tests/unit/reminders.test.ts > permite configurar la ventana 0ms
+   → Pendiente implementar recordatorios
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > guarda una cita válida como instante UTC
+Error: Pendiente implementar agenda
+ ❯ ScheduleAppointment.execute src/modules/appointments/application/schedule-appointment.ts:5:70
+      3| export class ScheduleAppointment {
+      4|   constructor(private readonly repository: AppointmentRepository, priv…
+      5|   async execute(_input: ScheduleInput): Promise<Appointment> { throw n…
+       |                                                                      ^
+      6| }
+      7|
+ ❯ tests/unit/appointments.test.ts:23:87
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:00-10:30
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:45-10:15
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:15-10:45
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:05-10:20
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:30-11:00
+Error: Pendiente implementar agenda
+ ❯ ScheduleAppointment.execute src/modules/appointments/application/schedule-appointment.ts:5:70
+      3| export class ScheduleAppointment {
+      4|   constructor(private readonly repository: AppointmentRepository, priv…
+      5|   async execute(_input: ScheduleInput): Promise<Appointment> { throw n…
+       |                                                                      ^
+      6| }
+      7|
+ ❯ tests/unit/appointments.test.ts:26:66
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯
+
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 09:30-10:00
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 10:30-11:00
+Error: Pendiente implementar agenda
+ ❯ ScheduleAppointment.execute src/modules/appointments/application/schedule-appointment.ts:5:70
+      3| export class ScheduleAppointment {
+      4|   constructor(private readonly repository: AppointmentRepository, priv…
+      5|   async execute(_input: ScheduleInput): Promise<Appointment> { throw n…
+       |                                                                      ^
+      6| }
+      7|
+ ❯ tests/unit/appointments.test.ts:27:113
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯
+
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > permite el mismo horario con otro veterinario
+Error: Pendiente implementar agenda
+ ❯ ScheduleAppointment.execute src/modules/appointments/application/schedule-appointment.ts:5:70
+      3| export class ScheduleAppointment {
+      4|   constructor(private readonly repository: AppointmentRepository, priv…
+      5|   async execute(_input: ScheduleInput): Promise<Appointment> { throw n…
+       |                                                                      ^
+      6| }
+      7|
+ ❯ tests/unit/appointments.test.ts:28:82
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯
+
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-07T10:00:00Z"} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-08T15:00:00Z"} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T10:00:00-07:00"} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T09:30:00-07:00"} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-09T10:00:00"} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"no-fecha"} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-02-30T10:00:00Z"} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"reason":" "} antes de persistir
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"petId":""} antes de persistir
+AssertionError: expected Error: Pendiente implementar agenda to match object { code: 'VALIDATION_ERROR' }
+
+- Expected
++ Received
+
+- {
+-   "code": "VALIDATION_ERROR",
++ Error {
++   "message": "Pendiente implementar agenda",
+  }
+
+ ❯ tests/unit/appointments.test.ts:39:123
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯
+
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"petId":"missing"}
+ FAIL  tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"veterinarianId":"missing"}
+AssertionError: expected Error: Pendiente implementar agenda to match object { code: 'NOT_FOUND' }
+
+- Expected
++ Received
+
+- {
+-   "code": "NOT_FOUND",
++ Error {
++   "message": "Pendiente implementar agenda",
+  }
+
+ ❯ tests/unit/appointments.test.ts:40:163
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯
+
+ FAIL  tests/unit/reminders.test.ts > incluye el límite de 24 horas y excluye citas pasadas, actuales y posteriores
+Error: Pendiente implementar recordatorios
+ ❯ SendReminders.execute src/modules/notifications/application/send-reminders.ts:5:52
+      3| export class SendReminders {
+      4|   constructor(private readonly repository: ReminderRepository, private…
+      5|   async execute(): Promise<{sent: number}> { throw new Error('Pendient…
+       |                                                    ^
+      6| }
+      7|
+ ❯ tests/unit/reminders.test.ts:16:53
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/24]⎯
+
+ FAIL  tests/unit/reminders.test.ts > dos ejecuciones no duplican un correo simulado
+Error: Pendiente implementar recordatorios
+ ❯ SendReminders.execute src/modules/notifications/application/send-reminders.ts:5:52
+      3| export class SendReminders {
+      4|   constructor(private readonly repository: ReminderRepository, private…
+      5|   async execute(): Promise<{sent: number}> { throw new Error('Pendient…
+       |                                                    ^
+      6| }
+      7|
+ ❯ tests/unit/reminders.test.ts:24:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/24]⎯
+
+ FAIL  tests/unit/reminders.test.ts > sin citas no genera recordatorios
+Error: Pendiente implementar recordatorios
+ ❯ SendReminders.execute src/modules/notifications/application/send-reminders.ts:5:52
+      3| export class SendReminders {
+      4|   constructor(private readonly repository: ReminderRepository, private…
+      5|   async execute(): Promise<{sent: number}> { throw new Error('Pendient…
+       |                                                    ^
+      6| }
+      7|
+ ❯ tests/unit/reminders.test.ts:28:101
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/24]⎯
+
+ FAIL  tests/unit/reminders.test.ts > permite configurar la ventana
+Error: Pendiente implementar recordatorios
+ ❯ SendReminders.execute src/modules/notifications/application/send-reminders.ts:5:52
+      3| export class SendReminders {
+      4|   constructor(private readonly repository: ReminderRepository, private…
+      5|   async execute(): Promise<{sent: number}> { throw new Error('Pendient…
+       |                                                    ^
+      6| }
+      7|
+ ❯ tests/unit/reminders.test.ts:31:55
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/24]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  24 failed (24)
+   Start at  09:24:35
+   Duration  184ms (transform 47%, tests 25%, import 21%, worker 7%)
+

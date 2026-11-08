@@ -7,6 +7,19 @@ export const environmentSchema = z.object({
   DB_NAME: z.string().default("vetsync"),
   PORT: z.coerce.number().int().min(1).max(65535).default(3010),
   HOST: z.string().default("127.0.0.1"),
-  CLINIC_TIMEZONE: z.string().default("America/Hermosillo"),
+  CLINIC_TIMEZONE: z
+    .string()
+    .refine(
+      (timeZone) => {
+        try {
+          new Intl.DateTimeFormat("es-MX", { timeZone });
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message: "Zona horaria no reconocida por el servidor." },
+    )
+    .default("America/Hermosillo"),
   REMINDER_HOURS: z.coerce.number().positive().max(168).default(24),
 });

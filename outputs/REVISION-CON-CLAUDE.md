@@ -1,6 +1,8 @@
 # Revisión independiente con Claude Code
 
-Estado: **preparada, todavía no ejecutada**. Abrir Claude Code en:
+Estado: **ejecutada**. El estudiante entregó `test1.md`; se preservó en `docs/evidencias/revision/claude-test1-original.md`. La evaluación y las correcciones están en [RESULTADO-REVISION-CLAUDE.md](RESULTADO-REVISION-CLAUDE.md).
+
+Se conserva a continuación el prompt preparado originalmente. Directorio de revisión:
 
 ```text
 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync

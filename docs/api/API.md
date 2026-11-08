@@ -60,7 +60,7 @@ La ventana es `ahora < startsAt <= ahora + REMINDER_HOURS`. Por defecto, 24 hora
 - Dos citas contiguas son válidas. Mismo veterinario e intervalos solapados producen 409, incluso con solicitudes simultáneas.
 - El historial solo permite instantes actuales/pasados y se consulta por mascota existente.
 - Nacimiento usa `YYYY-MM-DD`, sin hora; no puede superar el día UTC actual.
-- Respuestas de instantes en UTC. La UI aplica la zona configurada para mostrarlos.
+- Campos de instantes en las respuestas: UTC. La UI aplica la zona configurada para mostrarlos. El texto de `message` de los avisos usa la hora de la clínica e identifica `CLINIC_TIMEZONE`.
 
 ## Errores
 

@@ -16,6 +16,7 @@ export function composeServices(
   pool: Pool,
   clock: Clock,
   reminderHours: number,
+  timeZone: string = "America/Hermosillo",
 ) {
   const pets = new MysqlPets(pool),
     veterinarians = new MysqlVeterinarians(pool),
@@ -36,7 +37,7 @@ export function composeServices(
       clock,
     ),
     schedule: new ScheduleAppointment(appointments, clock),
-    sendReminders: new SendReminders(reminders, clock, reminderHours),
+    sendReminders: new SendReminders(reminders, clock, reminderHours, timeZone),
     health: async () => {
       await pool.query("SELECT 1");
     },
@@ -48,7 +49,7 @@ export function buildApplication(
   options: { timeZone: string; reminderHours: number },
 ) {
   return createApp(
-    composeServices(pool, clock, options.reminderHours),
+    composeServices(pool, clock, options.reminderHours, options.timeZone),
     options,
   );
 }

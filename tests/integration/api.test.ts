@@ -303,29 +303,88 @@ it("oculta detalles internos cuando una dependencia falla", async () => {
 });
 
 it.each([
- ["idéntico", "10:00", "10:30", 409],
- ["solape anterior", "09:45", "10:15", 409],
- ["solape posterior", "10:15", "10:45", 409],
- ["contenida", "10:05", "10:20", 409],
- ["envolvente", "09:30", "11:00", 409],
- ["contigua anterior", "09:30", "10:00", 201],
- ["contigua posterior", "10:30", "11:00", 201],
-] as const)("intervalos SQL: %s",async(_scenario,startsAt,endsAt,status)=>{
- await request(app).post('/api/appointments').send(appointment).expect(201);
- const response=await request(app).post('/api/appointments').send({
-  ...appointment,startsAt:`2026-11-09T${startsAt}:00Z`,endsAt:`2026-11-09T${endsAt}:00Z`
- }).expect(status);
- if(status===409)expect(response.body.error.code).toBe('APPOINTMENT_CONFLICT');
- expect(await rows(pool,'SELECT id FROM appointments')).toHaveLength(status===201?2:1);
-});
-it.each([[-1,0],[0,0],[1,1],[24,1],[25,0]] as const)("ventana SQL: cita a %+d horas produce %d avisos",async(hours,expected)=>{
- // Fixture directa: permite citas pasadas/actuales sin saltarse la validación del endpoint de reservas.
- const startsAt=new Date(now.getTime()+hours*3600000);
- await pool.execute('INSERT INTO appointments (id,pet_id,veterinarian_id,starts_at,ends_at,reason) VALUES (?,?,?,?,?,?)',[
-  'window-case',petId,vetId,startsAt,new Date(startsAt.getTime()+1800000),'Límite de ventana'
- ]);
- expect((await request(app).post('/api/notifications/run').send({}).expect(200)).body.sent).toBe(expected);
- const notifications=await request(app).get('/api/notifications').expect(200);
- expect(notifications.body).toHaveLength(expected);
- expect((await request(app).post('/api/notifications/run').send({}).expect(200)).body.sent).toBe(0);
+  ["idéntico", "10:00", "10:30", 409],
+  ["solape anterior", "09:45", "10:15", 409],
+  ["solape posterior", "10:15", "10:45", 409],
+  ["contenida", "10:05", "10:20", 409],
+  ["envolvente", "09:30", "11:00", 409],
+  ["contigua anterior", "09:30", "10:00", 201],
+  ["contigua posterior", "10:30", "11:00", 201],
+] as const)(
+  "intervalos SQL: %s",
+  async (_scenario, startsAt, endsAt, status) => {
+    await request(app).post("/api/appointments").send(appointment).expect(201);
+    const response = await request(app)
+      .post("/api/appointments")
+      .send({
+        ...appointment,
+        startsAt: `2026-11-09T${startsAt}:00Z`,
+        endsAt: `2026-11-09T${endsAt}:00Z`,
+      })
+      .expect(status);
+    if (status === 409)
+      expect(response.body.error.code).toBe("APPOINTMENT_CONFLICT");
+    expect(await rows(pool, "SELECT id FROM appointments")).toHaveLength(
+      status === 201 ? 2 : 1,
+    );
+  },
+);
+it.each([
+  [-1, 0],
+  [0, 0],
+  [1, 1],
+  [24, 1],
+  [25, 0],
+] as const)(
+  "ventana SQL: cita a %d horas produce %d avisos",
+  async (hours, expected) => {
+    // Fixture directa: permite citas pasadas/actuales sin saltarse la validación del endpoint de reservas.
+    const startsAt = new Date(now.getTime() + hours * 3600000);
+    await pool.execute(
+      "INSERT INTO appointments (id,pet_id,veterinarian_id,starts_at,ends_at,reason) VALUES (?,?,?,?,?,?)",
+      [
+        "window-case",
+        petId,
+        vetId,
+        startsAt,
+        new Date(startsAt.getTime() + 1800000),
+        "Límite de ventana",
+      ],
+    );
+    expect(
+      (await request(app).post("/api/notifications/run").send({}).expect(200))
+        .body.sent,
+    ).toBe(expected);
+    const notifications = await request(app)
+      .get("/api/notifications")
+      .expect(200);
+    expect(notifications.body).toHaveLength(expected);
+    expect(
+      (await request(app).post("/api/notifications/run").send({}).expect(200))
+        .body.sent,
+    ).toBe(0);
+  },
+);
+it("usa la zona configurada al componer el mensaje del recordatorio", async () => {
+  const tokyoApp = buildApplication(
+    pool,
+    { now: () => now },
+    { timeZone: "Asia/Tokyo", reminderHours: 24 },
+  );
+  await request(tokyoApp)
+    .post("/api/appointments")
+    .send(appointment)
+    .expect(201);
+  await request(tokyoApp).post("/api/notifications/run").send({}).expect(200);
+  const notification = (
+    await request(tokyoApp).get("/api/notifications").expect(200)
+  ).body[0];
+  expect(notification.message).toContain("19:00");
+  expect(notification.message).toContain("(Asia/Tokyo)");
+  // La presentación cambia; el instante persistido y la ventana siguen en UTC.
+  const persisted = await rows<{ startsAt: Date }>(
+    pool,
+    "SELECT starts_at AS startsAt FROM appointments",
+  );
+  expect(persisted[0]?.startsAt.toISOString()).toBe("2026-11-09T10:00:00.000Z");
 });

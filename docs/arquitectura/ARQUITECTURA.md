@@ -48,7 +48,7 @@ El esquema ejecutable y sus índices están en `database/migrations/001-initial.
 2. Comenzar transacción READ COMMITTED.
 3. Bloquear la fila del veterinario activo con `SELECT ... FOR UPDATE`.
 4. Verificar mascota y consultar cruces con `starts_at < nuevoFin AND ends_at > nuevoInicio`.
-5. Insertar o devolver conflicto; confirmar o deshacer y liberar la conexión.
+5. Insertar o devolver conflicto; confirmar o deshacer y liberar la conexión. Si también falla el rollback, conservar ambos fallos en un AggregateError cuya causa es el error original.
 
 La fila del veterinario existe aun cuando no tiene citas; esto protege la primera reserva simultánea. Se permiten citas contiguas y horarios iguales de veterinarios distintos. Las reglas futuras de reprogramación tendrían que seguir el mismo protocolo.
 
@@ -59,6 +59,8 @@ Referencia consultada: [MySQL 8.4, locking reads](https://dev.mysql.com/doc/refm
 ## Recordatorios e idempotencia
 
 Ventana: `ahora < inicio <= ahora + REMINDER_HOURS`. El reloj se toma una vez por ejecución. Una consulta conjunta obtiene mascota y correo del dueño, evitando una consulta adicional por cita. La restricción única `(appointment_id, type)` garantiza un solo aviso incluso con dos ejecuciones concurrentes. Solo se ignora el error de duplicación esperado; otros errores se propagan.
+
+El texto del aviso se formatea en `CLINIC_TIMEZONE` y señala la zona, sin cambiar el instante UTC persistido ni la ventana temporal. La zona se valida con Intl al cargar la configuración; el esquema puro está en `src/shared/environment.ts` y tiene pruebas unitarias.
 
 El proceso se activa desde la interfaz o `POST /api/notifications/run`. No hay un planificador automático en esta primera versión. La simulación es una escritura atómica de BD; un envío de correo real necesitaría otro diseño de entrega y reintentos.
 
@@ -78,4 +80,4 @@ Se fijan versiones exactas y lockfile. El override de `minimatch` >=7 y <11 a 11
 
 ## Exclusiones de cobertura
 
-La cobertura incluye casos de uso, adaptadores SQL, validadores y API. Se excluyen el punto de arranque y configuración (dependen del proceso y entorno), el ensamblado de dependencias y la interfaz web. La UI se verifica con Playwright y capturas. Las exclusiones no incluyen reglas de agenda o notificaciones.
+La cobertura incluye casos de uso, adaptadores SQL, validadores y API. Se excluyen el punto de arranque y configuración (dependen del proceso y entorno), el ensamblado de dependencias y la interfaz web. La UI se verifica con Playwright y capturas. Las exclusiones no incluyen reglas de agenda, notificaciones ni validación del esquema de entorno.

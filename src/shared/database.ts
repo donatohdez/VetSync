@@ -26,7 +26,19 @@ export async function transaction<T>(
     await connection.commit();
     return result;
   } catch (error) {
-    await connection.rollback();
+    const failures: unknown[] = [error];
+    try {
+      await connection.rollback();
+    } catch (rollbackError) {
+      failures.push(rollbackError);
+    }
+    if (failures.length > 1) {
+      throw new AggregateError(
+        failures,
+        "Falló la transacción y no se pudo revertir.",
+        { cause: error },
+      );
+    }
     throw error;
   } finally {
     connection.release();

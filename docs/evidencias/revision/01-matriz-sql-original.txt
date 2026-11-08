@@ -1,0 +1,37 @@
+
+> vetsync@1.0.0 test:integration
+> vitest run tests/integration --reporter=verbose
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+ ✓ tests/integration/api.test.ts > crea dueños y mascotas, valida asociaciones y consulta listas 43ms
+ ✓ tests/integration/api.test.ts > rechaza entradas malformadas sin persistir 10ms
+ ✓ tests/integration/api.test.ts > agrega historial y lo aísla por mascota, con orden cronológico 16ms
+ ✓ tests/integration/api.test.ts > reserva, rechaza conflicto y permite otro veterinario/citas contiguas 16ms
+ ✓ tests/integration/api.test.ts > rechaza mascota/veterinario inexistentes o inactivo sin crear citas 11ms
+ ✓ tests/integration/api.test.ts > dos solicitudes concurrentes incompatibles: una confirma y otra recibe 409 9ms
+ ✓ tests/integration/api.test.ts > simula recordatorios próximos y no duplica con dos ejecuciones concurrentes 13ms
+ ✓ tests/integration/api.test.ts > usa parámetros SQL incluso si el texto contiene instrucciones SQL 9ms
+ ✓ tests/integration/api.test.ts > configuración, salud, 404 y JSON malformado tienen respuestas controladas 7ms
+ ✓ tests/integration/api.test.ts > rechaza escrituras sin JSON y cargas demasiado grandes 6ms
+ ✓ tests/integration/api.test.ts > sirve la interfaz compilada sin exponer archivos TypeScript 8ms
+ ✓ tests/integration/api.test.ts > oculta detalles internos cuando una dependencia falla 5ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: idéntico 9ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: solape anterior 8ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: solape posterior 9ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: contenida 8ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: envolvente 10ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: contigua anterior 9ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: contigua posterior 8ms
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a %+d horas produce -1 avisos 7ms
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a %+d horas produce 0 avisos 7ms
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a %+d horas produce 1 avisos 7ms
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a %+d horas produce 24 avisos 8ms
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a %+d horas produce 25 avisos 9ms
+
+ Test Files  1 passed (1)
+      Tests  24 passed (24)
+   Start at  10:16:48
+   Duration  481ms (tests 63%, import 30%, transform 7%)
+

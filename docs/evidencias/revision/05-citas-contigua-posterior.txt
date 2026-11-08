@@ -1,0 +1,64 @@
+MUTACION CONTROLADA; NO ES UN FALLO DEL CODIGO FINAL
+Archivo: src/modules/appointments/infrastructure/mysql-appointments.ts
+Cambio temporal: ends_at > ? -> ends_at >= ?
+Comando: npm run test:integration -- --reporter=verbose -t "intervalos SQL"
+
+
+> vetsync@1.0.0 test:integration
+> vitest run tests/integration --reporter=verbose -t intervalos SQL
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+ ↓ tests/integration/api.test.ts > crea dueños y mascotas, valida asociaciones y consulta listas
+ ↓ tests/integration/api.test.ts > rechaza entradas malformadas sin persistir
+ ↓ tests/integration/api.test.ts > agrega historial y lo aísla por mascota, con orden cronológico
+ ↓ tests/integration/api.test.ts > reserva, rechaza conflicto y permite otro veterinario/citas contiguas
+ ↓ tests/integration/api.test.ts > rechaza mascota/veterinario inexistentes o inactivo sin crear citas
+ ↓ tests/integration/api.test.ts > dos solicitudes concurrentes incompatibles: una confirma y otra recibe 409
+ ↓ tests/integration/api.test.ts > simula recordatorios próximos y no duplica con dos ejecuciones concurrentes
+ ↓ tests/integration/api.test.ts > usa parámetros SQL incluso si el texto contiene instrucciones SQL
+ ↓ tests/integration/api.test.ts > configuración, salud, 404 y JSON malformado tienen respuestas controladas
+ ↓ tests/integration/api.test.ts > rechaza escrituras sin JSON y cargas demasiado grandes
+ ↓ tests/integration/api.test.ts > sirve la interfaz compilada sin exponer archivos TypeScript
+ ↓ tests/integration/api.test.ts > oculta detalles internos cuando una dependencia falla
+ ✓ tests/integration/api.test.ts > intervalos SQL: idéntico 33ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: solape anterior 13ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: solape posterior 9ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: contenida 9ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: envolvente 10ms
+ ✓ tests/integration/api.test.ts > intervalos SQL: contigua anterior 9ms
+ × tests/integration/api.test.ts > intervalos SQL: contigua posterior 9ms
+   → expected 201 "Created", got 409 "Conflict"
+ ↓ tests/integration/api.test.ts > ventana SQL: cita a -1 horas produce 0 avisos
+ ↓ tests/integration/api.test.ts > ventana SQL: cita a 0 horas produce 0 avisos
+ ↓ tests/integration/api.test.ts > ventana SQL: cita a 1 horas produce 1 avisos
+ ↓ tests/integration/api.test.ts > ventana SQL: cita a 24 horas produce 1 avisos
+ ↓ tests/integration/api.test.ts > ventana SQL: cita a 25 horas produce 0 avisos
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed | 17 skipped (24)
+   Start at  10:17:14
+   Duration  242ms (tests 53%, import 37%, transform 10%, worker 1%)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/api.test.ts > intervalos SQL: contigua posterior
+Error: expected 201 "Created", got 409 "Conflict"
+ ❯ tests/integration/api.test.ts:317:5
+    315|  const response=await request(app).post('/api/appointments').send({
+    316|   ...appointment,startsAt:`2026-11-09T${startsAt}:00Z`,endsAt:`2026-11…
+    317|  }).expect(status);
+       |     ^
+    318|  if(status===409)expect(response.body.error.code).toBe('APPOINTMENT_CO…
+    319|  expect(await rows(pool,'SELECT id FROM appointments')).toHaveLength(s…
+ ❯ Test._assertStatus node_modules/supertest/lib/test.js:535:14
+ ❯ node_modules/supertest/lib/test.js:591:13
+ ❯ Test._assertFunction node_modules/supertest/lib/test.js:568:13
+ ❯ Test.assert node_modules/supertest/lib/test.js:432:23
+ ❯ localAssert node_modules/supertest/lib/test.js:382:38
+ ❯ Server.<anonymous> node_modules/supertest/lib/test.js:126:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

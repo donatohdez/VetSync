@@ -2,7 +2,7 @@
 
 Sistema local de gestión de citas veterinarias, construido para la primera asignación de la unidad 3 de Fundamentos de IA en Ingeniería de Software.
 
-**Estado:** primera versión funcional local; revisión independiente con Claude, revisión del estudiante y publicación remota pendientes.
+**Estado:** versión local funcional, revisada por Claude y corregida con pruebas de regresión; revisión del estudiante y publicación remota pendientes.
 
 Incluye dueños, mascotas, historial médico, veterinarios de demostración, agenda protegida contra reservas simultáneas y correos simulados. Arquitectura de monolito modular con TypeScript, Express y MySQL. La interfaz está en español y se adapta a escritorio y móvil.
 
@@ -35,7 +35,7 @@ El nombre de Compose se mantiene fijo (`te-x20`) para conservar el contenedor y 
 4. En **Historial médico**, elegir la mascota y agregar una nota con fecha actual o pasada.
 5. En **Recordatorios**, simular avisos para citas de las próximas 24 horas. Ejecutar otra vez: no debe duplicar mensajes.
 
-Los formularios convierten la hora del dispositivo a UTC. La agenda se muestra en la zona configurada de la clínica, `America/Hermosillo` por defecto; la interfaz explica esta diferencia. No hay envío de correo real.
+Los formularios convierten la hora del dispositivo a UTC. La agenda se muestra en la zona configurada de la clínica, `America/Hermosillo` por defecto; la interfaz explica esta diferencia. El texto de los recordatorios también usa esa zona y la identifica explícitamente. Una zona no reconocida impide el arranque con un error de configuración. No hay envío de correo real.
 
 ## Desarrollo y verificación
 
@@ -84,4 +84,4 @@ Para desarrollar el backend: `npm run dev`. Después de cambiar la interfaz Type
 
 Las notificaciones se ejecutan manualmente desde la UI o la API. Esta versión no incluye autenticación, videollamadas, cancelación, reprogramación, paginación ni despliegue público. Es una demostración académica local con datos ficticios.
 
-El workflow `.github/workflows/ci.yml` está preparado para cada push y PR. **Su ejecución en GitHub aún no se ha comprobado:** no hay remoto configurado. La bitácora final de cinco prompts, la reflexión personal y el enlace de entrega se cerrarán después de la revisión y la participación del estudiante.
+El workflow `.github/workflows/ci.yml` está preparado para cada push y PR. **Su ejecución en GitHub aún no se ha comprobado:** no hay remoto configurado. La revisión de Claude y su evaluación están en [RESULTADO-REVISION-CLAUDE.md](outputs/RESULTADO-REVISION-CLAUDE.md). La bitácora final de cinco prompts, la reflexión personal y el enlace de entrega se cerrarán con la participación del estudiante.

@@ -1,0 +1,34 @@
+
+> vetsync@1.0.0 test:integration
+> vitest run tests/integration -t zona configurada
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+ ❯ tests/integration/api.test.ts (25 tests | 1 failed | 24 skipped) 51ms
+   × usa la zona configurada al componer el mensaje del recordatorio 40ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/api.test.ts > usa la zona configurada al componer el mensaje del recordatorio
+AssertionError: expected 'Recordatorio: Luna tiene una cita el …' to contain '19:00'
+
+Expected: "19:00"
+Received: "Recordatorio: Luna tiene una cita el 2026-11-09T10:00:00.000Z. Correo simulado; no se envió un correo real."
+
+ ❯ tests/integration/api.test.ts:337:31
+    335|  await request(tokyoApp).post('/api/notifications/run').send({}).expec…
+    336|  const notification=(await request(tokyoApp).get('/api/notifications')…
+    337|  expect(notification.message).toContain('19:00');
+       |                               ^
+    338|  expect(notification.message).toContain('(Asia/Tokyo)');
+    339|  // La presentación cambia; el instante persistido y la ventana siguen…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 24 skipped (25)
+   Start at  10:17:43
+   Duration  260ms (import 62%, tests 25%, transform 13%, worker 1%)
+

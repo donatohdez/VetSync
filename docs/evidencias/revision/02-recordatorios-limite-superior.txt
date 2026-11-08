@@ -1,0 +1,65 @@
+MUTACION CONTROLADA; NO ES UN FALLO DEL CODIGO FINAL
+Archivo: src/modules/notifications/infrastructure/mysql-reminders.ts
+Cambio temporal: a.starts_at<=? -> a.starts_at<?
+Comando: npm run test:integration -- --reporter=verbose -t "ventana SQL"
+
+
+> vetsync@1.0.0 test:integration
+> vitest run tests/integration --reporter=verbose -t ventana SQL
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+ ↓ tests/integration/api.test.ts > crea dueños y mascotas, valida asociaciones y consulta listas
+ ↓ tests/integration/api.test.ts > rechaza entradas malformadas sin persistir
+ ↓ tests/integration/api.test.ts > agrega historial y lo aísla por mascota, con orden cronológico
+ ↓ tests/integration/api.test.ts > reserva, rechaza conflicto y permite otro veterinario/citas contiguas
+ ↓ tests/integration/api.test.ts > rechaza mascota/veterinario inexistentes o inactivo sin crear citas
+ ↓ tests/integration/api.test.ts > dos solicitudes concurrentes incompatibles: una confirma y otra recibe 409
+ ↓ tests/integration/api.test.ts > simula recordatorios próximos y no duplica con dos ejecuciones concurrentes
+ ↓ tests/integration/api.test.ts > usa parámetros SQL incluso si el texto contiene instrucciones SQL
+ ↓ tests/integration/api.test.ts > configuración, salud, 404 y JSON malformado tienen respuestas controladas
+ ↓ tests/integration/api.test.ts > rechaza escrituras sin JSON y cargas demasiado grandes
+ ↓ tests/integration/api.test.ts > sirve la interfaz compilada sin exponer archivos TypeScript
+ ↓ tests/integration/api.test.ts > oculta detalles internos cuando una dependencia falla
+ ↓ tests/integration/api.test.ts > intervalos SQL: idéntico
+ ↓ tests/integration/api.test.ts > intervalos SQL: solape anterior
+ ↓ tests/integration/api.test.ts > intervalos SQL: solape posterior
+ ↓ tests/integration/api.test.ts > intervalos SQL: contenida
+ ↓ tests/integration/api.test.ts > intervalos SQL: envolvente
+ ↓ tests/integration/api.test.ts > intervalos SQL: contigua anterior
+ ↓ tests/integration/api.test.ts > intervalos SQL: contigua posterior
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a -1 horas produce 0 avisos 32ms
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a 0 horas produce 0 avisos 10ms
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a 1 horas produce 1 avisos 9ms
+ × tests/integration/api.test.ts > ventana SQL: cita a 24 horas produce 1 avisos 8ms
+   → expected +0 to be 1 // Object.is equality
+ ✓ tests/integration/api.test.ts > ventana SQL: cita a 25 horas produce 0 avisos 8ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed | 19 skipped (24)
+   Start at  10:17:13
+   Duration  291ms (import 52%, tests 35%, transform 12%, worker 1%)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/api.test.ts > ventana SQL: cita a 24 horas produce 1 avisos
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/integration/api.test.ts:327:93
+    325|   'window-case',petId,vetId,startsAt,new Date(startsAt.getTime()+18000…
+    326|  ]);
+    327|  expect((await request(app).post('/api/notifications/run').send({}).ex…
+       |                                                                                             ^
+    328|  const notifications=await request(app).get('/api/notifications').expe…
+    329|  expect(notifications.body).toHaveLength(expected);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

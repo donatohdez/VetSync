@@ -27,4 +27,15 @@
 - Se corrigieron alertas de dependencias transitivas con override acotado y se verificó el linter.
 - La salida inicial y la corregida del navegador se conservan en `docs/evidencias/pruebas/`.
 
-No se atribuyen estas revisiones técnicas al estudiante: fueron realizadas por Codex. La revisión humana y la revisión independiente con Claude siguen pendientes.
+No se atribuyen estas revisiones técnicas al estudiante: fueron realizadas por Codex. La revisión humana sigue pendiente; la revisión independiente de Claude ya fue recibida y contrastada.
+
+## Ciclo 3: hallazgos de Claude
+
+- Informe original: `docs/evidencias/revision/claude-test1-original.md`, sin editar.
+- Commit de reproducción inicial: `694769f`.
+- Rojo: `05-revision-claude-rojo.txt`: cinco fallos de unitarias reproducen B1, B2 y B4; las otras 29 unitarias pasaban.
+- Rojo de composición: `06-zona-integracion-rojo.txt`: el texto del aviso no recibía la zona configurada, comprobado con una instancia de API en Asia/Tokyo.
+- Verde unitario: `07-revision-claude-verde.txt`: 34 unitarias aprobadas tras corregir.
+- M1: se agregaron matrices SQL con cinco solapamientos, dos contiguas y cinco límites de recordatorios. El SQL original las aprobó; cuatro mutaciones temporales cambiaron los operadores de límites y cada una hizo fallar exactamente una prueba relevante. Se restauraron ambos adaptadores byte por byte.
+- Evidencia de mutaciones: `docs/evidencias/revision/02*` a `05*`. Son regresiones intencionadas en una verificación controlada, no defectos del código final.
+- Verificación final: `docs/evidencias/revision/06-verificacion-corregida.txt`.

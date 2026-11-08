@@ -12,11 +12,11 @@ Primera versión local con registros, historial, agenda sin choques, correos sim
 
 ## Siguiente paso
 
-Ejecutar la revisión independiente de [Claude Code](REVISION-CON-CLAUDE.md), conservar su respuesta y contrastar sus hallazgos aquí. Después, realizar las correcciones justificadas y volver a verificar lo afectado.
+La revisión independiente de Claude ya fue recibida, contrastada y atendida. Consultar [RESULTADO-REVISION-CLAUDE.md](RESULTADO-REVISION-CLAUDE.md). Siguiente paso: revisión del estudiante y preparación del repositorio remoto y los entregables académicos.
 
 ## Pendiente antes de la entrega académica
 
-1. Revisión y comprensión del código por el estudiante; revisión independiente con Claude.
+1. Revisión y comprensión del código por el estudiante. La revisión de Claude ya está documentada.
 2. Completar la bitácora seleccionando cinco prompts realmente utilizados, con respuestas y crítica.
 3. Reflexión técnica personal de máximo 500 palabras.
 4. Configurar GitHub/GitLab, publicar el código y comprobar acceso del profesor.

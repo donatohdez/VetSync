@@ -1,6 +1,6 @@
 # Bitácora de IA en construcción
 
-Estado: dos interacciones candidatas documentadas; **todavía no es la entrega final de cinco prompts**. No se ha ejecutado la revisión con Claude. No se inventarán prompts ni resultados para completar el número.
+Estado: cuatro interacciones candidatas documentadas; **todavía no es la entrega final de cinco prompts**. La revisión con Claude fue entregada por el estudiante en `test1.md` y se contrastó con el código. No se inventarán prompts ni resultados para completar el número.
 
 ## 01. Analizar materiales y planificar
 
@@ -27,10 +27,31 @@ Estado: dos interacciones candidatas documentadas; **todavía no es la entrega f
 - Mejoras de diseño: persistencia desacoplada de casos de uso, reloj inyectado, bloqueo transaccional por veterinario y restricción única para recordatorios. Los archivos TypeScript dejaron de servirse como recursos estáticos.
 - Cómo se verificó: tipos, linter, compilación, 36 pruebas unitarias/integración en MySQL y dos pruebas de navegador. Las ejecuciones iniciales y corregidas están conservadas.
 - Autoría de las correcciones anteriores: Codex. **No se atribuyen al estudiante cambios que todavía no haya revisado o realizado.** Estos fallos de código no se etiquetan automáticamente como alucinaciones.
-- Crítica y comprensión humana: pendientes de la revisión del estudiante y la segunda revisión con Claude.
+- Crítica y comprensión humana: pendientes del estudiante. La revisión independiente con Claude ya fue recibida y sus hallazgos se evaluaron en las entradas siguientes.
 
-## Próximas interacciones
+## 03. Revisión independiente con Claude
 
-El prompt de revisión preparado está en `outputs/REVISION-CON-CLAUDE.md`. Cuando se ejecute, archivar aquí el texto exacto y la respuesta íntegra o capturas. Las solicitudes posteriores de corrección y validación también pueden ser candidatas si realmente se utilizan. Seleccionar cinco al final, priorizando su complejidad y la calidad de la crítica, no el número de herramientas.
+- Fecha: 8 de noviembre de 2026.
+- Herramienta: Claude Code; el informe se identifica como “Sonnet 5.5”. Ese nombre se registra según el informe, sin verificación independiente de la interfaz.
+- Prompt preparado: [03-revision-claude.txt](prompts/03-revision-claude.txt). Es el bloque que se proporcionó para copiar. El informe señala que se utilizó `outputs/REVISION-CON-CLAUDE.md`; si se modificó al enviarlo, conservar también esa versión del chat para garantizar literalidad.
+- Respuesta de Claude: [informe original preservado](../evidencias/revision/claude-test1-original.md), idéntico al `test1.md` entregado por el usuario.
+- Crítica de Codex: M1 era una carencia de pruebas, no un error de los operadores SQL actuales; B1 y B4 se reprodujeron con pruebas fallidas; B2 es una mejora de presentación porque el instante UTC original era correcto, aunque menos cómodo para el usuario.
+- Propuesta pospuesta: B3 (máximos de duración/horizonte) no se impuso sin una regla de negocio definida. El enunciado no especifica esos máximos.
+- Falso positivo descartado por Claude y verificado contra documentación: exigir JSON en `/notifications/run` es el contrato declarado, no un error nuevo.
+- Límites: las cifras de la sonda de 40 solicitudes y 30 rondas pertenecen al informe de Claude. No se conservó aquí su script ni se presentan como una ejecución propia de Codex.
+- Revisión humana: el estudiante ejecutó la revisión y compartió su archivo; falta su comentario personal sobre lo aprendido y las decisiones técnicas.
 
-La reflexión final debe basarse en la experiencia real del estudiante. Registrar momentos concretos de carga cognitiva y decisiones de mantenimiento; no redactar una experiencia personal ficticia.
+## 04. Contrastar y corregir la revisión
+
+- Fecha: 8 de noviembre de 2026.
+- Herramienta: Codex Desktop, esta conversación.
+- Mensaje exacto que aportó el resultado: [04-resultado-claude.txt](prompts/04-resultado-claude.txt). La validación y corrección continúa el flujo previamente acordado; no se sustituye ese mensaje por un prompt técnico inventado.
+- Respuesta de la IA: correcciones de configuración/avisos/transacciones, pruebas SQL y [evaluación de hallazgos](../../outputs/RESULTADO-REVISION-CLAUDE.md).
+- Cambios: esquema de entorno puro y probado; zona configurada inyectada al servicio de avisos; texto en hora de clínica; error agregado con causa original cuando falla también el rollback; matrices reales de integración.
+- Verificación: estados rojos y verdes en `../evidencias/tdd/05*` a `07*`; cuatro mutaciones temporales de operadores SQL detectadas por las nuevas pruebas, con restauración exacta de los fuentes.
+- Crítica: no se cambió el SQL correcto ni se adoptaron automáticamente todas las mejoras opcionales. Se reprodujo antes de corregir y se separó la evidencia propia de las afirmaciones de la otra herramienta.
+- Autoría: modificaciones de Codex, motivadas por revisión de Claude. No se atribuyen cambios manuales al estudiante.
+
+## Cierre pendiente
+
+Seleccionar cinco interacciones realmente utilizadas y completar la crítica personal del estudiante. Estas cuatro candidatas no sustituyen ese requisito. La reflexión final debe basarse en su experiencia real, sin inventar carga cognitiva, decisiones o experiencias personales.

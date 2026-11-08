@@ -1,4 +1,4 @@
-# Informe de verificación de la primera versión
+# Informe de verificación de VetSync
 
 Fecha: 8 de noviembre de 2026. Directorio activo: `/Users/donato/Ago-Dic 2026/Fun de IA/VetSync`.
 
@@ -8,9 +8,9 @@ Fecha: 8 de noviembre de 2026. Directorio activo: `/Users/donato/Ago-Dic 2026/Fu
 - TypeScript: sin errores al ejecutar `npm run typecheck`.
 - ESLint: sin errores al ejecutar `npm run lint`.
 - Compilación backend/frontend y copia de recursos: correcta con `npm run build`.
-- 24 pruebas unitarias y 12 pruebas de integración: **36 aprobadas**.
-- Cobertura: **98.87% líneas, 98.36% sentencias, 98.43% funciones y 96.82% ramas**; mínimo configurado 80% en cada métrica.
-- Dos pruebas Playwright: recorrido funcional en escritorio y navegación móvil. Evidencia de la última ejecución en `docs/evidencias/pruebas/navegador.txt`.
+- 34 pruebas unitarias y 25 pruebas de integración: **59 aprobadas**.
+- Cobertura: **98.94% líneas, 98.46% sentencias, 98.46% funciones y 96.96% ramas**; mínimo configurado 80% en cada métrica.
+- Dos pruebas Playwright: recorrido funcional en escritorio y navegación móvil. Evidencia tras las correcciones en `docs/evidencias/revision/07-navegador-corregido.txt`.
 - Auditoría npm: cero alertas en el resultado archivado en `docs/evidencias/pruebas/npm-audit.json`.
 
 Las exclusiones de cobertura están declaradas en `vitest.config.ts` y justificadas en arquitectura: arranque, configuración de entorno, composición y UI. La UI se verifica con Playwright, no se incluye artificialmente en cobertura de unitarias.
@@ -36,6 +36,16 @@ El primer intento de navegador falló por las etiquetas accesibles de navegació
 
 ## Límites de la evidencia
 
-Esta es validación local contra datos ficticios y una carga pequeña, no una prueba de estrés ni una auditoría externa. La revisión independiente con Claude y la revisión del estudiante están pendientes. El workflow de GitHub Actions está escrito, pero no se ha ejecutado en GitHub porque no hay repositorio remoto configurado.
+Esta es validación local contra datos ficticios. La revisión independiente con Claude fue recibida y se contrastó con pruebas propias. La revisión del estudiante sigue pendiente. Las sondas adicionales descritas en `test1.md` son evidencia atribuida a Claude, no una ejecución propia de Codex. El workflow de GitHub Actions está escrito, pero no se ha ejecutado en GitHub porque no hay repositorio remoto configurado.
 
 Los tests de integración borran únicamente registros de `vetsync_test`; no modifican la base de demostración `vetsync`. No ejecutar integración y Playwright simultáneamente sobre esa base compartida de pruebas.
+
+## Validación de la revisión independiente
+
+- M1: matriz completa de intervalos y ventana contra SQL real. Cuatro mutaciones de operadores detectadas, con fuentes restaurados; no se modificó el SQL original correcto.
+- B1: una zona horaria no reconocida se rechaza al interpretar la configuración.
+- B2: los avisos nuevos usan la zona de clínica y la identifican; prueba de composición en Asia/Tokyo, conservando UTC en BD.
+- B4: se conservan el error original y el de rollback con AggregateError; una prueba simula el fallo de rollback, sin afirmar que se cortó una conexión real.
+- B3: duración y horizonte máximos se mantienen como decisión de negocio pendiente, no como requisito inventado.
+
+La verificación completa posterior está en `docs/evidencias/revision/06-verificacion-corregida.txt`. Las pruebas originales y su resultado de 36 casos se conservan como evidencia histórica en `docs/evidencias/pruebas/`.

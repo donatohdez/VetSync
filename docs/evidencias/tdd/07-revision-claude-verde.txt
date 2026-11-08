@@ -1,0 +1,47 @@
+
+> vetsync@1.0.0 test
+> vitest run tests/unit --reporter=verbose
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+ ✓ tests/unit/reminders.test.ts > incluye el límite de 24 horas y excluye citas pasadas, actuales y posteriores 10ms
+ ✓ tests/unit/reminders.test.ts > dos ejecuciones no duplican un correo simulado 0ms
+ ✓ tests/unit/reminders.test.ts > sin citas no genera recordatorios 0ms
+ ✓ tests/unit/reminders.test.ts > permite configurar la ventana 0ms
+ ✓ tests/unit/reminders.test.ts > expresa el aviso en la zona configurada America/Hermosillo 0ms
+ ✓ tests/unit/reminders.test.ts > expresa el aviso en la zona configurada UTC 0ms
+ ✓ tests/unit/environment.test.ts > rechaza zona horaria inválida "Foo/Bar" al configurar el servidor 9ms
+ ✓ tests/unit/environment.test.ts > rechaza zona horaria inválida "" al configurar el servidor 0ms
+ ✓ tests/unit/environment.test.ts > acepta zona horaria soportada America/Hermosillo 1ms
+ ✓ tests/unit/environment.test.ts > acepta zona horaria soportada UTC 0ms
+ ✓ tests/unit/environment.test.ts > acepta zona horaria soportada Europe/Madrid 0ms
+ ✓ tests/unit/environment.test.ts > usa la zona de la clínica por defecto 0ms
+ ✓ tests/unit/transaction.test.ts > preserva el fallo original y libera la conexión; rollback falla=false 1ms
+ ✓ tests/unit/transaction.test.ts > preserva el fallo original y libera la conexión; rollback falla=true 1ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > guarda una cita válida como instante UTC 4ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:00-10:30 1ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:45-10:15 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:15-10:45 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:05-10:20 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:30-11:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 09:30-10:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 10:30-11:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite el mismo horario con otro veterinario 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-07T10:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-08T15:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T10:00:00-07:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T09:30:00-07:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-09T10:00:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"no-fecha"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-02-30T10:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"reason":" "} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"petId":""} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"petId":"missing"} 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"veterinarianId":"missing"} 0ms
+
+ Test Files  4 passed (4)
+      Tests  34 passed (34)
+   Start at  10:17:58
+   Duration  336ms (import 57%, tests 22%, transform 17%, worker 4%)
+

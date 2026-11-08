@@ -39,3 +39,14 @@ No se atribuyen estas revisiones técnicas al estudiante: fueron realizadas por 
 - M1: se agregaron matrices SQL con cinco solapamientos, dos contiguas y cinco límites de recordatorios. El SQL original las aprobó; cuatro mutaciones temporales cambiaron los operadores de límites y cada una hizo fallar exactamente una prueba relevante. Se restauraron ambos adaptadores byte por byte.
 - Evidencia de mutaciones: `docs/evidencias/revision/02*` a `05*`. Son regresiones intencionadas en una verificación controlada, no defectos del código final.
 - Verificación final: `docs/evidencias/revision/06-verificacion-corregida.txt`.
+
+## Ciclos 4–6: diseño y recepción
+
+- `9e9888e`: cinco pruebas de interfaz fallaron antes del pulido; `08-pulido-interfaz-rojo.txt`. Se implementaron selectores con búsqueda, historial contextual, estados y móvil. El foco al abrir teclado móvil requirió corregir el cierre por scroll.
+- `10-selector-redimension-rojo.txt`: el menú se cerraba al redimensionar; se cambió a recalcular posición y se verificó en `11-pulido-final-verde.txt` (siete casos entonces existentes). La evidencia registra una regresión real, no una prueba de negocio.
+- `1bccd2a`: `12-horarios-clinica-rojo.txt` registra 14 fallos y 35 aprobadas antes de implementar disponibilidad y reglas de 30 minutos. Se implementaron conversión a zona clínica, validación de servidor y los 16 bloques diarios.
+- `a2665f7`: `13-recepcion-interfaz-rojo.txt` registra tres fallos de alta durante la cita y márgenes de flechas. Se implementó navegación entre formularios preservando borradores y centrado SVG con margen de 16 px.
+- Verde: `14-recepcion-interfaz-verde.txt` y `../pruebas/navegador-recepcion-final.txt`, diez pruebas de navegador aprobadas. `../pruebas/verificacion-recepcion.txt`: 81 pruebas de backend y controles estáticos aprobados.
+- Las matrices arbitrarias de solapamientos siguen comprobando directamente el repositorio MySQL: las nuevas restricciones de horario del caso de uso no deben ocultar errores en los operadores SQL.
+
+Decisiones del estudiante verificables: pidió altas durante la reserva, sustituyó inicio/fin por fecha/hora y confirmó cierre 18:00 con último inicio 17:30. El código y las correcciones fueron realizados por Codex; no se atribuyen cambios manuales al estudiante.

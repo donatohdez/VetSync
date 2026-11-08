@@ -1,0 +1,55 @@
+
+> vetsync@1.0.0 check
+> npm run typecheck && npm run lint && npm run build && npm run test:coverage
+
+
+> vetsync@1.0.0 typecheck
+> tsc --noEmit
+
+
+> vetsync@1.0.0 lint
+> eslint src tests scripts
+
+
+> vetsync@1.0.0 build
+> tsc -p tsconfig.build.json && esbuild src/web/app.ts --bundle --format=esm --outfile=dist/web/app.js && node scripts/copy-web.mjs
+
+
+  dist/web/app.js  39.6kb
+
+⚡ Done in 7ms
+
+> vetsync@1.0.0 test:coverage
+> vitest run --coverage
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+      Coverage enabled with v8
+
+
+ Test Files  6 passed (6)
+      Tests  81 passed (81)
+   Start at  11:31:26
+   Duration  1.00s (tests 56%, import 36%, worker 5%, transform 3%)
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   98.33 |    97.82 |   98.63 |    98.7 |                   
+ http              |     100 |       95 |     100 |     100 |                   
+  app.ts           |     100 |       95 |     100 |     100 | 141               
+ ...ntments/domain |   95.23 |      100 |     100 |   94.73 |                   
+  clinic-hours.ts  |   95.23 |      100 |     100 |   94.73 | 55                
+ ...infrastructure |   88.88 |       50 |     100 |    87.5 |                   
+  ...-reminders.ts |   88.88 |       50 |     100 |    87.5 | 29                
+ shared            |   94.87 |      100 |    90.9 |   97.29 |                   
+  clock.ts         |       0 |      100 |       0 |       0 | 4                 
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 98.33% ( 236/240 )
+Branches     : 97.82% ( 90/92 )
+Functions    : 98.63% ( 72/73 )
+Lines        : 98.7% ( 229/232 )
+================================================================================

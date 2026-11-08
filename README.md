@@ -53,13 +53,15 @@ El proyecto corresponde a la **primera asignación de la unidad 3** de **Optativ
 
 | Sección | Qué permite hacer |
 | :--- | :--- |
-| **Agenda** | Crear y consultar citas con mascota, veterinario, inicio, fin y motivo; filtrar próximas o todas. |
+| **Agenda** | Recepción selecciona mascota, veterinario, fecha, hora y motivo. Puede registrar un dueño y su mascota durante la reserva; filtrar próximas o todas. |
 | **Pacientes** | Registrar dueños y mascotas, consultar sus datos y acceder al historial de cada paciente. |
 | **Historial médico** | Agregar notas clínicas con fecha y veterinario; consultar primero las atenciones más recientes. |
 | **Recordatorios** | Ejecutar avisos para citas de las próximas 24 horas y consultar los correos simulados guardados. |
 | **Resumen de la clínica** | Consultar citas próximas, pacientes registrados, veterinarios activos y recordatorios simulados. |
 
-La interfaz se adapta a escritorio y móvil, valida los formularios y muestra los conflictos de horario sin guardar una segunda reserva incompatible.
+La interfaz se adapta a escritorio y móvil, incluye selectores con búsqueda y contexto del paciente, historial en línea de tiempo y estados de carga y error. Las citas duran 30 minutos: hay 16 turnos de 10:00 a 17:30, con cierre a las 18:00 en la zona de la clínica. El fin se calcula automáticamente. Los turnos pasados u ocupados se deshabilitan y el servidor vuelve a validar cada reserva, incluso frente a solicitudes concurrentes.
+
+El dashboard está pensado para personal de la veterinaria. La reserva directa por el dueño desde un portal público queda fuera de esta versión.
 
 <p align="center">
   <img src="docs/assets/agenda.png" alt="Agenda de VetSync con resumen de la clínica y citas de demostración" width="1100" />
@@ -234,12 +236,12 @@ Playwright inicia su propio servidor en el puerto `3011`. No ejecutes integraci�
 
 | Comprobación | Resultado registrado |
 | :--- | :--- |
-| Unitarias | **34 aprobadas**. |
-| Integración HTTP/MySQL | **25 aprobadas**, incluidas reservas y avisos concurrentes. |
-| Navegador | **2 recorridos aprobados**: flujo funcional y navegación móvil. |
-| Cobertura de líneas | **98.94%**. |
-| Cobertura de ramas | **96.96%**. |
-| Cobertura de funciones y sentencias | **98.46%** en cada métrica. |
+| Unitarias | **49 aprobadas**. |
+| Integración HTTP/MySQL | **32 aprobadas**, incluidas reservas y avisos concurrentes. |
+| Navegador | **10 recorridos aprobados**: recepción, alta durante reserva, disponibilidad, selectores, historial, errores y móvil. |
+| Cobertura de líneas | **98.70%**. |
+| Cobertura de ramas | **97.82%**. |
+| Cobertura de funciones y sentencias | **98.63% funciones; 98.33% sentencias**. |
 | Umbral configurado | **80% mínimo** en las cuatro métricas. |
 | CI remoto | Instalación limpia, migración, tipos, linter, compilación, pruebas y artefactos aprobados. |
 
@@ -309,7 +311,7 @@ Los registros distinguen las modificaciones de los asistentes de las decisiones 
 
 VetSync es una **demostración académica local con datos ficticios**. Los veterinarios se cargan con el seed y los avisos se ejecutan manualmente desde la interfaz o la API.
 
-Esta versión no incluye autenticación, videollamadas, cancelación, reprogramación, paginación ni despliegue público. Aunque el título académico menciona telemedicina, los requisitos entregados no definen videollamadas o chat. La duración máxima y el horizonte máximo de las citas tampoco están establecidos como reglas de negocio.
+Esta versión no incluye autenticación, videollamadas, cancelación, reprogramación, paginación ni despliegue público. Aunque el título académico menciona telemedicina, los requisitos entregados no definen videollamadas o chat. El usuario definió citas de 30 minutos y horario de 10:00 a 18:00. No se ha establecido un horizonte máximo para reservar.
 
 Se utilizan consultas parametrizadas, claves foráneas, validación de entradas, límite del cuerpo JSON, cabeceras de seguridad y salidas de error controladas. Las notas se muestran como texto. El detalle de estas decisiones y sus límites está en la [documentación de arquitectura](docs/arquitectura/ARQUITECTURA.md).
 

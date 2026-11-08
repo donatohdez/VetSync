@@ -244,3 +244,7 @@ Recomiendo mantener: **monolito modular, TypeScript y MySQL; API como núcleo; i
 Los puntos con más impacto para ajustar el plan son tu experiencia con ese lenguaje, si existe alguna instrucción adicional del profesor sobre interfaz o telemedicina, y el repositorio/cuenta donde se entregará. El diseño puede revisarse ahora; la cuenta remota solo hace falta para publicar y comprobar CI más adelante.
 
 Hasta este punto se preservaron las fuentes, se analizó el material, se preparó la estructura y se escribieron documentos de planificación. **No se ha programado, instalado dependencias, inicializado Git ni publicado nada.**
+
+## Actualización del alcance aprobado: recepción y horarios
+
+8 de noviembre de 2026. Se conserva arriba el plan original como evidencia histórica. A solicitud del usuario, el formulario permite altas de dueño y mascota durante la cita y utiliza una fecha con turnos de 30 minutos. El usuario confirmó: “Cierre a las 18:00; última cita a las 17:30”. Se implementan horarios desde 10:00, validación de servidor y consulta de disponibilidad. El dashboard corresponde al trabajo interno de la clínica. Véanse U01–U04 en la matriz y el informe actualizado. No se implementó correo real ni un portal de autoservicio.

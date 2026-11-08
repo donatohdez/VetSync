@@ -1,0 +1,18 @@
+
+> vetsync@1.0.0 test:e2e
+> playwright test
+
+
+Running 7 tests using 1 worker
+
+(node:35684) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/clinic.spec.ts:16:1 › recorre registros, agenda, conflicto, historial y correo simulado (1.1s)
+  ✓  2 tests/e2e/clinic.spec.ts:103:1 › navegación móvil sin desbordamiento horizontal (173ms)
+  ✓  3 tests/e2e/polish.spec.ts:86:1 › selector de historial con búsqueda, contexto del paciente y notas (234ms)
+  ✓  4 tests/e2e/polish.spec.ts:121:1 › Escape cierra el selector antes del modal y permite selección por teclado (141ms)
+  ✓  5 tests/e2e/polish.spec.ts:142:1 › guardado con estado de carga, conflicto legible y aviso descartable (1.1s)
+  ✓  6 tests/e2e/polish.spec.ts:184:1 › una respuesta antigua no reemplaza el historial recién seleccionado (212ms)
+  ✓  7 tests/e2e/polish.spec.ts:229:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento (136ms)
+
+  7 passed (3.8s)

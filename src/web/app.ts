@@ -1,3 +1,9 @@
+import { icon, hydrateIcons, type IconName } from "./components/icons.js";
+import {
+  enhanceSelects,
+  syncSelect,
+  closeSelects,
+} from "./components/select.js";
 interface Owner {
   id: string;
   name: string;
@@ -36,6 +42,13 @@ interface MedicalRecord {
   veterinarianId: string;
   recordedAt: string;
   clinicalNote: string;
+}
+interface AppointmentSlot {
+  time: string;
+  startsAt: string;
+  endsAt: string;
+  available: boolean;
+  reason: "past" | "occupied" | null;
 }
 interface ClinicConfig {
   timeZone: string;
@@ -83,11 +96,53 @@ async function api<T>(path: string, body?: unknown): Promise<T> {
   }
   return result as T;
 }
+let noticeTimer: ReturnType<typeof setTimeout> | undefined;
+function clearNotice(): void {
+  if (noticeTimer) clearTimeout(noticeTimer);
+  q("#notice").hidden = true;
+}
 function notice(message: string, error = false): void {
-  const node = q("#notice");
-  node.textContent = message;
-  node.classList.toggle("error", error);
-  node.hidden = false;
+  clearNotice();
+  const box = q("#notice");
+  const copy = element("span", "notice-copy", message);
+  const close = element("button", "icon-button");
+  close.type = "button";
+  close.setAttribute("aria-label", "Cerrar aviso");
+  close.append(icon("close"));
+  close.addEventListener("click", clearNotice);
+  box.classList.toggle("error", error);
+  box.replaceChildren(icon(error ? "warning" : "check"), copy, close);
+  box.hidden = false;
+  if (!error) noticeTimer = setTimeout(clearNotice, 7000);
+}
+function buttonContents(
+  button: HTMLButtonElement,
+  label: string,
+  name: IconName,
+  loading = false,
+): void {
+  button.replaceChildren(
+    icon(loading ? "spinner" : name, loading ? "spinning" : ""),
+    element("span", "", label),
+  );
+}
+function emptyState(
+  title: string,
+  message: string,
+  name: IconName,
+  action?: { label: string; run: () => void },
+): HTMLElement {
+  const box = element("div", "empty-state"),
+    mark = element("span", "empty-icon");
+  mark.append(icon(name));
+  box.append(mark, element("h3", "", title), element("p", "", message));
+  if (action) {
+    const button = element("button", "button secondary", action.label);
+    button.type = "button";
+    button.addEventListener("click", action.run);
+    box.append(button);
+  }
+  return box;
 }
 function report(error: unknown): void {
   notice(
@@ -100,7 +155,9 @@ function date(value: string, withTime = false): string {
     timeZone: state.config.timeZone,
     day: "numeric",
     month: "short",
-    ...(withTime ? { hour: "2-digit", minute: "2-digit" } : {}),
+    ...(withTime
+      ? { year: "numeric", hour: "2-digit", minute: "2-digit" }
+      : {}),
   }).format(new Date(value));
 }
 function time(value: string): string {
@@ -129,25 +186,42 @@ function field(form: HTMLFormElement, name: string): HTMLInputElement {
 }
 function options(
   select: HTMLSelectElement,
-  items: { id: string; name: string }[],
+  items: { id: string; name: string; description?: string }[],
   selected?: string,
+  placeholder?: string,
 ): void {
   select.replaceChildren(
     ...items.map((item) => {
       const option = element("option", "", item.name);
       option.value = item.id;
+      if (item.description) option.dataset.description = item.description;
       return option;
     }),
   );
+  if (placeholder) {
+    const empty = element("option", "", placeholder);
+    empty.value = "";
+    empty.disabled = true;
+    select.prepend(empty);
+    select.value = "";
+  }
   if (selected && items.some((item) => item.id === selected))
     select.value = selected;
+  syncSelect(select);
+}
+function petChoices() {
+  return state.pets.map((p) => ({
+    ...p,
+    description: `${p.species} · ${state.owners.find((o) => o.id === p.ownerId)?.name ?? "Dueño"}`,
+  }));
 }
 function petAvatar(pet: Pet): HTMLElement {
-  return element(
+  const mark = element(
     "span",
     `pet-avatar ${pet.species === "Gato" ? "cat" : ""}`,
-    pet.species === "Gato" ? "🐈" : pet.species === "Perro" ? "🐕" : "🐾",
   );
+  mark.append(icon("paw"));
+  return mark;
 }
 function renderAppointments(): void {
   const now = Date.now();
@@ -157,14 +231,24 @@ function renderAppointments(): void {
   q("#appointment-count").textContent =
     `${appointments.length} ${appointments.length === 1 ? "cita" : "citas"} ${state.upcomingOnly ? "próximas" : "registradas"}`;
   q("#zone-label").textContent = state.config.timeZone;
-  q("#agenda-empty").hidden = appointments.length !== 0;
+  const empty = q("#agenda-empty");
+  empty.hidden = appointments.length !== 0;
+  if (!appointments.length)
+    empty.replaceChildren(
+      emptyState(
+        "Tu agenda tiene espacio",
+        "Agenda una cita para acompañar a tu próximo paciente.",
+        "calendar",
+        { label: "Crear primera cita", run: () => openForm("appointment") },
+      ),
+    );
   q("#appointments-body").replaceChildren(
     ...appointments.map((a) => {
       const pet = state.pets.find((p) => p.id === a.petId),
         owner = state.owners.find((o) => o.id === pet?.ownerId),
         vet = state.vets.find((v) => v.id === a.veterinarianId);
       const row = element("tr"),
-        patient = element("td"),
+        patient = element("td", "patient-column"),
         cell = element("div", "patient-cell"),
         details = element("div");
       if (pet) cell.append(petAvatar(pet));
@@ -174,7 +258,8 @@ function renderAppointments(): void {
       );
       cell.append(details);
       patient.append(cell);
-      const schedule = element("td");
+      const schedule = element("td", "date-column");
+      schedule.dataset.label = "Fecha y hora";
       schedule.append(
         element("span", "date-primary", date(a.startsAt)),
         element(
@@ -183,122 +268,245 @@ function renderAppointments(): void {
           `${time(a.startsAt)} – ${time(a.endsAt)}`,
         ),
       );
-      const status = element("td"),
-        isPast = new Date(a.startsAt).getTime() <= now;
+      const vetCell = element(
+        "td",
+        "vet-column",
+        vet?.name ?? "Veterinario no activo",
+      );
+      vetCell.dataset.label = "Veterinario";
+      const reason = element("td", "reason-column", a.reason);
+      reason.dataset.label = "Motivo";
+      const status = element("td", "status-column"),
+        past = new Date(a.startsAt).getTime() <= now;
       status.append(
         element(
           "span",
-          `badge${isPast ? " past" : ""}`,
-          isPast ? "Fecha transcurrida" : "Programada",
+          `badge${past ? " past" : ""}`,
+          past ? "Fecha transcurrida" : "Programada",
         ),
       );
-      row.append(
-        patient,
-        schedule,
-        element("td", "", vet?.name ?? "Veterinario no activo"),
-        element("td", "", a.reason),
-        status,
-      );
+      row.append(patient, schedule, vetCell, reason, status);
       return row;
     }),
   );
 }
 function renderPatients(): void {
-  const cards = state.pets.map((p) => {
+  const query = q<HTMLInputElement>("#patient-search")
+    .value.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+  const pets = state.pets.filter((p) =>
+    `${p.name} ${p.species} ${state.owners.find((o) => o.id === p.ownerId)?.name ?? ""}`
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .includes(query),
+  );
+  q("#patient-count").textContent =
+    `${pets.length} ${pets.length === 1 ? "paciente" : "pacientes"}`;
+  const cards = pets.map((p) => {
     const card = element("article", "patient-card"),
       owner = state.owners.find((o) => o.id === p.ownerId),
-      button = element("button", "button secondary", "Ver historial ↗");
+      header = element("div", "patient-card-header"),
+      title = element("div");
+    title.append(
+      element("h3", "", p.name),
+      element("span", "species-tag", p.species),
+    );
+    header.append(petAvatar(p), title);
+    const details = element("div", "patient-card-details");
+    details.append(
+      element("p", "patient-breed", p.breed ?? "Raza no especificada"),
+    );
+    const ownerRow = element("p", "patient-owner");
+    ownerRow.append(
+      icon("user"),
+      element("span", "", owner?.name ?? "Sin dueño registrado"),
+    );
+    details.append(ownerRow);
+    const button = element("button", "button patient-history");
+    button.type = "button";
+    buttonContents(button, "Ver historial", "arrow");
     button.addEventListener("click", () => {
-      q<HTMLSelectElement>("#history-pet").value = p.id;
+      const select = q<HTMLSelectElement>("#history-pet");
+      select.value = p.id;
+      syncSelect(select);
       void switchView("history");
     });
-    card.append(
-      petAvatar(p),
-      element("h3", "", p.name),
-      element("p", "", `${p.species}${p.breed ? ` · ${p.breed}` : ""}`),
-      element("p", "", `Dueño: ${owner?.name ?? "—"}`),
-      button,
-    );
+    card.append(header, details, button);
     return card;
   });
-  q("#patients-grid").replaceChildren(...cards);
+  const grid = q("#patients-grid");
+  grid.replaceChildren(...cards);
   if (!cards.length)
-    q("#patients-grid").append(
-      element(
-        "p",
-        "empty",
-        "Aún no hay pacientes. Registra un dueño y su mascota para comenzar.",
+    grid.append(
+      emptyState(
+        query
+          ? "No encontramos ese paciente"
+          : "Cada historia empieza por un nombre",
+        query
+          ? "Prueba con el nombre de la mascota o de su dueño."
+          : "Registra un dueño y su mascota para comenzar.",
+        "paw",
+        query
+          ? undefined
+          : { label: "Registrar dueño", run: () => openForm("owner") },
       ),
     );
 }
+let historyRequest = 0;
 async function renderHistory(): Promise<void> {
-  const select = q<HTMLSelectElement>("#history-pet"),
+  const request = ++historyRequest,
+    select = q<HTMLSelectElement>("#history-pet"),
     petId = select.value,
-    list = q("#history-list");
-  if (!petId) {
+    list = q("#history-list"),
+    profile = q("#history-patient");
+  const pet = state.pets.find((p) => p.id === petId),
+    owner = state.owners.find((o) => o.id === pet?.ownerId);
+  if (!pet) {
+    profile.hidden = true;
+    list.removeAttribute("aria-busy");
     list.replaceChildren(
-      element("p", "empty", "Registra una mascota para comenzar su historial."),
+      emptyState(
+        "Un expediente para cada paciente",
+        "Registra una mascota para comenzar su historial.",
+        "clipboard",
+      ),
     );
     return;
   }
-  list.replaceChildren(element("p", "empty", "Cargando historial…"));
+  profile.hidden = false;
+  const details = element("div", "history-patient-copy");
+  details.append(
+    element("h3", "", pet.name),
+    element("p", "", `${pet.species}${pet.breed ? ` · ${pet.breed}` : ""}`),
+    element("span", "", `Dueño: ${owner?.name ?? "—"}`),
+  );
+  profile.replaceChildren(petAvatar(pet), details);
+  list.setAttribute("aria-busy", "true");
+  const loading = element("div", "loading-state");
+  loading.append(
+    icon("spinner", "spinning"),
+    element("span", "", "Cargando historial…"),
+  );
+  list.replaceChildren(loading);
   try {
     const records = await api<MedicalRecord[]>(
       `/pets/${encodeURIComponent(petId)}/medical-records`,
     );
-    if (select.value !== petId) return;
+    if (request !== historyRequest) return;
+    profile.append(
+      element(
+        "span",
+        "record-count",
+        `${records.length} ${records.length === 1 ? "nota clínica" : "notas clínicas"}`,
+      ),
+    );
     list.replaceChildren(
       ...records.map((r) => {
-        const item = element("article");
-        item.append(
+        const item = element("article", "timeline-entry"),
+          marker = element("span", "timeline-marker");
+        marker.append(icon("clipboard"));
+        const content = element("div", "timeline-card"),
+          header = element("div", "timeline-heading");
+        header.append(
           element("strong", "", date(r.recordedAt, true)),
+          element("span", "badge", "Atención registrada"),
+        );
+        const clinician = element("p", "timeline-clinician");
+        clinician.append(
+          icon("medical"),
           element(
-            "small",
+            "span",
             "",
             state.vets.find((v) => v.id === r.veterinarianId)?.name ??
               "Veterinario",
           ),
-          element("p", "", r.clinicalNote),
         );
+        content.append(
+          header,
+          clinician,
+          element("p", "clinical-note", r.clinicalNote),
+        );
+        item.append(marker, content);
         return item;
       }),
     );
     if (!records.length)
       list.append(
-        element(
-          "p",
-          "empty",
-          "Su historia empieza aquí. Agrega la primera nota clínica.",
+        emptyState(
+          "Sin notas clínicas todavía",
+          "Aquí aparecerán las atenciones y el seguimiento de este paciente.",
+          "clipboard",
+          { label: "Agregar primera nota", run: () => openForm("record") },
         ),
       );
   } catch (error) {
+    if (request !== historyRequest) return;
     list.replaceChildren(
-      element("p", "empty", "No se pudo cargar el historial."),
+      emptyState(
+        "No se pudo cargar el historial",
+        "Intenta consultar de nuevo en unos momentos.",
+        "warning",
+        {
+          label: "Volver a intentar",
+          run: () => {
+            void renderHistory();
+          },
+        },
+      ),
     );
     report(error);
+  } finally {
+    if (request === historyRequest) list.removeAttribute("aria-busy");
   }
 }
 function renderReminders(): void {
   const cards = state.reminders.map((r) => {
-    const card = element("article", "notification");
-    card.append(
-      element("strong", "", `Para: ${r.recipient}`),
-      element("p", "", r.message),
-      element(
-        "small",
-        "",
-        `Simulado el ${date(r.simulatedAt, true)} · Sin envío real`,
+    const appointment = state.appointments.find(
+        (a) => a.id === r.appointmentId,
       ),
+      pet = state.pets.find((p) => p.id === appointment?.petId);
+    const card = element("article", "notification"),
+      header = element("div", "notification-heading"),
+      mark = element("span", "notification-mark");
+    mark.append(icon("mail"));
+    const heading = element("div", "notification-title");
+    heading.append(
+      element(
+        "h3",
+        "",
+        pet ? `Recordatorio para ${pet.name}` : "Recordatorio de cita",
+      ),
+      element("p", "", `Para: ${r.recipient}`),
+    );
+    header.append(
+      mark,
+      heading,
+      element("span", "badge simulated", "Simulado"),
+    );
+    const footer = element("div", "notification-footer");
+    footer.append(
+      icon("clock"),
+      element("span", "", `Registrado el ${date(r.simulatedAt, true)}`),
+      element("span", "delivery-note", "Sin envío real"),
+    );
+    card.append(
+      header,
+      element("p", "notification-message", r.message),
+      footer,
     );
     return card;
   });
-  q("#notifications-list").replaceChildren(...cards);
+  const list = q("#notifications-list");
+  list.replaceChildren(...cards);
   if (!cards.length)
-    q("#notifications-list").append(
-      element(
-        "p",
-        "empty",
-        "Todavía no hay recordatorios. Ejecuta la simulación para revisar las citas próximas.",
+    list.append(
+      emptyState(
+        "Todo listo para el próximo aviso",
+        "Simula los recordatorios de las citas próximas. Los mensajes aparecerán aquí.",
+        "mail",
       ),
     );
 }
@@ -326,10 +534,16 @@ async function refresh(): Promise<void> {
   q("#stat-reminders").textContent = String(reminders.length);
   q("#reminder-window").textContent = String(config.reminderHours);
   const historySelect = q<HTMLSelectElement>("#history-pet");
-  options(historySelect, pets, historySelect.value);
+  options(historySelect, petChoices(), historySelect.value);
   renderAppointments();
   renderPatients();
   renderReminders();
+  q("#today-label").textContent = new Intl.DateTimeFormat("es-MX", {
+    timeZone: config.timeZone,
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date());
   if (state.view === "history") await renderHistory();
 }
 const titles: Record<View, [string, string, string]> = {
@@ -355,7 +569,11 @@ const titles: Record<View, [string, string, string]> = {
   ],
 };
 async function switchView(view: View): Promise<void> {
+  clearNotice();
+  closeSelects();
+  if (state.view === "history" && view !== "history") historyRequest++;
   state.view = view;
+  window.scrollTo({ top: 0, behavior: "auto" });
   const [name, title, subtitle] = titles[view];
   q("#breadcrumb-current").textContent = name;
   q("#page-title").textContent = title;
@@ -365,32 +583,193 @@ async function switchView(view: View): Promise<void> {
   });
   document.querySelectorAll<HTMLElement>("[data-view]").forEach((node) => {
     node.classList.toggle("active", node.dataset.view === view);
+    if (node.dataset.view === view) node.setAttribute("aria-current", "page");
+    else node.removeAttribute("aria-current");
   });
   if (view === "history") await renderHistory();
 }
 const dialog = q<HTMLDialogElement>("#form-dialog");
-function openForm(kind: "appointment" | "owner" | "pet" | "record"): void {
-  if (
-    (kind === "appointment" || kind === "record") &&
-    (!state.pets.length || !state.vets.length)
-  ) {
-    notice(
-      "Primero registra una mascota y carga los veterinarios de demostración.",
-      true,
+let saving = false;
+type FormKind = "appointment" | "owner" | "pet" | "record";
+let activeKind: FormKind = "appointment";
+const formStack: { kind: FormKind; values: Record<string, string> }[] = [];
+let slots: AppointmentSlot[] = [];
+let availabilityRequest = 0;
+function clinicDay(value = new Date()): string {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: state.config.timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+      .formatToParts(value)
+      .map((p) => [p.type, p.value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+function selectedSlot(): AppointmentSlot | undefined {
+  return slots.find(
+    (slot) =>
+      slot.time === q<HTMLInputElement>("#appointment-time").value &&
+      slot.available,
+  );
+}
+function updateBookingButton(): void {
+  const form = q<HTMLFormElement>("#appointment-form");
+  q<HTMLButtonElement>("#appointment-form .submit-button").disabled =
+    saving ||
+    !field(form, "petId").value ||
+    !field(form, "veterinarianId").value ||
+    !selectedSlot();
+}
+function renderSlots(): void {
+  const group = q("#appointment-slots");
+  group.replaceChildren(
+    ...slots.map((slot) => {
+      const label = new Intl.DateTimeFormat("es-MX", {
+        timeZone: state.config.timeZone,
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }).format(new Date(slot.startsAt));
+      const button = element("button", "slot-button");
+      button.type = "button";
+      button.dataset.time = slot.time;
+      button.setAttribute("role", "radio");
+      button.setAttribute("aria-label", label);
+      button.setAttribute(
+        "aria-checked",
+        String(slot.time === q<HTMLInputElement>("#appointment-time").value),
+      );
+      button.disabled = !slot.available;
+      button.append(element("span", "", label));
+      if (slot.reason)
+        button.append(
+          element(
+            "small",
+            "",
+            slot.reason === "occupied" ? "Ocupado" : "Ya pasó",
+          ),
+        );
+      button.addEventListener("click", () => {
+        q<HTMLInputElement>("#appointment-time").value = slot.time;
+        q("#form-error").hidden = true;
+        renderSlots();
+        q<HTMLButtonElement>(`.slot-button[data-time="${slot.time}"]`).focus();
+        updateBookingButton();
+      });
+      button.addEventListener("keydown", (event) => {
+        if (
+          ![
+            "ArrowRight",
+            "ArrowLeft",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End",
+          ].includes(event.key)
+        )
+          return;
+        event.preventDefault();
+        const enabled = Array.from(
+          group.querySelectorAll<HTMLButtonElement>(
+            ".slot-button:not(:disabled)",
+          ),
+        );
+        const index = enabled.indexOf(button);
+        const next =
+          event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? enabled.length - 1
+              : (index +
+                  (["ArrowLeft", "ArrowUp"].includes(event.key) ? -1 : 1) +
+                  enabled.length) %
+                enabled.length;
+        enabled[next]?.click();
+      });
+      return button;
+    }),
+  );
+  if (!slots.some((slot) => slot.available))
+    group.append(
+      element(
+        "p",
+        "slots-empty",
+        "No hay horarios disponibles para este día. Selecciona otra fecha.",
+      ),
+    );
+}
+async function loadAvailability(): Promise<void> {
+  const request = ++availabilityRequest,
+    form = q<HTMLFormElement>("#appointment-form"),
+    dateValue = field(form, "date").value,
+    vet = field(form, "veterinarianId").value,
+    group = q("#appointment-slots");
+  slots = [];
+  updateBookingButton();
+  if (!dateValue || !vet) {
+    group.replaceChildren(
+      element(
+        "p",
+        "slots-empty",
+        "Selecciona un veterinario y una fecha para consultar horarios.",
+      ),
     );
     return;
   }
-  if (kind === "pet" && !state.owners.length) {
-    notice("Primero registra al dueño de la mascota.", true);
-    return;
+  group.setAttribute("aria-busy", "true");
+  const loading = element("p", "slots-loading");
+  loading.append(
+    icon("spinner", "spinning"),
+    element("span", "", "Consultando horarios…"),
+  );
+  group.replaceChildren(loading);
+  try {
+    const result = await api<AppointmentSlot[]>(
+      `/appointments/availability?date=${encodeURIComponent(dateValue)}&veterinarianId=${encodeURIComponent(vet)}`,
+    );
+    if (request !== availabilityRequest || activeKind !== "appointment") return;
+    slots = result;
+    if (!selectedSlot()) q<HTMLInputElement>("#appointment-time").value = "";
+    renderSlots();
+  } catch (error) {
+    if (request !== availabilityRequest) return;
+    group.replaceChildren(
+      element(
+        "p",
+        "slots-empty",
+        error instanceof Error
+          ? error.message
+          : "No se pudieron consultar los horarios.",
+      ),
+    );
+  } finally {
+    if (request === availabilityRequest) {
+      group.removeAttribute("aria-busy");
+      updateBookingButton();
+    }
   }
+}
+function openForm(kind: FormKind, preset: Record<string, string> = {}): void {
+  if (saving) return;
+  closeSelects();
+  availabilityRequest++;
+  activeKind = kind;
   const copy = {
     appointment: [
       "Agendar una cita",
-      "Un espacio en la agenda para cuidar de su salud.",
+      "Registra una visita desde recepción. Puedes dar de alta al dueño y a la mascota sin salir de este flujo.",
     ],
-    owner: ["Registrar dueño", "El primer paso para acompañar a su mascota."],
-    pet: ["Registrar mascota", "Queremos conocer a nuestro nuevo paciente."],
+    owner: [
+      "Registrar dueño",
+      "Registra a la persona responsable de la mascota.",
+    ],
+    pet: [
+      "Registrar mascota",
+      "Selecciona a su dueño o registra uno nuevo para completar el expediente.",
+    ],
     record: [
       "Agregar nota clínica",
       "Documenta la atención y el seguimiento del paciente.",
@@ -399,42 +778,128 @@ function openForm(kind: "appointment" | "owner" | "pet" | "record"): void {
   q("#dialog-title").textContent = copy[0] ?? "";
   q("#dialog-description").textContent = copy[1] ?? "";
   q("#form-error").hidden = true;
+  q("#form-flow-message").hidden = true;
   document.querySelectorAll<HTMLFormElement>("dialog form").forEach((form) => {
     form.hidden = form.id !== `${kind}-form`;
     if (!form.hidden) form.reset();
   });
-  document
-    .querySelectorAll<HTMLSelectElement>('dialog [name="petId"]')
-    .forEach((select) =>
-      options(select, state.pets, q<HTMLSelectElement>("#history-pet").value),
-    );
-  document
-    .querySelectorAll<HTMLSelectElement>('dialog [name="veterinarianId"]')
-    .forEach((select) => options(select, state.vets));
-  options(q<HTMLSelectElement>('#pet-form [name="ownerId"]'), state.owners);
-  const future = new Date(Date.now() + 3600000);
-  future.setMinutes(Math.ceil(future.getMinutes() / 30) * 30, 0, 0);
-  field(q("#appointment-form"), "startsAt").value = localInput(future);
-  field(q("#appointment-form"), "endsAt").value = localInput(
-    new Date(future.getTime() + 1800000),
+  options(
+    q<HTMLSelectElement>("#appointment-pet"),
+    petChoices(),
+    preset.petId,
+    "Selecciona una mascota",
   );
-  field(q("#record-form"), "recordedAt").value = localInput(new Date());
-  q<HTMLInputElement>('#pet-form [name="birthDate"]').max = localInput(
-    new Date(),
-  ).slice(0, 10);
+  options(
+    q<HTMLSelectElement>("#appointment-vet"),
+    state.vets,
+    preset.veterinarianId,
+    "Selecciona un veterinario",
+  );
+  options(
+    q<HTMLSelectElement>("#record-pet"),
+    petChoices(),
+    preset.petId ?? q<HTMLSelectElement>("#history-pet").value,
+  );
+  options(
+    q<HTMLSelectElement>("#record-vet"),
+    state.vets,
+    preset.veterinarianId,
+  );
+  options(
+    q<HTMLSelectElement>("#pet-owner"),
+    state.owners,
+    preset.ownerId,
+    state.owners.length ? "Selecciona un dueño" : "Registra primero un dueño",
+  );
+  const form = q<HTMLFormElement>(`#${kind}-form`);
+  if (kind === "appointment") {
+    field(form, "date").min = clinicDay();
+    field(form, "date").value = clinicDay();
+    field(form, "time").value = "";
+    q("#booking-zone").textContent =
+      `Todos los horarios corresponden a la clínica: ${state.config.timeZone}.`;
+  }
+  if (kind === "record") {
+    field(form, "recordedAt").value = localInput(new Date());
+    field(form, "recordedAt").max = localInput(new Date());
+  }
+  q<HTMLInputElement>('#pet-form [name="birthDate"]').max = new Date()
+    .toISOString()
+    .slice(0, 10);
+  for (const [name, value] of Object.entries(preset)) {
+    const input = form.elements.namedItem(name);
+    if (
+      input instanceof HTMLInputElement ||
+      input instanceof HTMLTextAreaElement ||
+      input instanceof HTMLSelectElement
+    )
+      input.value = value;
+  }
   const deviceZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   document.querySelectorAll<HTMLElement>(".time-hint").forEach((node) => {
-    node.textContent = `Ingresa la hora de tu dispositivo (${deviceZone}). La agenda se muestra en ${state.config.timeZone}.`;
+    node.textContent =
+      deviceZone === state.config.timeZone
+        ? `Horario de la clínica: ${state.config.timeZone}.`
+        : `Hora de tu dispositivo: ${deviceZone}. La agenda se muestra en ${state.config.timeZone}.`;
   });
-  dialog.showModal();
+  document
+    .querySelectorAll<HTMLSelectElement>("dialog select")
+    .forEach(syncSelect);
+  const back = q("#return-form");
+  back.hidden = !formStack.length;
+  q("#return-form-label").textContent =
+    formStack.at(-1)?.kind === "appointment"
+      ? "Volver a la cita"
+      : "Volver al registro de mascota";
+  q<HTMLButtonElement>("#pet-form .submit-button").disabled =
+    !state.owners.length;
+  document.body.classList.add("dialog-open");
+  if (!dialog.open) dialog.showModal();
+  dialog.scrollTop = 0;
+  form
+    .querySelector<HTMLElement>(
+      ".select-trigger:not(:disabled),input:not(.select-search-input):not([type=hidden]),textarea",
+    )
+    ?.focus();
+  if (kind === "appointment") void loadAvailability();
 }
+function pushForm(kind: FormKind): void {
+  formStack.push({
+    kind: activeKind,
+    values: formValues(q<HTMLFormElement>(`#${activeKind}-form`)),
+  });
+  openForm(kind);
+}
+q("#appointment-register-pet").addEventListener("click", () => pushForm("pet"));
+q("#pet-register-owner").addEventListener("click", () => pushForm("owner"));
+q("#return-form").addEventListener("click", () => {
+  if (saving) return;
+  const parent = formStack.pop();
+  if (parent) openForm(parent.kind, parent.values);
+});
+q("#appointment-date").addEventListener("change", () => {
+  q<HTMLInputElement>("#appointment-time").value = "";
+  void loadAvailability();
+});
+q("#appointment-vet").addEventListener("change", () => {
+  q<HTMLInputElement>("#appointment-time").value = "";
+  void loadAvailability();
+});
+q("#appointment-pet").addEventListener("change", updateBookingButton);
 for (const kind of ["appointment", "owner", "pet", "record"] as const) {
-  q(`#new-${kind}`).addEventListener("click", () => openForm(kind));
+  q(`#new-${kind}`).addEventListener("click", () => {
+    formStack.length = 0;
+    openForm(kind);
+  });
   q<HTMLFormElement>(`#${kind}-form`).addEventListener("submit", (event) => {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement,
       button = q<HTMLButtonElement>(`#${form.id} .submit-button`);
     button.disabled = true;
+    saving = true;
+    q<HTMLButtonElement>("#close-dialog").disabled = true;
+    const originalLabel = button.textContent?.trim() ?? "Guardar";
+    buttonContents(button, "Guardando…", "check", true);
     void (async () => {
       try {
         const values = formValues(form);
@@ -442,10 +907,14 @@ for (const kind of ["appointment", "owner", "pet", "record"] as const) {
           body: unknown;
         if (kind === "appointment") {
           path = "/appointments";
+          const slot = selectedSlot();
+          if (!slot) throw new Error("Selecciona un horario disponible.");
           body = {
-            ...values,
-            startsAt: new Date(values.startsAt ?? "").toISOString(),
-            endsAt: new Date(values.endsAt ?? "").toISOString(),
+            petId: values.petId,
+            veterinarianId: values.veterinarianId,
+            startsAt: slot.startsAt,
+            endsAt: slot.endsAt,
+            reason: values.reason,
           };
         }
         if (kind === "owner") {
@@ -468,42 +937,89 @@ for (const kind of ["appointment", "owner", "pet", "record"] as const) {
             clinicalNote: values.clinicalNote,
           };
         }
-        await api(path, body);
-        dialog.close();
-        notice("Información guardada correctamente.");
+        const created = await api<{ id: string }>(path, body);
         await refresh();
+        if ((kind === "owner" || kind === "pet") && formStack.length) {
+          const parent = formStack.pop()!;
+          parent.values[kind === "owner" ? "ownerId" : "petId"] = created.id;
+          saving = false;
+          openForm(parent.kind, parent.values);
+          q("#form-flow-message").textContent =
+            kind === "owner"
+              ? "Dueño registrado. Continúa con los datos de la mascota."
+              : "Mascota registrada. Puedes continuar con la cita.";
+          q("#form-flow-message").hidden = false;
+        } else {
+          dialog.close();
+          const messages = {
+            appointment: "Cita agendada. Todo listo para su próxima visita.",
+            owner: "Dueño registrado correctamente.",
+            pet: "Mascota registrada. Su historia comienza aquí.",
+            record: "Nota clínica guardada en el historial.",
+          };
+          notice(messages[kind]);
+        }
       } catch (error) {
         if (dialog.open) {
-          q("#form-error").textContent =
-            error instanceof Error ? error.message : "No se pudo guardar.";
-          q("#form-error").hidden = false;
+          const errorBox = q("#form-error");
+          errorBox.replaceChildren(
+            icon("warning"),
+            element(
+              "span",
+              "",
+              error instanceof Error ? error.message : "No se pudo guardar.",
+            ),
+          );
+          errorBox.hidden = false;
+          errorBox.focus();
         } else report(error);
       } finally {
         button.disabled = false;
+        saving = false;
+        q<HTMLButtonElement>("#close-dialog").disabled = false;
+        buttonContents(button, originalLabel, "check");
+        if (activeKind === "appointment") updateBookingButton();
       }
     })();
   });
 }
-q("#close-dialog").addEventListener("click", () => dialog.close());
-q<HTMLInputElement>('#appointment-form [name="startsAt"]').addEventListener(
-  "change",
-  (event) => {
-    const value = (event.target as HTMLInputElement).value;
-    if (value)
-      q<HTMLInputElement>('#appointment-form [name="endsAt"]').value =
-        localInput(new Date(new Date(value).getTime() + 1800000));
-  },
-);
+q("#close-dialog").addEventListener("click", () => {
+  if (!saving) dialog.close();
+});
+dialog.addEventListener("cancel", (event) => {
+  if (saving) event.preventDefault();
+});
+dialog.addEventListener("close", () => {
+  closeSelects();
+  document.body.classList.remove("dialog-open");
+  formStack.length = 0;
+  availabilityRequest++;
+});
+dialog.addEventListener("click", (event) => {
+  if (event.target !== dialog || saving) return;
+  const b = dialog.getBoundingClientRect();
+  if (
+    event.clientX < b.left ||
+    event.clientX > b.right ||
+    event.clientY < b.top ||
+    event.clientY > b.bottom
+  )
+    dialog.close();
+});
 q("#filter-upcoming").addEventListener("click", () => {
   state.upcomingOnly = true;
   q("#filter-upcoming").classList.add("selected");
   q("#filter-all").classList.remove("selected");
+  q("#filter-upcoming").setAttribute("aria-pressed", "true");
+  q("#filter-all").setAttribute("aria-pressed", "false");
   renderAppointments();
 });
 q("#filter-all").addEventListener("click", () => {
   state.upcomingOnly = false;
   q("#filter-all").classList.add("selected");
   q("#filter-upcoming").classList.remove("selected");
+  q("#filter-all").setAttribute("aria-pressed", "true");
+  q("#filter-upcoming").setAttribute("aria-pressed", "false");
   renderAppointments();
 });
 q("#history-pet").addEventListener("change", () => {
@@ -517,12 +1033,13 @@ document.querySelectorAll<HTMLElement>("[data-view]").forEach((button) =>
 q("#run-reminders").addEventListener("click", (event) => {
   const button = event.currentTarget as HTMLButtonElement;
   button.disabled = true;
+  buttonContents(button, "Preparando avisos…", "mail", true);
   void (async () => {
     try {
       const result = await api<{ sent: number }>("/notifications/run", {});
       notice(
         result.sent
-          ? `${result.sent} recordatorio(s) simulado(s). No se enviaron correos reales.`
+          ? `${result.sent} ${result.sent === 1 ? "recordatorio simulado" : "recordatorios simulados"}. No se enviaron correos reales.`
           : "No hay nuevos recordatorios pendientes.",
       );
       await refresh();
@@ -530,6 +1047,7 @@ q("#run-reminders").addEventListener("click", (event) => {
       report(error);
     } finally {
       button.disabled = false;
+      buttonContents(button, "Simular recordatorios", "mail");
     }
   })();
 });
@@ -538,4 +1056,7 @@ q("#today-label").textContent = new Intl.DateTimeFormat("es-MX", {
   month: "long",
   year: "numeric",
 }).format(new Date());
+q("#patient-search").addEventListener("input", renderPatients);
+hydrateIcons();
+enhanceSelects();
 void refresh().catch(report);

@@ -27,4 +27,8 @@ Código funcional validado en el primer CI: `cfba2fc4e274ab169288891628a2b500b70
 
 ## Antes de enviar a la plataforma
 
-El estudiante debe revisar la bitácora y la reflexión, confirmar el texto exacto enviado a Claude si lo modificó, recorrer la aplicación y comprobar que puede explicar sus decisiones. Después debe enviar el enlace y los documentos requeridos; no se ha realizado la entrega en la plataforma escolar.
+El estudiante debe revisar la bitácora y la reflexión, recorrer la aplicación y comprobar que puede explicar sus decisiones. Después debe enviar el enlace y los documentos requeridos; no se ha realizado la entrega en la plataforma escolar.
+
+## Actualización funcional
+
+La última validación local registra 81 pruebas de backend y diez de navegador, con recepción, registro durante reserva, disponibilidad y diseño pulido. La primera ejecución de CI citada arriba es histórica; el workflow enlazado permite comprobar la versión más reciente. El estudiante confirmó el uso literal del prompt preparado para Claude.

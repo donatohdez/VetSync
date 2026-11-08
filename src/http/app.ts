@@ -1,3 +1,5 @@
+import type { ListAvailability } from "../modules/appointments/application/list-availability.js";
+import { clinicHours } from "../modules/appointments/domain/clinic-hours.js";
 import express, { type Express, type ErrorRequestHandler } from "express";
 import helmet from "helmet";
 import path from "node:path";
@@ -15,6 +17,7 @@ export interface Services {
   pets: Pets;
   medicalRecords: MedicalRecords;
   schedule: ScheduleAppointment;
+  availability: ListAvailability;
   sendReminders: SendReminders;
   appointments: AppointmentRepository;
   veterinarians: VeterinarianRepository;
@@ -52,7 +55,7 @@ export function createApp(
     res.json({ status: "ok" });
   });
   app.get("/api/config", (_req, res) => {
-    res.json(options);
+    res.json({ ...options, bookingHours: clinicHours });
   });
   app.get("/api/owners", async (_req, res) => {
     res.json(await services.owners.list());
@@ -76,6 +79,9 @@ export function createApp(
     res
       .status(201)
       .json(await services.medicalRecords.create(req.params.petId, req.body));
+  });
+  app.get("/api/appointments/availability", async (req, res) => {
+    res.json(await services.availability.execute(req.query));
   });
   app.get("/api/appointments", async (_req, res) => {
     res.json(await services.appointments.list());

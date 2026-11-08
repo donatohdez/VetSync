@@ -1,0 +1,38 @@
+
+> vetsync@1.0.0 test:e2e
+> playwright test tests/e2e/polish.spec.ts -g móvil:
+
+
+Running 1 test using 1 worker
+
+(node:35936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/polish.spec.ts:229:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento (5.2s)
+
+
+  1) tests/e2e/polish.spec.ts:229:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.select-popup:not([hidden])')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('.select-popup:not([hidden])') with timeout 5000ms
+      - waiting for locator('.select-popup:not([hidden])')
+
+
+      259 |   await page.setViewportSize({width:430,height:900});
+      260 |   await page.waitForFunction(()=>document.documentElement.dataset.resized==='true');
+    > 261 |   await expect(popup).toBeVisible();
+          |                       ^
+      262 | });
+      263 |
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:261:23
+
+    Error Context: work/playwright-results/polish-móvil-navegación-co-45a6a-selector-sin-desbordamiento/error-context.md
+
+  1 failed
+    tests/e2e/polish.spec.ts:229:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento 

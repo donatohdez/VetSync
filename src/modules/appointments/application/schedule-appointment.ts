@@ -1,3 +1,4 @@
+import { assertClinicHours } from "../domain/clinic-hours.js";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import type {
@@ -25,6 +26,7 @@ export class ScheduleAppointment {
   constructor(
     private readonly repository: AppointmentRepository,
     private readonly clock: Clock,
+    private readonly timeZone: string = "America/Hermosillo",
   ) {}
   async execute(input: unknown): Promise<Appointment> {
     const data = parse(schema, input);
@@ -40,6 +42,7 @@ export class ScheduleAppointment {
         "VALIDATION_ERROR",
         "El fin debe ser posterior al inicio.",
       );
+    assertClinicHours(startsAt, endsAt, this.timeZone);
     const appointment: Appointment = {
       ...data,
       id: randomUUID(),

@@ -1,0 +1,21 @@
+
+> vetsync@1.0.0 test:e2e
+> playwright test
+
+
+Running 10 tests using 1 worker
+
+(node:38696) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/booking.spec.ts:15:1 › recepción registra dueño y mascota desde la cita y reserva un bloque de media hora (817ms)
+  ✓   2 tests/e2e/booking.spec.ts:115:3 › iconos centrados y flechas con margen en 1440px (157ms)
+  ✓   3 tests/e2e/booking.spec.ts:115:3 › iconos centrados y flechas con margen en 390px (147ms)
+  ✓   4 tests/e2e/clinic.spec.ts:15:1 › recorre registros, agenda, disponibilidad, historial y correo simulado (1.0s)
+  ✓   5 tests/e2e/clinic.spec.ts:141:1 › navegación móvil sin desbordamiento horizontal (163ms)
+  ✓   6 tests/e2e/polish.spec.ts:105:1 › selector de historial con búsqueda, contexto del paciente y notas (239ms)
+  ✓   7 tests/e2e/polish.spec.ts:140:1 › Escape cierra el selector antes del modal y permite selección por teclado (141ms)
+  ✓   8 tests/e2e/polish.spec.ts:161:1 › guardado con estado de carga, conflicto legible y aviso descartable (1.1s)
+  ✓   9 tests/e2e/polish.spec.ts:218:1 › una respuesta antigua no reemplaza el historial recién seleccionado (205ms)
+  ✓  10 tests/e2e/polish.spec.ts:263:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento (150ms)
+
+  10 passed (5.0s)

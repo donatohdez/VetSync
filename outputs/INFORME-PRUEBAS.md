@@ -8,9 +8,9 @@ Fecha: 8 de noviembre de 2026. Directorio activo: `/Users/donato/Ago-Dic 2026/Fu
 - TypeScript: sin errores al ejecutar `npm run typecheck`.
 - ESLint: sin errores al ejecutar `npm run lint`.
 - Compilación backend/frontend y copia de recursos: correcta con `npm run build`.
-- 34 pruebas unitarias y 25 pruebas de integración: **59 aprobadas**.
-- Cobertura: **98.94% líneas, 98.46% sentencias, 98.46% funciones y 96.96% ramas**; mínimo configurado 80% en cada métrica.
-- Dos pruebas Playwright: recorrido funcional en escritorio y navegación móvil. Evidencia tras las correcciones en `docs/evidencias/revision/07-navegador-corregido.txt`.
+- 49 pruebas unitarias y 32 pruebas de integración: **81 aprobadas**.
+- Cobertura: **98.70% líneas, 98.33% sentencias, 98.63% funciones y 97.82% ramas**; mínimo configurado 80% en cada métrica.
+- Diez pruebas Playwright: recorridos con MySQL para registro/reserva y móvil; casos de selectores, historial, errores y geometría. Resultado final en `docs/evidencias/pruebas/navegador-recepcion-final.txt`. Las pruebas de `polish.spec.ts` usan respuestas HTTP controladas; no sustituyen las de MySQL.
 - Auditoría npm: cero alertas en el resultado archivado en `docs/evidencias/pruebas/npm-audit.json`.
 
 Las exclusiones de cobertura están declaradas en `vitest.config.ts` y justificadas en arquitectura: arranque, configuración de entorno, composición y UI. La UI se verifica con Playwright, no se incluye artificialmente en cobertura de unitarias.
@@ -46,6 +46,14 @@ Los tests de integración borran únicamente registros de `vetsync_test`; no mod
 - B1: una zona horaria no reconocida se rechaza al interpretar la configuración.
 - B2: los avisos nuevos usan la zona de clínica y la identifican; prueba de composición en Asia/Tokyo, conservando UTC en BD.
 - B4: se conservan el error original y el de rollback con AggregateError; una prueba simula el fallo de rollback, sin afirmar que se cortó una conexión real.
-- B3: duración y horizonte máximos se mantienen como decisión de negocio pendiente, no como requisito inventado.
+- B3: después de aquella revisión, el usuario definió duración exacta de 30 minutos y horario de 10:00 a 18:00. Se implementaron mediante un nuevo ciclo TDD. El horizonte máximo continúa sin definirse.
 
 La verificación completa posterior está en `docs/evidencias/revision/06-verificacion-corregida.txt`. Las pruebas originales y su resultado de 36 casos se conservan como evidencia histórica en `docs/evidencias/pruebas/`.
+
+## Validación de recepción y diseño
+
+`npm run check` aprobó tipos, lint, compilación y los 81 casos de backend con cobertura: `docs/evidencias/pruebas/verificacion-recepcion.txt`. La ejecución final de `npm run test:e2e` con Chromium local aprobó los diez casos: `docs/evidencias/pruebas/navegador-recepcion-final.txt`.
+
+Se verificaron los 16 bloques, último inicio 17:30, duración de 30 minutos, fechas y disponibilidad por veterinario, rechazo HTTP de horarios inválidos y registro de dueño/mascota sin perder el borrador de la cita. Se midieron X y flechas a 1440 y 390 px. La consulta de disponibilidad no sustituye el bloqueo transaccional al reservar. Las fechas antiguas de la base de demostración se conservaron; el seed nuevo utiliza los bloques acordados sin reescribir filas existentes.
+
+Los registros rojos de UI, redimensionamiento y reglas están en `docs/evidencias/tdd/08*` a `14*`. El descubrimiento accidental de una copia temporal del repositorio por Vitest se registró y se corrigió delimitando la búsqueda a `tests/unit/` y `tests/integration/`; ese fallo de infraestructura no se cuenta como rojo de negocio.

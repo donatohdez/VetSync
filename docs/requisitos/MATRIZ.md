@@ -34,3 +34,16 @@ Fuentes: `../referencias/presentacion-profesor.pdf` (20 páginas) y `../referenc
 - El registro de veterinarios es soporte necesario para asignar citas: puede resolverse con datos de demostración inicialmente.
 - La captura fija cierre el **8 de noviembre de 2026 a las 23:59**. No indica zona horaria; comprobarla directamente en la plataforma al entregar.
 - El PDF llama a la actividad “Asignación IVirtual”; el usuario la identifica como primera asignación de unidad 3. Conservar su identificación sin deducir más numeración del rótulo.
+
+## Ajustes solicitados por el usuario (8 de noviembre de 2026)
+
+Estas reglas proceden de la conversación y completan el alcance; no son exigencias adicionales del profesor.
+
+| ID | Regla acordada | Evidencia |
+| --- | --- | --- |
+| U01 | Dashboard interno de la veterinaria; registrar dueño y mascota durante la reserva sin perder el borrador | `tests/e2e/booking.spec.ts` |
+| U02 | Una fecha y una hora; bloques de 30 minutos desde 10:00, última cita 17:30, cierre 18:00 | `tests/unit/appointments.test.ts`, `availability.test.ts` y `tests/integration/api.test.ts` |
+| U03 | Disponibilidad por veterinario y día en la zona de clínica; bloquear turnos pasados y ocupados; revalidar transaccionalmente al guardar | Caso de uso `ListAvailability`, reserva y pruebas MySQL |
+| U04 | Pulir tarjetas, historial, selectores con búsqueda, X centrada y flechas con margen | Pruebas Playwright `polish.spec.ts`, geometría de `booking.spec.ts` y capturas `pulido-*` |
+
+La consulta sobre correo real se evaluó como ampliación opcional; no autoriza envíos ni sustituye la simulación requerida.

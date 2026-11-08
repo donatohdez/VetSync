@@ -1,0 +1,1 @@
+otra cosda, el agendar cita está denrtro del dashoard, pero los datos que pide es como si el cliente hiciera la cita, tambien las mascotas ya vienen predeterminadas no deja agregar una nueva, tambien que solo pida la fecha y hora, no inicio y fin, que de opciones de cada media hora desde las 10 am hasta las 6 pm y cada media hora, si entiendes esto??

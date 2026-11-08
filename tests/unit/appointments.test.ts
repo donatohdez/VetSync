@@ -37,8 +37,8 @@ let service: ScheduleAppointment;
 const base: ScheduleInput = {
   petId: "pet",
   veterinarianId: "vet",
-  startsAt: "2026-11-09T10:00:00-07:00",
-  endsAt: "2026-11-09T10:30:00-07:00",
+  startsAt: "2026-11-09T11:00:00-07:00",
+  endsAt: "2026-11-09T11:30:00-07:00",
   reason: "Revisión general",
 };
 beforeEach(() => {
@@ -48,16 +48,16 @@ beforeEach(() => {
 describe("Agendar cita", () => {
   it("guarda una cita válida como instante UTC", async () => {
     const a = await service.execute(base);
-    expect(a.startsAt.toISOString()).toBe("2026-11-09T17:00:00.000Z");
+    expect(a.startsAt.toISOString()).toBe("2026-11-09T18:00:00.000Z");
     expect(await repo.list()).toHaveLength(1);
     expect(a.id).toBeTruthy();
   });
   it.each([
-    ["10:00", "10:30"],
-    ["09:45", "10:15"],
-    ["10:15", "10:45"],
-    ["10:05", "10:20"],
-    ["09:30", "11:00"],
+    ["11:00", "11:30"],
+    ["10:45", "11:15"],
+    ["11:15", "11:45"],
+    ["11:05", "11:20"],
+    ["10:30", "12:00"],
   ])("rechaza solapamiento %s-%s", async (s, e) => {
     await service.execute(base);
     await expect(
@@ -66,12 +66,14 @@ describe("Agendar cita", () => {
         startsAt: `2026-11-09T${s}:00-07:00`,
         endsAt: `2026-11-09T${e}:00-07:00`,
       }),
-    ).rejects.toMatchObject({ code: "APPOINTMENT_CONFLICT" });
+    ).rejects.toMatchObject({
+      code: s === "11:00" ? "APPOINTMENT_CONFLICT" : "VALIDATION_ERROR",
+    });
     expect(repo.appointments).toHaveLength(1);
   });
   it.each([
-    ["09:30", "10:00"],
     ["10:30", "11:00"],
+    ["11:30", "12:00"],
   ])("permite citas contiguas %s-%s", async (s, e) => {
     await service.execute(base);
     await service.execute({
@@ -112,13 +114,28 @@ describe("Agendar cita", () => {
   );
 });
 it.each([
- ['09:30:00','10:00:00'],['18:00:00','18:30:00'],['17:45:00','18:15:00'],
- ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01'],['10:00:00.001','10:30:00.001'],
-])('horario de clínica: rechaza %s-%s',async(start,end)=>{
- await expect(service.execute({...base,startsAt:`2026-11-09T${start}-07:00`,endsAt:`2026-11-09T${end}-07:00`})).rejects.toMatchObject({code:'VALIDATION_ERROR'});
- expect(repo.appointments).toHaveLength(0);
+  ["09:30:00", "10:00:00"],
+  ["18:00:00", "18:30:00"],
+  ["17:45:00", "18:15:00"],
+  ["10:15:00", "10:45:00"],
+  ["10:00:00", "11:00:00"],
+  ["10:00:01", "10:30:01"],
+  ["10:00:00.001", "10:30:00.001"],
+])("horario de clínica: rechaza %s-%s", async (start, end) => {
+  await expect(
+    service.execute({
+      ...base,
+      startsAt: `2026-11-09T${start}-07:00`,
+      endsAt: `2026-11-09T${end}-07:00`,
+    }),
+  ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+  expect(repo.appointments).toHaveLength(0);
 });
-it('la última cita empieza a las 17:30 y termina al cierre de las 18:00',async()=>{
- const result=await service.execute({...base,startsAt:'2026-11-09T17:30:00-07:00',endsAt:'2026-11-09T18:00:00-07:00'});
- expect(result.endsAt.getTime()-result.startsAt.getTime()).toBe(1800000);
+it("la última cita empieza a las 17:30 y termina al cierre de las 18:00", async () => {
+  const result = await service.execute({
+    ...base,
+    startsAt: "2026-11-09T17:30:00-07:00",
+    endsAt: "2026-11-09T18:00:00-07:00",
+  });
+  expect(result.endsAt.getTime() - result.startsAt.getTime()).toBe(1800000);
 });

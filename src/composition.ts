@@ -1,3 +1,4 @@
+import { ListAvailability } from "./modules/appointments/application/list-availability.js";
 import type { Pool } from "mysql2/promise";
 import type { Clock } from "./shared/clock.js";
 import { createApp } from "./http/app.js";
@@ -36,7 +37,13 @@ export function composeServices(
       },
       clock,
     ),
-    schedule: new ScheduleAppointment(appointments, clock),
+    schedule: new ScheduleAppointment(appointments, clock, timeZone),
+    availability: new ListAvailability(
+      appointments,
+      veterinarians,
+      clock,
+      timeZone,
+    ),
     sendReminders: new SendReminders(reminders, clock, reminderHours, timeZone),
     health: async () => {
       await pool.query("SELECT 1");

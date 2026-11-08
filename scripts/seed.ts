@@ -1,5 +1,34 @@
+import { clinicInstant } from "../src/modules/appointments/domain/clinic-hours.js";
 import { config } from "../src/shared/config.js";
 import { database } from "../src/shared/database.js";
+function nextClinicSlot(after: Date): Date {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: config.CLINIC_TIMEZONE,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+      .formatToParts(after)
+      .map((p) => [p.type, p.value]),
+  );
+  const day = new Date(`${parts.year}-${parts.month}-${parts.day}T12:00:00Z`);
+  for (let offset = 0; offset < 7; offset++) {
+    for (let minute = 600; minute < 1080; minute += 30) {
+      const time = `${String(Math.floor(minute / 60)).padStart(2, "0")}:${String(minute % 60).padStart(2, "0")}`;
+      const candidate = clinicInstant(
+        day.toISOString().slice(0, 10),
+        time,
+        config.CLINIC_TIMEZONE,
+      );
+      if (candidate >= after) return candidate;
+    }
+    day.setUTCDate(day.getUTCDate() + 1);
+  }
+  throw new Error(
+    "No se pudo generar una cita de demostración dentro del horario de clínica.",
+  );
+}
 const pool = database({
   host: config.DB_HOST,
   port: config.DB_PORT,
@@ -44,8 +73,7 @@ try {
     [3, "pet-nala", "vet-sofia", 20, "Control de vacunación"],
     [4, "pet-oliver", "vet-elena", 28, "Consulta preventiva"],
   ] as const) {
-    const startsAt = new Date(now.getTime() + hours * 3600000);
-    startsAt.setSeconds(0, 0);
+    const startsAt = nextClinicSlot(new Date(now.getTime() + hours * 3600000));
     await pool.execute(
       "INSERT IGNORE INTO appointments (id,pet_id,veterinarian_id,starts_at,ends_at,reason) VALUES (?,?,?,?,?,?)",
       [

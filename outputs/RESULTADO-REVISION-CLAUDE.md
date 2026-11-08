@@ -41,3 +41,7 @@ Se confirmó que la exigencia de JSON en la ejecución manual de recordatorios c
 Las cifras de carga y mutaciones de concurrencia de la sonda de Claude se conservan como afirmaciones del informe recibido. No se reejecutó su script ni se atribuyen a Codex. La propia comprobación de concurrencia de API contra MySQL sigue aprobando.
 
 La revisión técnica de IA está documentada; falta la revisión y comprensión personal del estudiante y presentar los entregables académicos. El repositorio y CI ya están disponibles.
+
+## Cambios posteriores a esta revisión
+
+El estudiante confirmó que pegó exactamente el prompt preparado; el mensaje se conserva en `docs/ia/respuestas/confirmacion-prompt-claude.txt`. Las cifras anteriores corresponden a la versión revisada entonces. El posterior flujo de recepción, horario de 30 minutos y pulido visual se verificó con 81 casos de backend y diez de navegador; véase `INFORME-PRUEBAS.md`. No se presenta esa ampliación como una segunda revisión de Claude.

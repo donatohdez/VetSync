@@ -1,3 +1,4 @@
+import { MysqlAppointments } from "../../src/modules/appointments/infrastructure/mysql-appointments.js";
 import { beforeAll, beforeEach, afterAll, it, expect, vi } from "vitest";
 import request from "supertest";
 import { config } from "../../src/shared/config.js";
@@ -10,7 +11,7 @@ const pool = database({
   password: config.DB_PASSWORD,
   database: "vetsync_test",
 });
-const now = new Date("2026-11-08T15:00:00Z");
+const now = new Date("2026-11-08T19:00:00Z");
 const app = buildApplication(
   pool,
   { now: () => now },
@@ -24,8 +25,8 @@ const missingId = "99999999-9999-4999-8999-999999999999";
 const appointment = {
   petId,
   veterinarianId: vetId,
-  startsAt: "2026-11-09T10:00:00Z",
-  endsAt: "2026-11-09T10:30:00Z",
+  startsAt: "2026-11-09T17:00:00Z",
+  endsAt: "2026-11-09T17:30:00Z",
   reason: "Revisión",
 };
 beforeAll(async () => {
@@ -170,7 +171,7 @@ it("reserva, rechaza conflicto y permite otro veterinario/citas contiguas", asyn
   await request(app).post("/api/appointments").send(appointment).expect(201);
   const conflict = await request(app)
     .post("/api/appointments")
-    .send({ ...appointment, startsAt: "2026-11-09T10:15:00Z" })
+    .send(appointment)
     .expect(409);
   expect(conflict.body.error.code).toBe("APPOINTMENT_CONFLICT");
   await request(app)
@@ -182,7 +183,7 @@ it("reserva, rechaza conflicto y permite otro veterinario/citas contiguas", asyn
     .send({
       ...appointment,
       startsAt: appointment.endsAt,
-      endsAt: "2026-11-09T11:00:00Z",
+      endsAt: "2026-11-09T18:00:00Z",
     })
     .expect(201);
   expect(
@@ -313,17 +314,25 @@ it.each([
 ] as const)(
   "intervalos SQL: %s",
   async (_scenario, startsAt, endsAt, status) => {
-    await request(app).post("/api/appointments").send(appointment).expect(201);
-    const response = await request(app)
-      .post("/api/appointments")
-      .send({
-        ...appointment,
-        startsAt: `2026-11-09T${startsAt}:00Z`,
-        endsAt: `2026-11-09T${endsAt}:00Z`,
-      })
-      .expect(status);
+    // La capa SQL conserva cobertura de intervalos arbitrarios; la API aplica además el horario de clínica.
+    const repository = new MysqlAppointments(pool);
+    await repository.reserve({
+      ...appointment,
+      id: "matrix-first",
+      startsAt: new Date("2026-11-09T10:00:00Z"),
+      endsAt: new Date("2026-11-09T10:30:00Z"),
+    });
+    const next = {
+      ...appointment,
+      id: "matrix-second",
+      startsAt: new Date(`2026-11-09T${startsAt}:00Z`),
+      endsAt: new Date(`2026-11-09T${endsAt}:00Z`),
+    };
     if (status === 409)
-      expect(response.body.error.code).toBe("APPOINTMENT_CONFLICT");
+      await expect(repository.reserve(next)).rejects.toMatchObject({
+        code: "APPOINTMENT_CONFLICT",
+      });
+    else await repository.reserve(next);
     expect(await rows(pool, "SELECT id FROM appointments")).toHaveLength(
       status === 201 ? 2 : 1,
     );
@@ -373,18 +382,73 @@ it("usa la zona configurada al componer el mensaje del recordatorio", async () =
   );
   await request(tokyoApp)
     .post("/api/appointments")
-    .send(appointment)
+    .send({
+      ...appointment,
+      startsAt: "2026-11-09T03:00:00Z",
+      endsAt: "2026-11-09T03:30:00Z",
+    })
     .expect(201);
   await request(tokyoApp).post("/api/notifications/run").send({}).expect(200);
   const notification = (
     await request(tokyoApp).get("/api/notifications").expect(200)
   ).body[0];
-  expect(notification.message).toContain("19:00");
+  expect(notification.message).toContain("12:00");
   expect(notification.message).toContain("(Asia/Tokyo)");
   // La presentación cambia; el instante persistido y la ventana siguen en UTC.
   const persisted = await rows<{ startsAt: Date }>(
     pool,
     "SELECT starts_at AS startsAt FROM appointments",
   );
-  expect(persisted[0]?.startsAt.toISOString()).toBe("2026-11-09T10:00:00.000Z");
+  expect(persisted[0]?.startsAt.toISOString()).toBe("2026-11-09T03:00:00.000Z");
 });
+
+it("disponibilidad real: 16 horarios, cierre a las 18:00 y bloqueo tras reservar", async () => {
+  const query = `/api/appointments/availability?date=2026-11-09&veterinarianId=${vetId}`;
+  const before = await request(app).get(query).expect(200);
+  expect(before.body).toHaveLength(16);
+  expect(before.body[0]).toMatchObject({ time: "10:00", available: true });
+  expect(before.body.at(-1)).toMatchObject({
+    time: "17:30",
+    endsAt: "2026-11-10T01:00:00.000Z",
+  });
+  await request(app).post("/api/appointments").send(appointment).expect(201);
+  const after = await request(app).get(query).expect(200);
+  expect(after.body[0]).toMatchObject({ available: false, reason: "occupied" });
+  expect(after.body[1].available).toBe(true);
+});
+it("disponibilidad valida fecha y veterinario y marca instantes ya pasados", async () => {
+  await request(app)
+    .get(`/api/appointments/availability?date=bad&veterinarianId=${vetId}`)
+    .expect(400);
+  await request(app)
+    .get(
+      `/api/appointments/availability?date=2026-11-09&veterinarianId=${missingId}`,
+    )
+    .expect(404);
+  const past = await request(app)
+    .get(
+      `/api/appointments/availability?date=2026-11-08&veterinarianId=${vetId}`,
+    )
+    .expect(200);
+  expect(past.body[0]).toMatchObject({ available: false, reason: "past" });
+});
+it.each([
+  ["09:30", "10:00"],
+  ["18:00", "18:30"],
+  ["17:45", "18:15"],
+  ["10:15", "10:45"],
+  ["10:00", "11:00"],
+])(
+  "API no permite saltarse el horario de clínica: %s-%s",
+  async (start, end) => {
+    await request(app)
+      .post("/api/appointments")
+      .send({
+        ...appointment,
+        startsAt: `2026-11-09T${start}:00-07:00`,
+        endsAt: `2026-11-09T${end}:00-07:00`,
+      })
+      .expect(400);
+    expect(await rows(pool, "SELECT * FROM appointments")).toHaveLength(0);
+  },
+);

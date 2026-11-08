@@ -7,7 +7,7 @@ Todas las escrituras requieren `Content-Type: application/json`, incluso la ejec
 | Método | Ruta relativa | Cuerpo / resultado |
 | --- | --- | --- |
 | GET | `/health` | Estado de conexión con BD |
-| GET | `/config` | Zona de clínica y horas de ventana de avisos |
+| GET | `/config` | Zona de clínica, ventana de avisos y `bookingHours` (`opensAt`, `closesAt`, `slotMinutes`) |
 | GET | `/owners` | Lista de dueños |
 | POST | `/owners` | `name`, `email`, `phone` opcional/null |
 | GET | `/pets` | Lista de mascotas |
@@ -16,6 +16,7 @@ Todas las escrituras requieren `Content-Type: application/json`, incluso la ejec
 | GET | `/pets/{petId}/medical-records` | Historial de mascota, más reciente primero |
 | POST | `/pets/{petId}/medical-records` | `veterinarianId`, `recordedAt`, `clinicalNote` |
 | GET | `/appointments` | Todas las citas ordenadas por inicio |
+| GET | `/appointments/availability?date=YYYY-MM-DD&veterinarianId=ID` | 16 bloques con `time`, `startsAt`, `endsAt`, `available` y `reason` (`past`, `occupied` o null) |
 | POST | `/appointments` | `petId`, `veterinarianId`, `startsAt`, `endsAt`, `reason` |
 | GET | `/notifications` | Correos simulados, más reciente primero |
 | POST | `/notifications/run` | `{}` → `{"sent": númeroDeAvisosNuevos}` |
@@ -56,7 +57,10 @@ La ventana es `ahora < startsAt <= ahora + REMINDER_HOURS`. Por defecto, 24 hora
 ## Reglas de fechas
 
 - Citas e historial requieren ISO 8601 con `Z` o desplazamiento como `-07:00`. No se aceptan fechas locales sin zona ni días de calendario inexistentes.
-- Inicio de cita estrictamente futuro y fin posterior a inicio.
+- Inicio de cita estrictamente futuro, segundos y milisegundos en cero, y duración exacta de 30 minutos.
+- En la zona de la clínica: inicio en hora o media hora desde 10:00 hasta 17:30; fin máximo a las 18:00 del mismo día. Un incumplimiento produce 400.
+- La UI solicita una fecha y un turno. Conserva `startsAt` y `endsAt` en el contrato HTTP y calcula automáticamente el fin.
+- La disponibilidad es informativa: una reserva concurrente puede ocupar el bloque entre consultar y guardar; el POST vuelve a comprobarlo dentro de la transacción y devuelve 409 si corresponde.
 - Dos citas contiguas son válidas. Mismo veterinario e intervalos solapados producen 409, incluso con solicitudes simultáneas.
 - El historial solo permite instantes actuales/pasados y se consulta por mascota existente.
 - Nacimiento usa `YYYY-MM-DD`, sin hora; no puede superar el día UTC actual.

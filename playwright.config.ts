@@ -12,6 +12,7 @@ export default defineConfig({
     reducedMotion: "reduce",
     viewport: { width: 1440, height: 1000 },
     timezoneId: "America/Hermosillo",
+    locale: "es-MX",
     launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
       ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH }
       : {},

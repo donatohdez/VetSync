@@ -8,7 +8,7 @@ Se trasladaron todos los elementos del directorio anterior, incluidos `.git`, `.
 
 ## Disponible
 
-Primera versión local con registros, historial, agenda sin choques, correos simulados, interfaz adaptable, migraciones, datos ficticios, pruebas, documentación y workflow de CI. Consultar README.md para arrancar y el informe de pruebas para resultados.
+Versión local con registro durante la reserva, turnos de 30 minutos (10:00–17:30), disponibilidad, selectores con búsqueda, historial contextual, diseño pulido, registros, historial, agenda sin choques, correos simulados, interfaz adaptable, migraciones, datos ficticios, pruebas, documentación y workflow de CI. Consultar README.md para arrancar y el informe de pruebas para resultados.
 
 ## Siguiente paso
 

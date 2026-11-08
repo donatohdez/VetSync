@@ -1,0 +1,161 @@
+
+> vetsync@1.0.0 test:e2e
+> playwright test tests/e2e/polish.spec.ts --timeout=5000
+
+
+Running 5 tests using 1 worker
+
+(node:34844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/polish.spec.ts:20:1 › selector de historial con búsqueda, contexto del paciente y notas (5.0s)
+(node:34856) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/polish.spec.ts:33:1 › Escape cierra el selector antes del modal y permite selección por teclado (5.0s)
+(node:34865) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/polish.spec.ts:42:1 › guardado con estado de carga, conflicto legible y aviso descartable (5.0s)
+(node:34876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 tests/e2e/polish.spec.ts:59:1 › una respuesta antigua no reemplaza el historial recién seleccionado (5.0s)
+(node:34887) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 tests/e2e/polish.spec.ts:74:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento (5.0s)
+
+
+  1) tests/e2e/polish.spec.ts:20:1 › selector de historial con búsqueda, contexto del paciente y notas 
+
+    Test timeout of 5000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('listbox')
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('listbox') with timeout 5000ms
+      - waiting for getByRole('listbox')
+      - Test timeout of 5000ms exceeded.
+
+
+      21 |  await fixture(page);await page.getByRole('button',{name:'Historial médico',exact:true}).click();
+      22 |  const combo=page.getByRole('combobox',{name:'Selecciona un paciente',exact:true});
+    > 23 |  await combo.click();await expect(page.getByRole('listbox')).toBeVisible();
+         |                                                              ^
+      24 |  await page.locator('.select-popup:not([hidden])').getByRole('searchbox').fill('no-existe');
+      25 |  await expect(page.locator('.select-popup:not([hidden])')).toContainText('Sin coincidencias');
+      26 |  await page.locator('.select-popup:not([hidden])').getByRole('searchbox').fill('Diego');
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:23:62
+
+    Error Context: work/playwright-results/polish-selector-de-histori-38221-ntexto-del-paciente-y-notas/error-context.md
+
+  2) tests/e2e/polish.spec.ts:33:1 › Escape cierra el selector antes del modal y permite selección por teclado 
+
+    Test timeout of 5000ms exceeded.
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('dialog')
+    Expected: "dialog-title"
+    Received: ""
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('dialog') with timeout 5000ms
+      - waiting for getByRole('dialog')
+        13 × locator resolved to <dialog open="" id="form-dialog">…</dialog>
+           - unexpected value "null"
+      - Test timeout of 5000ms exceeded.
+
+
+      33 | test('Escape cierra el selector antes del modal y permite selección por teclado',async({page})=>{
+      34 |  await fixture(page);await page.getByRole('button',{name:'Agendar cita'}).click();
+    > 35 |  const dialog=page.getByRole('dialog');await expect(dialog).toHaveAttribute('aria-labelledby','dialog-title');
+         |                                                             ^
+      36 |  const combo=dialog.getByRole('combobox',{name:'Mascota',exact:true});await combo.focus();await page.keyboard.press('ArrowDown');
+      37 |  await expect(page.getByRole('listbox')).toBeVisible();await page.keyboard.press('Escape');
+      38 |  await expect(page.getByRole('listbox')).toHaveCount(0);await expect(dialog).toBeVisible();
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:35:61
+
+    Error Context: work/playwright-results/polish-Escape-cierra-el-se-8cef0-rmite-selección-por-teclado/error-context.md
+
+  3) tests/e2e/polish.spec.ts:42:1 › guardado con estado de carga, conflicto legible y aviso descartable 
+
+    Test timeout of 5000ms exceeded.
+
+    Error: expect(locator).toBeDisabled() failed
+
+    Locator: getByRole('button', { name: 'Guardando…' })
+    Expected: disabled
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeDisabled" getByRole('button', { name: 'Guardando…' }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Guardando…' })
+      - Test timeout of 5000ms exceeded.
+
+
+      48 |  await page.getByRole('button',{name:'Agendar cita'}).click();
+      49 |  await page.getByLabel('Motivo').fill('Consulta de seguimiento');await page.getByRole('button',{name:'Guardar cita',exact:true}).click();
+    > 50 |  await expect(page.getByRole('button',{name:'Guardando…'})).toBeDisabled();
+         |                                                             ^
+      51 |  await expect(page.locator('#form-error')).toContainText('ya tiene una cita');
+      52 |  await expect(page.getByLabel('Motivo')).toHaveValue('Consulta de seguimiento');
+      53 |  await page.getByRole('button',{name:'Cerrar',exact:true}).click();
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:50:61
+
+    Error Context: work/playwright-results/polish-guardado-con-estado-0daef-legible-y-aviso-descartable/error-context.md
+
+  4) tests/e2e/polish.spec.ts:59:1 › una respuesta antigua no reemplaza el historial recién seleccionado 
+
+    Test timeout of 5000ms exceeded.
+
+    Error: locator.fill: Test timeout of 5000ms exceeded.
+    Call log:
+      - waiting for locator('.select-popup:not([hidden])').getByRole('searchbox')
+
+
+      15 | async function selectPatient(page:Page,name:string){
+      16 |  await page.getByRole('combobox',{name:'Selecciona un paciente',exact:true}).click();
+    > 17 |  await page.locator('.select-popup:not([hidden])').getByRole('searchbox').fill(name);
+         |                                                                           ^
+      18 |  await page.getByRole('option',{name:new RegExp(name)}).click();
+      19 | }
+      20 | test('selector de historial con búsqueda, contexto del paciente y notas',async({page})=>{
+        at selectPatient (/Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:17:75)
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:68:2
+
+    Error Context: work/playwright-results/polish-una-respuesta-antig-5f34b-storial-recién-seleccionado/error-context.md
+
+  5) tests/e2e/polish.spec.ts:74:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento 
+
+    Test timeout of 5000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.select-popup:not([hidden])')
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('.select-popup:not([hidden])') with timeout 5000ms
+      - waiting for locator('.select-popup:not([hidden])')
+      - Test timeout of 5000ms exceeded.
+
+
+      78 |  await page.getByRole('button',{name:'Historial médico',exact:true}).click();
+      79 |  await page.getByRole('combobox',{name:'Selecciona un paciente',exact:true}).click();
+    > 80 |  const popup=page.locator('.select-popup:not([hidden])');await expect(popup).toBeVisible();
+         |                                                                              ^
+      81 |  const box=await popup.boundingBox();expect(box?.x).toBeGreaterThanOrEqual(0);expect((box?.x??0)+(box?.width??0)).toBeLessThanOrEqual(390);
+      82 |  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+      83 | });
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/polish.spec.ts:80:78
+
+    Error Context: work/playwright-results/polish-móvil-navegación-co-45a6a-selector-sin-desbordamiento/error-context.md
+
+  5 failed
+    tests/e2e/polish.spec.ts:20:1 › selector de historial con búsqueda, contexto del paciente y notas 
+    tests/e2e/polish.spec.ts:33:1 › Escape cierra el selector antes del modal y permite selección por teclado 
+    tests/e2e/polish.spec.ts:42:1 › guardado con estado de carga, conflicto legible y aviso descartable 
+    tests/e2e/polish.spec.ts:59:1 › una respuesta antigua no reemplaza el historial recién seleccionado 
+    tests/e2e/polish.spec.ts:74:1 › móvil: navegación completa, agenda legible y selector sin desbordamiento 

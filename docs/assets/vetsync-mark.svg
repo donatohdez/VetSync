@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144" fill="none" role="img" aria-labelledby="title">
+  <title id="title">VetSync</title>
+  <rect x="4" y="4" width="136" height="136" rx="36" fill="#194E40"/>
+  <rect x="5.5" y="5.5" width="133" height="133" rx="34.5" stroke="#386455" stroke-width="3"/>
+  <path d="M61 35h22v26h26v22H83v26H61V83H35V61h26V35Z" fill="#F7F8F5"/>
+</svg>

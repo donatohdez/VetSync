@@ -1,0 +1,37 @@
+
+> vetsync@1.0.0 test
+> vitest run --exclude 'tests/integration/**' --reporter=verbose
+
+
+ RUN  v5.1.0 /Users/donato/Documents/Codex/2026-11-08/te-x20
+
+ ✓ tests/unit/appointments.test.ts > Agendar cita > guarda una cita válida como instante UTC 3ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:00-10:30 1ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:45-10:15 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:15-10:45 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:05-10:20 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:30-11:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 09:30-10:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 10:30-11:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite el mismo horario con otro veterinario 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-07T10:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-08T15:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T10:00:00-07:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T09:30:00-07:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-09T10:00:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"no-fecha"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-02-30T10:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"reason":" "} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"petId":""} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"petId":"missing"} 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"veterinarianId":"missing"} 0ms
+ ✓ tests/unit/reminders.test.ts > incluye el límite de 24 horas y excluye citas pasadas, actuales y posteriores 2ms
+ ✓ tests/unit/reminders.test.ts > dos ejecuciones no duplican un correo simulado 0ms
+ ✓ tests/unit/reminders.test.ts > sin citas no genera recordatorios 0ms
+ ✓ tests/unit/reminders.test.ts > permite configurar la ventana 0ms
+
+ Test Files  2 passed (2)
+      Tests  24 passed (24)
+   Start at  09:25:44
+   Duration  163ms (import 54%, transform 27%, tests 14%, worker 5%)
+

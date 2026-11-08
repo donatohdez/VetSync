@@ -1,0 +1,1 @@
+lo que me facilitó es que ahorré mucho tiempo en escribir código, también en la parte del test, claude code hizo el test muy bine y muy rápido, ahí metele mas cosas para que quede bien

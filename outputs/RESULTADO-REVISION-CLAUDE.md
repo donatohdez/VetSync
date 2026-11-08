@@ -33,11 +33,11 @@ Tipos, linter y compilación correctos. **59 pruebas aprobadas: 34 unitarias y 2
 
 - Máximos de duración/horizonte y prohibir citas simultáneas de una mascota con distintos veterinarios: requieren una regla explícita de negocio.
 - Migraciones con literales complejos, ejecución desde cualquier directorio y fijar acciones por SHA: mejoras opcionales; el proyecto actual tiene una migración simple y documenta ejecutar desde la raíz.
-- Ejecución remota de CI: continúa pendiente porque no hay remoto configurado.
+- La ejecución remota de CI estaba pendiente al cerrar la revisión. Posteriormente se publicó el repositorio y aprobó; consultar [CI-REMOTO.md](CI-REMOTO.md).
 - Autenticación, paginación y planificador automático: límites del alcance local ya declarados.
 
 Se confirmó que la exigencia de JSON en la ejecución manual de recordatorios coincide con la documentación. No se cambió ese contrato para resolver un falso positivo.
 
 Las cifras de carga y mutaciones de concurrencia de la sonda de Claude se conservan como afirmaciones del informe recibido. No se reejecutó su script ni se atribuyen a Codex. La propia comprobación de concurrencia de API contra MySQL sigue aprobando.
 
-La revisión técnica de IA está documentada; falta la revisión y comprensión personal del estudiante y cerrar repositorio remoto, CI y entregables académicos.
+La revisión técnica de IA está documentada; falta la revisión y comprensión personal del estudiante y presentar los entregables académicos. El repositorio y CI ya están disponibles.

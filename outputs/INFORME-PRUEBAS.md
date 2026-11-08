@@ -36,7 +36,7 @@ El primer intento de navegador falló por las etiquetas accesibles de navegació
 
 ## Límites de la evidencia
 
-Esta es validación local contra datos ficticios. La revisión independiente con Claude fue recibida y se contrastó con pruebas propias. La revisión del estudiante sigue pendiente. Las sondas adicionales descritas en `test1.md` son evidencia atribuida a Claude, no una ejecución propia de Codex. El workflow de GitHub Actions está escrito, pero no se ha ejecutado en GitHub porque no hay repositorio remoto configurado.
+Esta es validación local contra datos ficticios. La revisión independiente con Claude fue recibida y se contrastó con pruebas propias. La revisión del estudiante sigue pendiente. Las sondas adicionales descritas en `test1.md` son evidencia atribuida a Claude, no una ejecución propia de Codex. El workflow se ejecutó correctamente en GitHub sobre el commit `cfba2fc4e274ab169288891628a2b500b708c96a`. Véanse `CI-REMOTO.md` y las evidencias `docs/evidencias/pruebas/ci-github-inicial.*`.
 
 Los tests de integración borran únicamente registros de `vetsync_test`; no modifican la base de demostración `vetsync`. No ejecutar integración y Playwright simultáneamente sobre esa base compartida de pruebas.
 

@@ -1,8 +1,10 @@
 # VetSync
 
+[Repositorio](https://github.com/donatohdez/VetSync) · [Verificación en GitHub Actions](https://github.com/donatohdez/VetSync/actions/workflows/ci.yml)
+
 Sistema local de gestión de citas veterinarias, construido para la primera asignación de la unidad 3 de Fundamentos de IA en Ingeniería de Software.
 
-**Estado:** versión local funcional, revisada por Claude y corregida con pruebas de regresión; revisión del estudiante y publicación remota pendientes.
+**Estado:** código publicado, revisado por Claude y corregido con pruebas de regresión. CI remoto comprobado; revisión final del estudiante pendiente.
 
 Incluye dueños, mascotas, historial médico, veterinarios de demostración, agenda protegida contra reservas simultáneas y correos simulados. Arquitectura de monolito modular con TypeScript, Express y MySQL. La interfaz está en español y se adapta a escritorio y móvil.
 
@@ -84,4 +86,4 @@ Para desarrollar el backend: `npm run dev`. Después de cambiar la interfaz Type
 
 Las notificaciones se ejecutan manualmente desde la UI o la API. Esta versión no incluye autenticación, videollamadas, cancelación, reprogramación, paginación ni despliegue público. Es una demostración académica local con datos ficticios.
 
-El workflow `.github/workflows/ci.yml` está preparado para cada push y PR. **Su ejecución en GitHub aún no se ha comprobado:** no hay remoto configurado. La revisión de Claude y su evaluación están en [RESULTADO-REVISION-CLAUDE.md](outputs/RESULTADO-REVISION-CLAUDE.md). La bitácora final de cinco prompts, la reflexión personal y el enlace de entrega se cerrarán con la participación del estudiante.
+El workflow `.github/workflows/ci.yml` corre en cada push y PR. La [primera ejecución remota](https://github.com/donatohdez/VetSync/actions/runs/42505243566) aprobó instalación limpia, migraciones, tipos, linter, compilación, 59 pruebas y dos recorridos de navegador. La evidencia se conserva en [CI-REMOTO.md](outputs/CI-REMOTO.md). La revisión de Claude y su evaluación están en [RESULTADO-REVISION-CLAUDE.md](outputs/RESULTADO-REVISION-CLAUDE.md). La bitácora final de cinco prompts, la reflexión personal y el enlace de entrega se cerrarán con la participación del estudiante.

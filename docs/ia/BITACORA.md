@@ -1,6 +1,6 @@
 # Bitácora de IA en construcción
 
-Estado: cuatro interacciones candidatas documentadas; **todavía no es la entrega final de cinco prompts**. La revisión con Claude fue entregada por el estudiante en `test1.md` y se contrastó con el código. No se inventarán prompts ni resultados para completar el número.
+Estado: cinco interacciones reales registradas. La versión para revisión y entrega está en `outputs/BITACORA-PROMPTS.md`. La revisión con Claude fue entregada por el estudiante en `test1.md` y se contrastó con el código. No se inventarán prompts ni resultados para completar el número.
 
 ## 01. Analizar materiales y planificar
 
@@ -52,6 +52,17 @@ Estado: cuatro interacciones candidatas documentadas; **todavía no es la entreg
 - Crítica: no se cambió el SQL correcto ni se adoptaron automáticamente todas las mejoras opcionales. Se reprodujo antes de corregir y se separó la evidencia propia de las afirmaciones de la otra herramienta.
 - Autoría: modificaciones de Codex, motivadas por revisión de Claude. No se atribuyen cambios manuales al estudiante.
 
-## Cierre pendiente
+## 05. Publicar y comprobar CI
 
-Seleccionar cinco interacciones realmente utilizadas y completar la crítica personal del estudiante. Estas cuatro candidatas no sustituyen ese requisito. La reflexión final debe basarse en su experiencia real, sin inventar carga cognitiva, decisiones o experiencias personales.
+- Fecha: 8 de noviembre de 2026.
+- Herramienta: Codex Desktop, con Git/GitHub Actions como herramientas de verificación.
+- Prompt exacto: [05-repositorio.txt](prompts/05-repositorio.txt). Es una solicitud breve que continúa el contexto del proyecto; no se reemplaza por un prompt más elaborado que no se haya utilizado.
+- Respuesta de la IA: conexión del remoto, publicación del historial local y verificación de CI; [evidencia](../../outputs/CI-REMOTO.md).
+- Verificación real: repositorio inicialmente vacío, push sin forzar historial y primera ejecución remota exitosa. El runner instaló dependencias desde cero, aplicó la migración, ejecutó 59 pruebas y dos recorridos de navegador.
+- Crítica técnica: se conservaron los commits rojos y verdes, se comprobó que `.env` no estaba versionado y se distinguió la validación local de la ejecución en una máquina nueva. No se dio CI por aprobado solo porque existía el YAML.
+- Cambios al código funcional: ninguno en esta interacción; se actualizaron enlaces y documentación de entrega. El código validado en la primera ejecución corresponde a `cfba2fc4e274ab169288891628a2b500b708c96a`.
+- Alucinaciones detectadas: ninguna comprobada en esta interacción. La evidencia son el commit remoto, los logs y el resultado de Actions, no una afirmación sin ejecución.
+
+## Revisión personal pendiente
+
+El estudiante aportó su experiencia de ahorro de tiempo en código y pruebas; se conserva el mensaje original en `respuestas/reflexion-aporte-estudiante.txt`. Se redactó una reflexión de menos de 500 palabras con ese aporte y hechos comprobados. Debe revisar la voz final y las cinco entradas, especialmente que el prompt enviado a Claude coincide con el bloque conservado. No se inventaron cambios manuales ni experiencias personales para completar campos.

@@ -12,14 +12,14 @@ Primera versión local con registros, historial, agenda sin choques, correos sim
 
 ## Siguiente paso
 
-La revisión independiente de Claude ya fue recibida, contrastada y atendida. Consultar [RESULTADO-REVISION-CLAUDE.md](RESULTADO-REVISION-CLAUDE.md). Siguiente paso: revisión del estudiante y preparación del repositorio remoto y los entregables académicos.
+La revisión independiente de Claude ya fue recibida, contrastada y atendida. Consultar [RESULTADO-REVISION-CLAUDE.md](RESULTADO-REVISION-CLAUDE.md). El código ya está en [GitHub](https://github.com/donatohdez/VetSync) y la primera ejecución de CI aprobó. Siguiente paso: revisión del estudiante y entrega de los documentos.
 
 ## Pendiente antes de la entrega académica
 
 1. Revisión y comprensión del código por el estudiante. La revisión de Claude ya está documentada.
-2. Completar la bitácora seleccionando cinco prompts realmente utilizados, con respuestas y crítica.
-3. Reflexión técnica personal de máximo 500 palabras.
-4. Configurar GitHub/GitLab, publicar el código y comprobar acceso del profesor.
-5. Ejecutar y comprobar CI en el remoto, registrar commit final y enviar enlace/documentos a la plataforma.
+2. Revisar la bitácora final de cinco interacciones y sus evidencias.
+3. Revisar la reflexión técnica preparada con el aporte real del estudiante; máximo 500 palabras.
+4. Recorrer la demostración y comprobar comprensión del proyecto.
+5. Enviar enlace y documentos a la plataforma. El repositorio es público y CI remoto ya se comprobó.
 
 No se presenta esta primera versión como entrega académica terminada.

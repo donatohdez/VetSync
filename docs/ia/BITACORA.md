@@ -77,3 +77,13 @@ Estado: seis interacciones reales registradas; cinco seleccionadas para entrega.
 ## Revisión personal pendiente
 
 El estudiante aportó su experiencia de ahorro de tiempo en código y pruebas; se conserva el mensaje original en `respuestas/reflexion-aporte-estudiante.txt`. Se redactó una reflexión de menos de 500 palabras con ese aporte y hechos comprobados. Debe revisar la voz final y las cinco entradas. La literalidad del prompt de Claude ya fue confirmada por el estudiante. No se inventaron cambios manuales ni experiencias personales para completar campos.
+
+## 07. Ajuste visual del acceso al historial
+
+- Fecha: 8 de noviembre de 2026. Herramienta: Codex Desktop.
+- Prompt exacto: [09-boton-historial.txt](prompts/09-boton-historial.txt), acompañado de la captura del estudiante.
+- Cambio: `src/web/styles.css`, selector `.patient-history`: fondo explícito verde suave, borde y radio, alineación flex y margen interior para texto y flecha. El fondo gris provenía del estilo nativo del botón sin un fondo declarado en esta variante.
+- Resultado conservado: `../evidencias/capturas/pulido-pacientes.png`. Implementación publicada en `442b140`.
+- Validación ejecutada: `npm run build` aprobado y comprobación visual en navegador local mediante `work/pulido/capture.mjs`. No se ejecutaron nuevas pruebas de negocio para este cambio de CSS.
+- Revisión humana: el estudiante respondió “muy bien” y solicitó guardar todo mediante varios commits y push. No se atribuyen modificaciones manuales de código al estudiante.
+- No se detectaron alucinaciones comprobadas en esta interacción.

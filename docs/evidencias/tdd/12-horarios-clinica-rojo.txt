@@ -1,0 +1,338 @@
+
+> vetsync@1.0.0 test
+> vitest run tests/unit --reporter=verbose
+
+
+ RUN  v5.1.0 /Users/donato/Ago-Dic 2026/Fun de IA/VetSync
+
+ ✓ tests/unit/appointments.test.ts > Agendar cita > guarda una cita válida como instante UTC 3ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:00-10:30 1ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:45-10:15 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:15-10:45 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 10:05-10:20 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza solapamiento 09:30-11:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 09:30-10:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite citas contiguas 10:30-11:00 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > permite el mismo horario con otro veterinario 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-07T10:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-08T15:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T10:00:00-07:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"endsAt":"2026-11-09T09:30:00-07:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-11-09T10:00:00"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"no-fecha"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"startsAt":"2026-02-30T10:00:00Z"} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"reason":" "} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza entrada inválida {"petId":""} antes de persistir 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"petId":"missing"} 0ms
+ ✓ tests/unit/appointments.test.ts > Agendar cita > rechaza referencia inexistente {"veterinarianId":"missing"} 0ms
+ × tests/unit/appointments.test.ts > horario de clínica: rechaza 09:30:00-10:00:00 3ms
+   → promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+ × tests/unit/appointments.test.ts > horario de clínica: rechaza 18:00:00-18:30:00 0ms
+   → promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+ × tests/unit/appointments.test.ts > horario de clínica: rechaza 17:45:00-18:15:00 0ms
+   → promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+ × tests/unit/appointments.test.ts > horario de clínica: rechaza 10:15:00-10:45:00 0ms
+   → promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+ × tests/unit/appointments.test.ts > horario de clínica: rechaza 10:00:00-11:00:00 0ms
+   → promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+ × tests/unit/appointments.test.ts > horario de clínica: rechaza 10:00:01-10:30:01 0ms
+   → promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+ × tests/unit/appointments.test.ts > horario de clínica: rechaza 10:00:00.001-10:30:00.001 0ms
+   → promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+ ✓ tests/unit/appointments.test.ts > la última cita empieza a las 17:30 y termina al cierre de las 18:00 0ms
+ × tests/unit/availability.test.ts > ofrece 16 intervalos de media hora entre las 10:00 y las 17:30 2ms
+   → Pendiente implementar disponibilidad por horario de clínica
+ × tests/unit/availability.test.ts > calcula los intervalos en la zona de la clínica y no en la del dispositivo 0ms
+   → Pendiente implementar disponibilidad por horario de clínica
+ × tests/unit/availability.test.ts > un día pasado tiene todos sus intervalos no disponibles 0ms
+   → Pendiente implementar disponibilidad por horario de clínica
+ × tests/unit/availability.test.ts > rechaza fecha inválida 2026-02-30 2ms
+   → expected Error: Pendiente implementar disponibilid… to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/availability.test.ts > rechaza fecha inválida bad 0ms
+   → expected Error: Pendiente implementar disponibilid… to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/availability.test.ts > rechaza fecha inválida 2026-11-09T10:00:00Z 0ms
+   → expected Error: Pendiente implementar disponibilid… to match object { code: 'VALIDATION_ERROR' }
+ × tests/unit/availability.test.ts > rechaza un veterinario inexistente o inactivo 0ms
+   → expected Error: Pendiente implementar disponibilid… to match object { code: 'NOT_FOUND' }
+ ✓ tests/unit/environment.test.ts > rechaza zona horaria inválida "Foo/Bar" al configurar el servidor 8ms
+ ✓ tests/unit/environment.test.ts > rechaza zona horaria inválida "" al configurar el servidor 0ms
+ ✓ tests/unit/environment.test.ts > acepta zona horaria soportada America/Hermosillo 0ms
+ ✓ tests/unit/environment.test.ts > acepta zona horaria soportada UTC 0ms
+ ✓ tests/unit/environment.test.ts > acepta zona horaria soportada Europe/Madrid 0ms
+ ✓ tests/unit/environment.test.ts > usa la zona de la clínica por defecto 0ms
+ ✓ tests/unit/reminders.test.ts > incluye el límite de 24 horas y excluye citas pasadas, actuales y posteriores 8ms
+ ✓ tests/unit/reminders.test.ts > dos ejecuciones no duplican un correo simulado 0ms
+ ✓ tests/unit/reminders.test.ts > sin citas no genera recordatorios 0ms
+ ✓ tests/unit/reminders.test.ts > permite configurar la ventana 0ms
+ ✓ tests/unit/reminders.test.ts > expresa el aviso en la zona configurada America/Hermosillo 0ms
+ ✓ tests/unit/reminders.test.ts > expresa el aviso en la zona configurada UTC 0ms
+ ✓ tests/unit/transaction.test.ts > preserva el fallo original y libera la conexión; rollback falla=false 1ms
+ ✓ tests/unit/transaction.test.ts > preserva el fallo original y libera la conexión; rollback falla=true 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/appointments.test.ts > horario de clínica: rechaza 09:30:00-10:00:00
+AssertionError: promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "endsAt": 2026-11-09T17:00:00.000Z,
++   "id": "4204f65d-3185-40d0-a2a1-d19796713c75",
++   "petId": "pet",
++   "reason": "Revisión general",
++   "startsAt": 2026-11-09T16:30:00.000Z,
++   "veterinarianId": "vet",
+  }
+
+ ❯ tests/unit/appointments.test.ts:118:112
+    116|  ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01…
+    117| ])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+    118|  await expect(service.execute({...base,startsAt:`2026-11-09T${start}-0…
+       |                                                                                                                ^
+    119|  expect(repo.appointments).toHaveLength(0);
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  tests/unit/appointments.test.ts > horario de clínica: rechaza 18:00:00-18:30:00
+AssertionError: promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "endsAt": 2026-11-10T01:30:00.000Z,
++   "id": "97dd2a6b-2947-49c7-8dd5-e9e545ddf2c7",
++   "petId": "pet",
++   "reason": "Revisión general",
++   "startsAt": 2026-11-10T01:00:00.000Z,
++   "veterinarianId": "vet",
+  }
+
+ ❯ tests/unit/appointments.test.ts:118:112
+    116|  ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01…
+    117| ])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+    118|  await expect(service.execute({...base,startsAt:`2026-11-09T${start}-0…
+       |                                                                                                                ^
+    119|  expect(repo.appointments).toHaveLength(0);
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  tests/unit/appointments.test.ts > horario de clínica: rechaza 17:45:00-18:15:00
+AssertionError: promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "endsAt": 2026-11-10T01:15:00.000Z,
++   "id": "b68cbe5a-dd48-4663-b933-983f9a2f9dea",
++   "petId": "pet",
++   "reason": "Revisión general",
++   "startsAt": 2026-11-10T00:45:00.000Z,
++   "veterinarianId": "vet",
+  }
+
+ ❯ tests/unit/appointments.test.ts:118:112
+    116|  ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01…
+    117| ])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+    118|  await expect(service.execute({...base,startsAt:`2026-11-09T${start}-0…
+       |                                                                                                                ^
+    119|  expect(repo.appointments).toHaveLength(0);
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  tests/unit/appointments.test.ts > horario de clínica: rechaza 10:15:00-10:45:00
+AssertionError: promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "endsAt": 2026-11-09T17:45:00.000Z,
++   "id": "cebaaae2-6b01-459e-a564-7e57d9bde345",
++   "petId": "pet",
++   "reason": "Revisión general",
++   "startsAt": 2026-11-09T17:15:00.000Z,
++   "veterinarianId": "vet",
+  }
+
+ ❯ tests/unit/appointments.test.ts:118:112
+    116|  ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01…
+    117| ])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+    118|  await expect(service.execute({...base,startsAt:`2026-11-09T${start}-0…
+       |                                                                                                                ^
+    119|  expect(repo.appointments).toHaveLength(0);
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  tests/unit/appointments.test.ts > horario de clínica: rechaza 10:00:00-11:00:00
+AssertionError: promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "endsAt": 2026-11-09T18:00:00.000Z,
++   "id": "296be816-506e-4d41-9046-de0f1ea680a6",
++   "petId": "pet",
++   "reason": "Revisión general",
++   "startsAt": 2026-11-09T17:00:00.000Z,
++   "veterinarianId": "vet",
+  }
+
+ ❯ tests/unit/appointments.test.ts:118:112
+    116|  ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01…
+    117| ])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+    118|  await expect(service.execute({...base,startsAt:`2026-11-09T${start}-0…
+       |                                                                                                                ^
+    119|  expect(repo.appointments).toHaveLength(0);
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  tests/unit/appointments.test.ts > horario de clínica: rechaza 10:00:01-10:30:01
+AssertionError: promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "endsAt": 2026-11-09T17:30:01.000Z,
++   "id": "3e99dab5-e410-4ac7-916e-3e02fe7cec6a",
++   "petId": "pet",
++   "reason": "Revisión general",
++   "startsAt": 2026-11-09T17:00:01.000Z,
++   "veterinarianId": "vet",
+  }
+
+ ❯ tests/unit/appointments.test.ts:118:112
+    116|  ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01…
+    117| ])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+    118|  await expect(service.execute({...base,startsAt:`2026-11-09T${start}-0…
+       |                                                                                                                ^
+    119|  expect(repo.appointments).toHaveLength(0);
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  tests/unit/appointments.test.ts > horario de clínica: rechaza 10:00:00.001-10:30:00.001
+AssertionError: promise resolved "{ petId: 'pet', …(5) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "endsAt": 2026-11-09T17:30:00.001Z,
++   "id": "604e750b-0a94-4148-9e38-afd665735c9a",
++   "petId": "pet",
++   "reason": "Revisión general",
++   "startsAt": 2026-11-09T17:00:00.001Z,
++   "veterinarianId": "vet",
+  }
+
+ ❯ tests/unit/appointments.test.ts:118:112
+    116|  ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01…
+    117| ])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+    118|  await expect(service.execute({...base,startsAt:`2026-11-09T${start}-0…
+       |                                                                                                                ^
+    119|  expect(repo.appointments).toHaveLength(0);
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  tests/unit/availability.test.ts > ofrece 16 intervalos de media hora entre las 10:00 y las 17:30
+Error: Pendiente implementar disponibilidad por horario de clínica
+ ❯ ListAvailability.execute src/modules/appointments/application/list-availability.ts:6:65
+
+ ❯ tests/unit/availability.test.ts:8:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  tests/unit/availability.test.ts > calcula los intervalos en la zona de la clínica y no en la del dispositivo
+Error: Pendiente implementar disponibilidad por horario de clínica
+ ❯ ListAvailability.execute src/modules/appointments/application/list-availability.ts:6:65
+
+ ❯ tests/unit/availability.test.ts:18:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  tests/unit/availability.test.ts > un día pasado tiene todos sus intervalos no disponibles
+Error: Pendiente implementar disponibilidad por horario de clínica
+ ❯ ListAvailability.execute src/modules/appointments/application/list-availability.ts:6:65
+
+ ❯ tests/unit/availability.test.ts:22:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  tests/unit/availability.test.ts > rechaza fecha inválida 2026-02-30
+ FAIL  tests/unit/availability.test.ts > rechaza fecha inválida bad
+ FAIL  tests/unit/availability.test.ts > rechaza fecha inválida 2026-11-09T10:00:00Z
+AssertionError: expected Error: Pendiente implementar disponibilid… to match object { code: 'VALIDATION_ERROR' }
+
+- Expected
++ Received
+
+- {
+-   "code": "VALIDATION_ERROR",
++ Error {
++   "message": "Pendiente implementar disponibilidad por horario de clínica",
+  }
+
+ ❯ tests/unit/availability.test.ts:25:60
+     23| });
+     24| it.each(['2026-02-30','bad','2026-11-09T10:00:00Z'])('rechaza fecha in…
+     25|  await expect(service.execute({date,veterinarianId:'vet'})).rejects.to…
+       |                                                            ^
+     26| });
+     27| it('rechaza un veterinario inexistente o inactivo',async()=>{
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  tests/unit/availability.test.ts > rechaza un veterinario inexistente o inactivo
+AssertionError: expected Error: Pendiente implementar disponibilid… to match object { code: 'NOT_FOUND' }
+
+- Expected
++ Received
+
+- {
+-   "code": "NOT_FOUND",
++ Error {
++   "message": "Pendiente implementar disponibilidad por horario de clínica",
+  }
+
+ ❯ tests/unit/availability.test.ts:28:77
+     26| });
+     27| it('rechaza un veterinario inexistente o inactivo',async()=>{
+     28|  await expect(service.execute({date:'2026-11-09',veterinarianId:'missi…
+       |                                                                             ^
+     29| });
+     30|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+
+ Test Files  2 failed | 3 passed (5)
+      Tests  14 failed | 35 passed (49)
+   Start at  11:22:05
+   Duration  428ms (import 57%, tests 23%, transform 15%, worker 5%)
+

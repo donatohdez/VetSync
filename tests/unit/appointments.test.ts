@@ -111,3 +111,14 @@ describe("Agendar cita", () => {
     },
   );
 });
+it.each([
+ ['09:30:00','10:00:00'],['18:00:00','18:30:00'],['17:45:00','18:15:00'],
+ ['10:15:00','10:45:00'],['10:00:00','11:00:00'],['10:00:01','10:30:01'],['10:00:00.001','10:30:00.001'],
+])('horario de clínica: rechaza %s-%s',async(start,end)=>{
+ await expect(service.execute({...base,startsAt:`2026-11-09T${start}-07:00`,endsAt:`2026-11-09T${end}-07:00`})).rejects.toMatchObject({code:'VALIDATION_ERROR'});
+ expect(repo.appointments).toHaveLength(0);
+});
+it('la última cita empieza a las 17:30 y termina al cierre de las 18:00',async()=>{
+ const result=await service.execute({...base,startsAt:'2026-11-09T17:30:00-07:00',endsAt:'2026-11-09T18:00:00-07:00'});
+ expect(result.endsAt.getTime()-result.startsAt.getTime()).toBe(1800000);
+});

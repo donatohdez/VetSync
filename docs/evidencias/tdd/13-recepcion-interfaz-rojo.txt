@@ -1,0 +1,83 @@
+
+> vetsync@1.0.0 test:e2e
+> playwright test tests/e2e/booking.spec.ts --timeout=6000
+
+
+Running 3 tests using 1 worker
+
+(node:37335) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/booking.spec.ts:5:1 › recepción registra dueño y mascota desde la cita y reserva un bloque de media hora (5.3s)
+(node:37345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/booking.spec.ts:30:31 › iconos centrados y flechas con margen en 1440px (169ms)
+(node:37353) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/booking.spec.ts:30:31 › iconos centrados y flechas con margen en 390px (158ms)
+
+
+  1) tests/e2e/booking.spec.ts:5:1 › recepción registra dueño y mascota desde la cita y reserva un bloque de media hora 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('#appointment-form').getByLabel('Inicio', { exact: true })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('#appointment-form').getByLabel('Inicio', { exact: true }) with timeout 5000ms
+      - waiting for locator('#appointment-form').getByLabel('Inicio', { exact: true })
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       6 |  await page.goto('/');await expect(page.locator('#stat-vets')).not.toHaveText('—');
+       7 |  await page.getByRole('button',{name:'Agendar cita'}).click();const appointment=page.locator('#appointment-form');
+    >  8 |  await expect(appointment.getByLabel('Inicio',{exact:true})).toHaveCount(0);await expect(appointment.getByLabel('Fin',{exact:true})).toHaveCount(0);
+         |                                                              ^
+       9 |  await appointment.getByLabel('Motivo').fill('Primera consulta registrada por recepción');
+      10 |  await appointment.getByRole('button',{name:'Registrar mascota',exact:true}).click();
+      11 |  const unique=String(Date.now()),petName=`Kiwi ${unique}`,ownerName=`Responsable ${unique}`;
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/booking.spec.ts:8:62
+
+    Error Context: work/playwright-results/booking-recepción-registra-fa276-rva-un-bloque-de-media-hora/error-context.md
+
+  2) tests/e2e/booking.spec.ts:30:31 › iconos centrados y flechas con margen en 1440px ─────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    14
+
+      33 |  expect(Math.abs((close!.x+close!.width/2)-(x!.x+x!.width/2))).toBeLessThanOrEqual(1);expect(Math.abs((close!.y+close!.height/2)-(x!.y+x!.height/2))).toBeLessThanOrEqual(1);
+      34 |  const control=page.locator('#appointment-form .select-trigger').first(),rect=await control.boundingBox(),arrow=await control.locator('svg').boundingBox();
+    > 35 |  expect(rect!.x+rect!.width-(arrow!.x+arrow!.width)).toBeGreaterThanOrEqual(16);
+         |                                                      ^
+      36 | });
+      37 |
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/booking.spec.ts:35:54
+
+    Error Context: work/playwright-results/booking-iconos-centrados-y-flechas-con-margen-en-1440px/error-context.md
+
+  3) tests/e2e/booking.spec.ts:30:31 › iconos centrados y flechas con margen en 390px ──────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 16
+    Received:    13
+
+      33 |  expect(Math.abs((close!.x+close!.width/2)-(x!.x+x!.width/2))).toBeLessThanOrEqual(1);expect(Math.abs((close!.y+close!.height/2)-(x!.y+x!.height/2))).toBeLessThanOrEqual(1);
+      34 |  const control=page.locator('#appointment-form .select-trigger').first(),rect=await control.boundingBox(),arrow=await control.locator('svg').boundingBox();
+    > 35 |  expect(rect!.x+rect!.width-(arrow!.x+arrow!.width)).toBeGreaterThanOrEqual(16);
+         |                                                      ^
+      36 | });
+      37 |
+        at /Users/donato/Ago-Dic 2026/Fun de IA/VetSync/tests/e2e/booking.spec.ts:35:54
+
+    Error Context: work/playwright-results/booking-iconos-centrados-y-flechas-con-margen-en-390px/error-context.md
+
+  3 failed
+    tests/e2e/booking.spec.ts:5:1 › recepción registra dueño y mascota desde la cita y reserva un bloque de media hora 
+    tests/e2e/booking.spec.ts:30:31 › iconos centrados y flechas con margen en 1440px ──────────────
+    tests/e2e/booking.spec.ts:30:31 › iconos centrados y flechas con margen en 390px ───────────────

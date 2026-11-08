@@ -828,20 +828,35 @@ footer {
   color: #819677;
 }
 .patient-history {
-  width: 100%;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #e6ecde;
-  border-radius: 0;
-  padding: 14px 0 0;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 12px 14px;
+  border: 1px solid #e2eadf;
+  border-radius: 10px;
+  background: #f4f8f1;
   color: var(--green);
-  min-height: 39px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
 }
 .patient-history:hover {
-  color: #55814d;
+  background: #eaf2e5;
+  border-color: #bdcfb6;
+}
+.patient-history:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
 }
 .patient-history .icon {
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
   order: 2;
 }
 .history-panel {

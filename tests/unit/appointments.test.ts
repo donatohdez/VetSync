@@ -139,3 +139,47 @@ it("la última cita empieza a las 17:30 y termina al cierre de las 18:00", async
   });
   expect(result.endsAt.getTime() - result.startsAt.getTime()).toBe(1800000);
 });
+it("un fin igual o anterior al inicio se rechaza con el mensaje específico", async () => {
+  await expect(
+    service.execute({ ...base, endsAt: base.startsAt }),
+  ).rejects.toMatchObject({ message: "El fin debe ser posterior al inicio." });
+  await expect(
+    service.execute({ ...base, endsAt: "2026-11-09T10:30:00-07:00" }),
+  ).rejects.toMatchObject({ message: "El fin debe ser posterior al inicio." });
+});
+describe("límite temporal de «ahora» con horario válido de clínica (F-02)", () => {
+  // 17:00Z = 10:00 en Hermosillo: hora de cuadrícula dentro de 10:00-17:30.
+  const exactNow = new Date("2026-11-09T17:00:00Z");
+  const atNow = {
+    ...base,
+    startsAt: "2026-11-09T10:00:00-07:00",
+    endsAt: "2026-11-09T10:30:00-07:00",
+  };
+  it("rechaza una cita que empieza exactamente en este instante, por el límite y no por el horario", async () => {
+    const local = new MemoryAppointments();
+    const clocked = new ScheduleAppointment(local, { now: () => exactNow });
+    await expect(clocked.execute(atNow)).rejects.toMatchObject({
+      code: "VALIDATION_ERROR",
+      message: "La cita debe comenzar en el futuro.",
+    });
+    expect(local.appointments).toHaveLength(0);
+  });
+  it("acepta el bloque siguiente (el primero que empieza después de «ahora»)", async () => {
+    const local = new MemoryAppointments();
+    const clocked = new ScheduleAppointment(local, { now: () => exactNow });
+    await clocked.execute({
+      ...base,
+      startsAt: "2026-11-09T10:30:00-07:00",
+      endsAt: "2026-11-09T11:00:00-07:00",
+    });
+    expect(local.appointments).toHaveLength(1);
+  });
+  it("un milisegundo antes del inicio sí es futuro (el límite es estricto)", async () => {
+    const local = new MemoryAppointments();
+    const clocked = new ScheduleAppointment(local, {
+      now: () => new Date(exactNow.getTime() - 1),
+    });
+    await clocked.execute(atNow);
+    expect(local.appointments).toHaveLength(1);
+  });
+});

@@ -26,11 +26,14 @@ export class MedicalRecords {
     private readonly references: ClinicalReferences,
     private readonly clock: Clock,
   ) {}
-  private async requirePet(petId: string): Promise<void> {
-    if (!(await this.references.petExists(parse(idSchema, petId))))
-      throw notFound("La mascota");
+  // El identificador de la ruta se normaliza (recorte de espacios) igual que
+  // el resto de los IDs y ese valor es el que se valida y se persiste.
+  private async requirePet(rawPetId: string): Promise<string> {
+    const petId = parse(idSchema, rawPetId);
+    if (!(await this.references.petExists(petId))) throw notFound("La mascota");
+    return petId;
   }
-  async create(petId: string, input: unknown): Promise<MedicalRecord> {
+  async create(rawPetId: string, input: unknown): Promise<MedicalRecord> {
     const data = parse(schema, input);
     const recordedAt = new Date(data.recordedAt);
     if (recordedAt > this.clock.now())
@@ -38,15 +41,15 @@ export class MedicalRecords {
         "VALIDATION_ERROR",
         "El historial no puede tener una fecha futura.",
       );
-    await this.requirePet(petId);
+    const petId = await this.requirePet(rawPetId);
     if (!(await this.references.veterinarianExists(data.veterinarianId)))
       throw notFound("El veterinario");
     const record = { ...data, id: randomUUID(), petId, recordedAt };
     await this.repository.create(record);
     return record;
   }
-  async list(petId: string): Promise<MedicalRecord[]> {
-    await this.requirePet(petId);
+  async list(rawPetId: string): Promise<MedicalRecord[]> {
+    const petId = await this.requirePet(rawPetId);
     return this.repository.list(petId);
   }
 }

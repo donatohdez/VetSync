@@ -1,6 +1,10 @@
 import { z } from "zod";
 import type { AppointmentRepository } from "../domain/appointment.js";
-import { clinicInstant, clinicHours } from "../domain/clinic-hours.js";
+import {
+  clinicInstant,
+  bookingWindow,
+  formatClock,
+} from "../domain/clinic-hours.js";
 import type { Clock } from "../../../shared/clock.js";
 import { notFound } from "../../../shared/errors.js";
 import { idSchema, parse } from "../../../shared/validation.js";
@@ -28,14 +32,11 @@ export class ListAvailability {
     const appointments = await this.repository.list(),
       now = this.clock.now();
     const slots: AppointmentSlot[] = [];
-    for (
-      let minute = 10 * 60;
-      minute < 18 * 60;
-      minute += clinicHours.slotMinutes
-    ) {
-      const time = `${String(Math.floor(minute / 60)).padStart(2, "0")}:${String(minute % 60).padStart(2, "0")}`;
+    const { opens, closes, slot } = bookingWindow();
+    for (let minute = opens; minute + slot <= closes; minute += slot) {
+      const time = formatClock(minute);
       const startsAt = clinicInstant(date, time, this.timeZone),
-        endsAt = new Date(startsAt.getTime() + clinicHours.slotMinutes * 60000);
+        endsAt = new Date(startsAt.getTime() + slot * 60000);
       const reason =
         startsAt <= now
           ? "past"

@@ -12,6 +12,9 @@ import type { AppointmentRepository } from "../modules/appointments/domain/appoi
 import type { VeterinarianRepository } from "../modules/veterinarians/domain/veterinarian.js";
 import type { ReminderRepository } from "../modules/notifications/domain/reminder.js";
 import { AppError } from "../shared/errors.js";
+import { parse } from "../shared/validation.js";
+import { z } from "zod";
+const emptyBody = z.strictObject({}).optional();
 export interface Services {
   owners: Owners;
   pets: Pets;
@@ -23,6 +26,86 @@ export interface Services {
   veterinarians: VeterinarianRepository;
   reminders: ReminderRepository;
   health: () => Promise<void>;
+}
+interface TranslatedError {
+  status: number;
+  code: string;
+  message: string;
+}
+// Errores conocidos de body-parser/raw-body (por `type`) y de Express 5
+// (parámetro de ruta mal codificado). Solo se traducen casos explícitos: no se
+// confía en `status`/`statusCode` de un error arbitrario. Comportamiento
+// comprobado con body-parser 2.4.0 y router 2.2.0.
+const bodyErrors: Record<string, TranslatedError> = {
+  "entity.parse.failed": {
+    status: 400,
+    code: "INVALID_JSON",
+    message: "El JSON no es válido.",
+  },
+  "entity.too.large": {
+    status: 413,
+    code: "PAYLOAD_TOO_LARGE",
+    message: "La solicitud supera el tamaño permitido.",
+  },
+  "charset.unsupported": {
+    status: 415,
+    code: "UNSUPPORTED_CHARSET",
+    message: "Usa codificación UTF-8 en el cuerpo de la solicitud.",
+  },
+  "encoding.unsupported": {
+    status: 415,
+    code: "UNSUPPORTED_CONTENT_ENCODING",
+    message: "La codificación del contenido no es compatible.",
+  },
+  "request.aborted": {
+    status: 400,
+    code: "REQUEST_ABORTED",
+    message: "La solicitud se interrumpió antes de terminar.",
+  },
+  "request.size.invalid": {
+    status: 400,
+    code: "INVALID_REQUEST_SIZE",
+    message: "El tamaño declarado no coincide con el cuerpo recibido.",
+  },
+  "entity.verify.failed": {
+    status: 403,
+    code: "BODY_VERIFICATION_FAILED",
+    message: "No se pudo verificar el cuerpo de la solicitud.",
+  },
+};
+// body-parser envuelve los fallos de zlib/brotli con createError(400, error):
+// conservan `code` de zlib y `errno` numérico, pero no `type`.
+const isDecompressionError = (error: Error): boolean =>
+  "errno" in error &&
+  typeof error.errno === "number" &&
+  "code" in error &&
+  typeof error.code === "string" &&
+  "status" in error &&
+  error.status === 400 &&
+  "expose" in error &&
+  error.expose === true;
+function translateHttpError(error: unknown): TranslatedError | null {
+  if (typeof error !== "object" || error === null) return null;
+  if ("type" in error && typeof error.type === "string") {
+    const known = bodyErrors[error.type];
+    if (known) return known;
+  }
+  if (
+    error instanceof URIError &&
+    error.message.startsWith("Failed to decode param")
+  )
+    return {
+      status: 400,
+      code: "INVALID_PARAMETER",
+      message: "Un parámetro de la ruta no está codificado correctamente.",
+    };
+  if (error instanceof Error && isDecompressionError(error))
+    return {
+      status: 400,
+      code: "INVALID_BODY_ENCODING",
+      message: "El cuerpo no coincide con la codificación indicada.",
+    };
+  return null;
 }
 export function createApp(
   services: Services,
@@ -92,7 +175,9 @@ export function createApp(
   app.get("/api/notifications", async (_req, res) => {
     res.json(await services.reminders.list());
   });
-  app.post("/api/notifications/run", async (_req, res) => {
+  app.post("/api/notifications/run", async (req, res) => {
+    // El contrato admite solo `{}` (o ausencia de cuerpo con Content-Type JSON).
+    parse(emptyBody, req.body);
     res.json(await services.sendReminders.execute());
   });
   app.use("/api", (_req, res) => {
@@ -111,28 +196,10 @@ export function createApp(
         .json({ error: { code: error.code, message: error.message } });
       return;
     }
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "type" in error &&
-      error.type === "entity.parse.failed"
-    ) {
-      res.status(400).json({
-        error: { code: "INVALID_JSON", message: "El JSON no es válido." },
-      });
-      return;
-    }
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "type" in error &&
-      error.type === "entity.too.large"
-    ) {
-      res.status(413).json({
-        error: {
-          code: "PAYLOAD_TOO_LARGE",
-          message: "La solicitud supera el tamaño permitido.",
-        },
+    const known = translateHttpError(error);
+    if (known) {
+      res.status(known.status).json({
+        error: { code: known.code, message: known.message },
       });
       return;
     }

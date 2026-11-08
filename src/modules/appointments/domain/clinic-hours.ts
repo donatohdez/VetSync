@@ -4,6 +4,32 @@ export const clinicHours = {
   closesAt: "18:00",
   slotMinutes: 30,
 } as const;
+const toMinutes = (clock: string): number => {
+  const [hour, minute] = clock.split(":").map(Number);
+  return hour! * 60 + minute!;
+};
+/** Ventana de reservas en minutos del día, derivada de `clinicHours` (única fuente). */
+export const bookingWindow = () => ({
+  opens: toMinutes(clinicHours.opensAt),
+  closes: toMinutes(clinicHours.closesAt),
+  slot: clinicHours.slotMinutes,
+});
+export const formatClock = (minutes: number): string =>
+  `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
+// Date.UTC trata los años 0-99 como 1900-1999; setUTCFullYear no.
+function utcMillis(
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute: number,
+  second = 0,
+): number {
+  const date = new Date(0);
+  date.setUTCFullYear(year, month - 1, day);
+  date.setUTCHours(hour, minute, second, 0);
+  return date.getTime();
+}
 function parts(date: Date, timeZone: string) {
   const values = Object.fromEntries(
     new Intl.DateTimeFormat("en-CA", {
@@ -35,15 +61,15 @@ export function clinicInstant(
 ): Date {
   const [year, month, day] = date.split("-").map(Number),
     [hour, minute] = time.split(":").map(Number);
-  const target = Date.UTC(year!, month! - 1, day!, hour!, minute!);
+  const target = utcMillis(year!, month!, day!, hour!, minute!);
   let instant = target;
   for (let attempt = 0; attempt < 4; attempt++) {
     const local = parts(new Date(instant), timeZone);
     const delta =
       target -
-      Date.UTC(
+      utcMillis(
         local.year,
-        local.month - 1,
+        local.month,
         local.day,
         local.hour,
         local.minute,
@@ -65,19 +91,20 @@ export function assertClinicHours(
   const a = parts(start, timeZone),
     b = parts(end, timeZone);
   const sameDay = a.year === b.year && a.month === b.month && a.day === b.day;
+  const { opens, closes, slot } = bookingWindow();
+  const startMinute = a.hour * 60 + a.minute;
   if (
-    end.getTime() - start.getTime() !== clinicHours.slotMinutes * 60000 ||
+    end.getTime() - start.getTime() !== slot * 60000 ||
     start.getUTCMilliseconds() !== 0 ||
     a.second !== 0 ||
-    a.minute % 30 !== 0 ||
-    a.hour < 10 ||
-    a.hour >= 18 ||
-    !sameDay ||
-    b.hour * 60 + b.minute > 18 * 60
+    (startMinute - opens) % slot !== 0 ||
+    startMinute < opens ||
+    startMinute + slot > closes ||
+    !sameDay
   ) {
     throw new AppError(
       "VALIDATION_ERROR",
-      "Las citas duran 30 minutos y deben iniciar entre las 10:00 y las 17:30, en horas o medias horas de la clínica.",
+      `Las citas duran ${slot} minutos y deben iniciar entre las ${clinicHours.opensAt} y las ${formatClock(closes - slot)}, en bloques de la clínica.`,
     );
   }
 }

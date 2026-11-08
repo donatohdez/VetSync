@@ -25,7 +25,7 @@ export function composeServices(
     reminders = new MysqlReminders(pool);
   return {
     owners: new Owners(new MysqlOwners(pool)),
-    pets: new Pets(pets, clock),
+    pets: new Pets(pets, clock, timeZone),
     veterinarians,
     appointments,
     reminders,

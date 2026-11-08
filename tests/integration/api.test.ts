@@ -452,3 +452,91 @@ it.each([
     expect(await rows(pool, "SELECT * FROM appointments")).toHaveLength(0);
   },
 );
+it("disponibilidad real: la cita de un veterinario no bloquea a otro (F-02)", async () => {
+  await request(app).post("/api/appointments").send(appointment).expect(201);
+  const forFirst = await request(app)
+    .get(
+      `/api/appointments/availability?date=2026-11-09&veterinarianId=${vetId}`,
+    )
+    .expect(200);
+  const forSecond = await request(app)
+    .get(
+      `/api/appointments/availability?date=2026-11-09&veterinarianId=${secondVet}`,
+    )
+    .expect(200);
+  expect(forFirst.body[0]).toMatchObject({ reason: "occupied" });
+  expect(forSecond.body[0]).toMatchObject({ available: true, reason: null });
+  expect(forSecond.body.every((s: { available: boolean }) => s.available)).toBe(
+    true,
+  );
+});
+it("/config publica el horario de reservas desde la misma definición que la disponibilidad", async () => {
+  const { clinicHours } =
+    await import("../../src/modules/appointments/domain/clinic-hours.js");
+  const config = (await request(app).get("/api/config").expect(200)).body;
+  expect(config).toEqual({
+    timeZone: "America/Hermosillo",
+    reminderHours: 24,
+    bookingHours: { opensAt: "10:00", closesAt: "18:00", slotMinutes: 30 },
+  });
+  expect(config.bookingHours).toEqual(clinicHours);
+  const slots = (
+    await request(app)
+      .get(
+        `/api/appointments/availability?date=2026-11-09&veterinarianId=${vetId}`,
+      )
+      .expect(200)
+  ).body as { time: string }[];
+  expect(slots[0]?.time).toBe(config.bookingHours.opensAt);
+  expect(slots).toHaveLength(
+    (18 * 60 - 10 * 60) / config.bookingHours.slotMinutes,
+  );
+});
+it("historial con identificador de mascota con espacios usa el identificador normalizado (F-07)", async () => {
+  const padded = encodeURIComponent(` ${petId} `);
+  const created = await request(app)
+    .post(`/api/pets/${padded}/medical-records`)
+    .send({
+      veterinarianId: vetId,
+      recordedAt: "2026-11-08T14:00:00Z",
+      clinicalNote: "Control con espacios en la ruta.",
+    })
+    .expect(201);
+  expect(created.body.petId).toBe(petId);
+  const stored = await rows<{ petId: string }>(
+    pool,
+    "SELECT pet_id AS petId FROM medical_records",
+  );
+  expect(stored).toEqual([{ petId }]);
+  const listed = await request(app)
+    .get(`/api/pets/${padded}/medical-records`)
+    .expect(200);
+  expect(listed.body).toHaveLength(1);
+  await request(app)
+    .get(`/api/pets/${encodeURIComponent(" otra ")}/medical-records`)
+    .expect(404);
+});
+it("parámetros mal codificados, charset y codificación inválidos responden 4xx con la aplicación compuesta (F-06)", async () => {
+  await request(app).get("/api/pets/%E0%A4%A/medical-records").expect(400);
+  await request(app)
+    .post("/api/owners")
+    .set("Content-Type", "application/json; charset=iso-8859-1")
+    .send("{}")
+    .expect(415);
+  await request(app)
+    .post("/api/owners")
+    .set("Content-Type", "application/json")
+    .set("Content-Encoding", "gzip")
+    .send("no comprimido")
+    .expect(400);
+  expect(await rows(pool, "SELECT * FROM owners")).toHaveLength(1);
+});
+it("POST /notifications/run solo admite el objeto vacío (F-19)", async () => {
+  await request(app).post("/api/notifications/run").send({}).expect(200);
+  await request(app).post("/api/notifications/run").send([]).expect(400);
+  const extra = await request(app)
+    .post("/api/notifications/run")
+    .send({ x: 1 })
+    .expect(400);
+  expect(extra.body.error.code).toBe("VALIDATION_ERROR");
+});
